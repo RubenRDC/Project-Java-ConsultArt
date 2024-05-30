@@ -3,6 +3,8 @@ package com.rubenrdc.consultartoptimizado.dao;
 import com.rubenrdc.consultartoptimizado.models.User;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -11,27 +13,30 @@ import java.sql.SQLException;
 public class UserDao {
 
     DaoConnection abc = new DaoConnection();
+    private List<String> paramsSql = new ArrayList<>();
 
     public UserDao() {
     }
 
-    public boolean existUser(User u){
+    public boolean existUser(User u) {
         boolean existe = false;
-        abc.ExtablecerC();
-        String consulta = String.format("Select * From usuarios where User = \"%s\" AND Pass = \"%s\";", u.getUserName(), u.getPass());
-        
-        try {
-            ResultSet rs = abc.ConsultaG(consulta);
-            if (rs.next()) {
-                existe = true;
-                return existe;
+        if (abc.ExtablecerC() != null) {
+            String consulta = String.format("Select * From usuarios where User = ? AND Pass = ?;");
+            paramsSql.add(u.getUserName());
+            paramsSql.add(u.getPass());
+            ResultSet rs = abc.GenericQuery(consulta, paramsSql);
+            try {
+                if (rs.next()) {
+                    existe = true;
+                    return existe;
+                }
+
+            } catch (SQLException | java.lang.NullPointerException e) {
+
             }
-
-        } catch (SQLException | java.lang.NullPointerException e) {
-
+            paramsSql.clear();
+            abc.getCloseC();
         }
-        abc.getCloseC();
-        
         return existe;
     }
 }

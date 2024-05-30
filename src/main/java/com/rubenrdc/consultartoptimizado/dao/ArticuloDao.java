@@ -126,6 +126,7 @@ public class ArticuloDao {
             } catch (NumberFormatException | SQLException e) {
                 System.out.println(e);
             }
+            paramsSql.clear();
             abc.getCloseC();
         }
 
