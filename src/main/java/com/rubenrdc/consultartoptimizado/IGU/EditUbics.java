@@ -1,14 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package com.rubenrdc.consultartoptimizado.IGU;
 
 import com.rubenrdc.consultartoptimizado.dao.ArticuloDao;
 import com.rubenrdc.consultartoptimizado.funtionsComp.funtionsCom;
 import com.rubenrdc.consultartoptimizado.models.Articulo;
 import java.awt.BorderLayout;
-import java.awt.Component;
 
 /**
  *
@@ -100,6 +95,7 @@ public class EditUbics extends javax.swing.JPanel implements funtionsCom{
             }
         };
         tabUbEx.setModel(tableModel2);
+        tabUbEx.setFocusable(false);
         tabUbEx.setRowHeight(25);
         tabUbEx.setRowMargin(5);
         tabUbEx.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -166,6 +162,7 @@ public class EditUbics extends javax.swing.JPanel implements funtionsCom{
             }
         };
         tabUbP.setModel(tableModel);
+        tabUbP.setFocusable(false);
         tabUbP.setRowHeight(25);
         tabUbP.setRowMargin(5);
         tabUbP.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -411,6 +408,7 @@ public class EditUbics extends javax.swing.JPanel implements funtionsCom{
         //tabUbEx.isFocusOwner();
         //System.out.println("jTable2 selectedRow" + selectedRow);
         if (selectedRow != -1) {
+            tabUbP.clearSelection();
             editBtnP.setEnabled(false);
             addBtnP.setEnabled(false);
             editBtnEx.setEnabled(true);
@@ -453,6 +451,7 @@ public class EditUbics extends javax.swing.JPanel implements funtionsCom{
         //System.out.println("jTable1 selectedRow" + selectedRow);
         //jTable1.clearSelection();
         if (selectedRow != -1) {
+            tabUbEx.clearSelection();
             editBtnP.setEnabled(true);
             editBtnEx.setEnabled(false);
             addBtnEx.setEnabled(false);
@@ -519,7 +518,6 @@ public class EditUbics extends javax.swing.JPanel implements funtionsCom{
         }
     }//GEN-LAST:event_listDepositoItemStateChanged
 
-    ;
     private void previusPageMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_previusPageMouseClicked
         if (previusPage.isVisible()) {
             addOeditUbic = null;
@@ -533,9 +531,7 @@ public class EditUbics extends javax.swing.JPanel implements funtionsCom{
         tb.getColumnModel().getColumn(0).setMaxWidth(20);
         llenarTabla(tb, a,2);
     }
-
     
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel ContentExtra;
     private javax.swing.JPanel TableUbicExtra;

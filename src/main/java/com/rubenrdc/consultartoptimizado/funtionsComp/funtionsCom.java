@@ -82,7 +82,7 @@ public interface funtionsCom {
         panel.setEnabled(isEnabled);
         java.awt.Component[] components = panel.getComponents();
         for (Component component : components) {
-            System.out.println(" ... " + component);
+            //System.out.println(" ... " + component);
             component.setEnabled(isEnabled);
         }
     }
