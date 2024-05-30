@@ -471,32 +471,32 @@ public class UpAndEditArt extends javax.swing.JPanel {
         String descripcion = descTxt.getText();
         String foto = fotoUrlTxt.getText();
         if ((codigo.length() <= 10 && codigo.length() >= 4) && (descripcion.length() >= 5 && descripcion.length() < 65) && (foto.length() < 65)) {
-            if (artDao.busquedaEstrictaArt(codigo, 1) == null) {//Si encuentra algun articulo que consida el codigo que se intenta dar de alta no avanzara el programa advirtiendo de que el codigo ya existe.
-                if (foto.toLowerCase().contains(".jpg") || foto.toLowerCase().contains(".png")||foto.toLowerCase().contains("")) {
-                    if (tipo == 0) {//Add Articulo
+
+            if (foto.toLowerCase().contains(".jpg") || foto.toLowerCase().contains(".png") || foto.toLowerCase().contains("")) {
+                if (tipo == 0) {//Add Articulo
+                    if (artDao.busquedaEstrictaArt(codigo, 1) == null) {//Si encuentra algun articulo que consida el codigo que se intenta dar de alta no avanzara el programa advirtiendo de que el codigo ya existe.
                         ObjetoArticulo = new Articulo(0, codigo, descripcion, foto);
                         artDao.addArticulo(ObjetoArticulo);
 
                         codigotxt.setText("");
                         descTxt.setText("");
                         fotoUrlTxt.setText("");
-                    } else {//Actualizar Articulo
-                        ObjetoArticulo.setId(idArt);
-                        ObjetoArticulo.setCodigo(codigo);
-                        ObjetoArticulo.setDesc(descripcion);
-                        ObjetoArticulo.setFoto(foto);
-
-                        artDao.updateArticulo(ObjetoArticulo);
-
+                    } else {
+                        JOptionPane.showMessageDialog(null, "El codigo de articulo que intentas cargar ya existe", "Advertencia!", JOptionPane.ERROR_MESSAGE);
                     }
-                } else {
-                    JOptionPane.showMessageDialog(null, "La URL ingresada debe de contener una imagen en formato JPG o PNG\nEn caso de que la URL termine en '.webp' o otro formato, reemplazar por el formato permitido. ", "Advertencia!", JOptionPane.ERROR_MESSAGE);
+                } else {//Actualizar Articulo
+                    ObjetoArticulo.setId(idArt);
+                    ObjetoArticulo.setCodigo(codigo);
+                    ObjetoArticulo.setDesc(descripcion);
+                    ObjetoArticulo.setFoto(foto);
+
+                    artDao.updateArticulo(ObjetoArticulo);
 
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "El codigo de articulo que intentas cargar ya existe", "Advertencia!", JOptionPane.ERROR_MESSAGE);
-            }
+                JOptionPane.showMessageDialog(null, "La URL ingresada debe de contener una imagen en formato JPG o PNG\nEn caso de que la URL termine en '.webp' o otro formato, reemplazar por el formato permitido. ", "Advertencia!", JOptionPane.ERROR_MESSAGE);
 
+            }
         } else {
             JOptionPane.showMessageDialog(null, "Los campos ingrasado no cumplen con el reglamento.", "Advertencia!", JOptionPane.ERROR_MESSAGE);
         }

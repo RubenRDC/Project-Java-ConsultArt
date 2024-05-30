@@ -6,16 +6,20 @@ package com.rubenrdc.consultartoptimizado.dao;
 
 import com.rubenrdc.consultartoptimizado.funtionsComp.funtionsCom;
 import com.rubenrdc.consultartoptimizado.models.Articulo;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author Ruben
  */
 public class ArticuloDao {
+
+    private List<String> datos = new ArrayList<>();
 
     private DaoConnection abc = new DaoConnection();
 
@@ -202,62 +206,124 @@ public class ArticuloDao {
     }
 
     public void addArticulo(Articulo varArt) {
-        if (abc.ExtablecerC() != null) {
-            String cod = varArt.getCodigo();
-            String desc = varArt.getDesc();
-            String foto = varArt.getFoto();
 
-            boolean exito = abc.UpOrDelectOrInsert(String.format("INSERT INTO articulos (codigo,descripcion,foto) VALUES (\"%s\",\"%s\",\"%s\")", cod, desc, foto));
-            if (exito) {
-                funtions.msgInfo(1);
-            } else {
-                funtions.msgInfo(0);
-            }
-            abc.getCloseC();
+        datos.add(0, varArt.getCodigo());
+        datos.add(1, varArt.getDesc());
+        datos.add(2, varArt.getFoto());
+
+        boolean exito = UpOrDelectOrInsert(datos);
+        if (exito) {
+            funtions.msgInfo(1);
+        } else {
+            funtions.msgInfo(0);
         }
+        datos.clear();
 
     }
 
     public void updateArticulo(Articulo varArt) {
-        if (abc.ExtablecerC() != null) {
-            int id = varArt.getId();
-            String cod = varArt.getCodigo();
-            String desc = varArt.getDesc();
-            String foto = varArt.getFoto();
 
-            boolean exito = abc.UpOrDelectOrInsert(String.format("UPDATE articulos SET codigo = \"%s\",descripcion = \"%s\",foto = \"%s\" WHERE id=%d", cod, desc, foto, id));
-            if (exito) {
-                funtions.msgInfo(1);
-            } else {
-                funtions.msgInfo(0);
-            }
-            abc.getCloseC();
+        datos.add(0, String.valueOf(varArt.getId()));
+        datos.add(1, varArt.getCodigo());
+        datos.add(2, varArt.getDesc());
+        datos.add(3, varArt.getFoto());
+
+        boolean exito = UpOrDelectOrInsert(datos);
+        if (exito) {
+            funtions.msgInfo(1);
+        } else {
+            funtions.msgInfo(0);
         }
+        datos.clear();
+    }
+    public void eliminarArt(int idArt) {
+        boolean exito = false;
+        datos.add(String.valueOf(idArt));
+        exito = UpOrDelectOrInsert(datos);
 
+        datos.clear();
+        if (exito) {
+            funtions.msgInfo(1);
+        } else {
+            funtions.msgInfo(0);
+        }
     }
 
-    public void deleteArticulo(int idArt) {
+    private boolean UpOrDelectOrInsert(List<String> datosArt) {
+        String query = "";
+
+        boolean exito = false;
         if (abc.ExtablecerC() != null) {
-            ResultSet rs = abc.ConsultaG(String.format("SELECT id FROM ubicaciones WHERE idArt = %d", idArt));
-            try {
-                while (rs.next()) {
-                    int idUbic = rs.getInt("id");
-
-                    abc.UpOrDelectOrInsert(String.format("DELETE FROM ubicacion_extra WHERE idUbic = %d", idUbic));
-                    abc.UpOrDelectOrInsert(String.format("DELETE FROM ubicaciones WHERE id = %d", idUbic));
+            if (datosArt.size() == 4) {
+                query = "UPDATE articulos SET codigo = ? ,descripcion = ? ,foto = ? WHERE id = ? ;";
+                try {
+                    PreparedStatement cs = abc.ExtablecerC().prepareStatement(query);
+                    cs.setString(1, datosArt.get(1));
+                    cs.setString(2, datosArt.get(2));
+                    cs.setString(3, datosArt.get(3));
+                    cs.setInt(4, Integer.parseInt(datosArt.get(0)));
+                    
+                    
+                    int rs = cs.executeUpdate();
+                    
+                    if (rs > 0) {
+                        return exito = true;
+                    } else {
+                        return exito;
+                    }
+                } catch (SQLException ex) {
+                    System.out.println("ex "+ ex);
                 }
-                boolean exito = abc.UpOrDelectOrInsert(String.format("DELETE FROM articulos WHERE id = %d", idArt));
-
-                if (exito) {
-                    funtions.msgInfo(1);
-                } else {
-                    funtions.msgInfo(0);
-                }
-            } catch (SQLException ex) {
-
             }
-            abc.getCloseC();
+
+            if (datosArt.size() == 3) {
+                query = "INSERT INTO articulos (codigo,descripcion,foto) VALUES (?,?,?);";
+                try {
+                    PreparedStatement cs = abc.ExtablecerC().prepareStatement(query);
+                    cs.setString(1, datosArt.get(0));
+                    cs.setString(2, datosArt.get(1));
+                    cs.setString(3, datosArt.get(2));
+                    int rs = cs.executeUpdate();
+                    if (rs > 0) {
+                        return exito = true;
+                    } else {
+                        return exito;
+                    }
+                } catch (SQLException ex) {
+
+                }
+            }
+
+            if (datosArt.size() == 1) {
+                query = "SELECT id FROM ubicaciones WHERE idArt = ?";
+                int idArt = Integer.parseInt(datosArt.get(0));
+
+                try {
+                    ResultSet rs = abc.ConsultPorId(query, idArt);
+
+                    while (rs.next()) {
+
+                        int idUbic = rs.getInt("id");
+                        query = "DELETE FROM ubicacion_extra WHERE idUbic = ?";
+                        abc.EliminarPorId(query, idUbic);
+
+                        query = "DELETE FROM ubicaciones WHERE id = ?";
+                        abc.EliminarPorId(query, idUbic);
+
+                    }
+                    query = "DELETE FROM articulos WHERE id = ?";
+                    exito = abc.EliminarPorId(query, idArt);
+
+                } catch (SQLException ex) {
+
+                }
+            }
+
         }
+
+        abc.getCloseC();
+        return exito;
+
     }
 
 }

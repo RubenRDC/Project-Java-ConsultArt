@@ -246,7 +246,7 @@ public class EditUbic extends javax.swing.JPanel {
                 if (tipoV == 0) {
                     //Tipo Ventana de Add Ubicacion
                     String ObtenerIdDep = String.format("SELECT id FROM depositos WHERE descrip = \"%s\"", Dep);
-                    int idDep = dao.RetornarIdArt(ObtenerIdDep);
+                    int idDep = dao.RetornarId(ObtenerIdDep);
                     String add = String.format("INSERT INTO ubicaciones (idArt,idDep,exist, ubic) VALUES (%d,%d,%d,\"%s\")", idArt, idDep, stock, ubicC);
                     exito = dao.UpOrDelectOrInsert(add);
 

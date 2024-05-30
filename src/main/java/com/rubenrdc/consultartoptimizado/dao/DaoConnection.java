@@ -44,24 +44,6 @@ public class DaoConnection {
 
     }
 
-    public boolean UpOrDelectOrInsert(String consulta) {
-        boolean exito = false;
-        try {
-            PreparedStatement cs = conectar.prepareStatement(consulta);
-            //System.out.println("UpdateUb consulta: " + consulta);
-            int rs = cs.executeUpdate();
-            if (rs > 0) {
-                return exito = true;
-            } else {
-                JOptionPane.showMessageDialog(null, "Ha Ocurrido un Error a la hora de realizar la operacion solicitada.", "ERROR", JOptionPane.ERROR_MESSAGE);
-            }
-        } catch (SQLException ex) {
-            System.out.println("consulta UpOrDelectOrInsert " + consulta);
-            System.out.println(ex);
-        }
-        return exito;
-        //System.out.println("consulta: " + consulta);
-    }
 
     public ResultSet ConsultaG(String consulta) {
         ResultSet rs = null;
@@ -75,7 +57,7 @@ public class DaoConnection {
         return rs;
     }
 
-    public int RetornarIdArt(String Consulta) {
+    public int RetornarId(String Consulta) {
         int id = 0;
         try {
             PreparedStatement cs = conectar.prepareStatement(Consulta);
@@ -83,7 +65,6 @@ public class DaoConnection {
             if (rs.next()) {
                 id = rs.getInt("id");
             }
-
         } catch (SQLException ex) {
             //System.out.println("ex= " + ex);
         }
@@ -94,10 +75,35 @@ public class DaoConnection {
         if (conectar != null) {
             try {
                 conectar.close();
-                conectar=null;
+                conectar = null;
             } catch (SQLException ex) {
 
             }
+        }
+
+    }
+
+    public ResultSet ConsultPorId(String Query, int IdParam) throws SQLException {
+        ResultSet rs = null;
+        
+        PreparedStatement ps = conectar.prepareStatement(Query);
+        ps.setInt(1, IdParam);
+        rs = ps.executeQuery();
+        
+        return rs;
+
+    }
+
+    public boolean EliminarPorId(String Query, int IdParam) throws SQLException {
+
+        PreparedStatement ps = conectar.prepareStatement(Query);
+        ps.setInt(1, IdParam);
+        int rs = ps.executeUpdate();
+
+        if (rs > 0) {
+            return true;
+        } else {
+            return false;
         }
 
     }
