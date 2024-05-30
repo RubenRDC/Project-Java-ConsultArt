@@ -1,4 +1,4 @@
-package com.rubenrdc.consultartoptimizado.IGU;
+package com.rubenrdc.consultartoptimizado.IGU.Av;
 
 import com.rubenrdc.consultartoptimizado.dao.ArticuloDao;
 import java.awt.event.MouseEvent;

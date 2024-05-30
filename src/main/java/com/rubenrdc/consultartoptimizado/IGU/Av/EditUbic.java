@@ -1,4 +1,4 @@
-package com.rubenrdc.consultartoptimizado.IGU;
+package com.rubenrdc.consultartoptimizado.IGU.Av;
 
 import com.rubenrdc.consultartoptimizado.dao.DaoConnection;
 import com.rubenrdc.consultartoptimizado.funtionsComp.funtionsCom;

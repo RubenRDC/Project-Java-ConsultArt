@@ -1,5 +1,5 @@
 package com.rubenrdc.consultartoptimizado;
-import com.rubenrdc.consultartoptimizado.IGU.Login;
+import com.rubenrdc.consultartoptimizado.IGU.auth.Login;
 /**
  *
  * @author Ruben
