@@ -1,11 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package com.rubenrdc.consultartoptimizado.IGU;
 
 import com.rubenrdc.consultartoptimizado.dao.DaoConnection;
 import com.rubenrdc.consultartoptimizado.funtionsComp.funtionsCom;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -13,9 +11,11 @@ import com.rubenrdc.consultartoptimizado.funtionsComp.funtionsCom;
  */
 public class EditUbic extends javax.swing.JPanel {
 
-    int stock, idUbic, tipoU, tipoV, idArt;
-    String s = "", p = "", e = "", c = "", a = "", ubicC, Dep;
-    funtionsCom funcion = new funtionsCom();
+    private int stock, idUbic, tipoU, tipoV, idArt;
+    private String s = "", p = "", e = "", c = "", a = "", ubicC, Dep;
+    private funtionsCom funcion = new funtionsCom();
+    private DaoConnection dao = new DaoConnection();
+    private List<String> paramsSQL = new ArrayList<>();
 
     /**
      *
@@ -167,11 +167,6 @@ public class EditUbic extends javax.swing.JPanel {
                 sendInfoBtnMouseClicked(evt);
             }
         });
-        sendInfoBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                sendInfoBtnActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -221,68 +216,84 @@ public class EditUbic extends javax.swing.JPanel {
     private void sendInfoBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_sendInfoBtnMouseClicked
         if (sendInfoBtn.isEnabled()) {
             boolean exito = false;
-            DaoConnection dao = new DaoConnection();
-            dao.ExtablecerC();
-            s = SelSector.getValue().toString();
-            p = String.valueOf(SelPasillo.getValue());
-            e = String.valueOf(SelEstante.getValue());
-            c = String.valueOf(SelCajon.getValue());
-            a = String.valueOf(SelAltura.getValue());
-            stock = (int) stocktxt.getValue();
+            String querys = "";
+            if (dao.ExtablecerC() != null) {
 
-            if (p.length() < 2) {
-                p = "0" + p;
-            }
-            if (e.length() < 2) {
-                e = "0" + e;
-            }
-            if (c.length() < 2) {
-                c = "0" + c;
-            }
+                s = SelSector.getValue().toString();
+                p = String.valueOf(SelPasillo.getValue());
+                e = String.valueOf(SelEstante.getValue());
+                c = String.valueOf(SelCajon.getValue());
+                a = String.valueOf(SelAltura.getValue());
+                stock = (int) stocktxt.getValue();
 
-            ubicC = s + p + "-" + e + c + "-" + a;
-
-            if (tipoU == 0) {//Tipo Ubicacion Principal
-                if (tipoV == 0) {
-                    //Tipo Ventana de Add Ubicacion
-                    String ObtenerIdDep = String.format("SELECT id FROM depositos WHERE descrip = \"%s\"", Dep);
-                    int idDep = dao.RetornarId(ObtenerIdDep);
-                    String add = String.format("INSERT INTO ubicaciones (idArt,idDep,exist, ubic) VALUES (%d,%d,%d,\"%s\")", idArt, idDep, stock, ubicC);
-                    exito = dao.UpOrDelectOrInsert(add);
-
-                } else if (tipoV == 1) {
-                    //Tipo Ventana de Edit Ubicacion
-                    exito = dao.UpOrDelectOrInsert(String.format("UPDATE ubicaciones SET exist = %d,ubic = \"%s\" WHERE id=%d", stock, ubicC, idUbic));
-                    System.out.println("Tipo Ventana de Edit Ubicacion Principal");
+                if (p.length() < 2) {
+                    p = "0" + p;
                 }
-            } else if (tipoU == 1) {//Tipo Ubicacion Extra
-                if (tipoV == 0) {
-                    //Agregar
-                    exito = dao.UpOrDelectOrInsert(String.format("INSERT INTO ubicacion_extra (idUbic,ubic) VALUES (%d,\"%s\")", idUbic, ubicC));
-                    System.out.println("Tipo Ventana de Add Ubicacion Extra");
-                } else if (tipoV == 1) {
-                    //Editar
-                    exito = dao.UpOrDelectOrInsert(String.format("UPDATE ubicacion_extra SET ubic = \"%s\" WHERE id = %d", ubicC, idUbic));
-                    System.out.println("Tipo Ventana de Edit Ubicacion Extra");
+                if (e.length() < 2) {
+                    e = "0" + e;
                 }
+                if (c.length() < 2) {
+                    c = "0" + c;
+                }
+
+                ubicC = s + p + "-" + e + c + "-" + a;
+
+                if (tipoU == 0) {//Tipo Ubicacion Principal
+                    if (tipoV == 0) {
+                        //Tipo Ventana de Add Ubicacion
+                        String ObtenerIdDep = String.format("SELECT id FROM depositos WHERE descrip = \"%s\"", Dep);
+                        int idDep = dao.RetornarId(ObtenerIdDep);
+                        paramsSQL.add(0, String.valueOf(idArt));
+                        paramsSQL.add(1, String.valueOf(idDep));
+                        paramsSQL.add(2, String.valueOf(stock));
+                        paramsSQL.add(3, ubicC);
+                        querys = "INSERT INTO ubicaciones (idArt,idDep,exist, ubic) VALUES (?,?,?,?)";
+                        exito = dao.GenericUpdate(querys, paramsSQL);
+
+                    } else if (tipoV == 1) {
+                        //Tipo Ventana de Edit Ubicacion
+                        paramsSQL.add(0, String.valueOf(stock));
+                        paramsSQL.add(1, ubicC);
+                        paramsSQL.add(2, String.valueOf(idUbic));
+                        querys = "UPDATE ubicaciones SET exist = ?,ubic = ? WHERE id=?";
+                        exito = dao.GenericUpdate(querys, paramsSQL);
+                        System.out.println("Tipo Ventana de Edit Ubicacion Principal");
+                    }
+                } else if (tipoU == 1) {//Tipo Ubicacion Extra
+                    if (tipoV == 0) {
+                        //Agregar
+                        querys = "INSERT INTO ubicacion_extra (idUbic,ubic) VALUES (?,?)";
+                        
+                        paramsSQL.add(0, String.valueOf(idUbic));
+                        paramsSQL.add(1, ubicC);
+                        
+                        exito = dao.GenericUpdate(querys, paramsSQL);
+                        System.out.println("Tipo Ventana de Add Ubicacion Extra");
+                    } else if (tipoV == 1) {
+                        //Editar
+                        querys="UPDATE ubicacion_extra SET ubic = ? WHERE id = ?";
+                        paramsSQL.add(0, ubicC);
+                        paramsSQL.add(1, String.valueOf(idUbic));
+                        exito = dao.GenericUpdate(querys, paramsSQL);
+                        System.out.println("Tipo Ventana de Edit Ubicacion Extra");
+                    }
+                }
+
+                if (exito) {
+                    setPanelEnabled(jPanel4, false);
+                    setPanelEnabled(jPanel5, false);
+                    sendInfoBtn.setEnabled(false);
+                    funcion.msgInfo(1);
+                } else {
+                    funcion.msgInfo(0);
+                }
+                querys = null;
+                paramsSQL.clear();
+                dao.getCloseC();
             }
 
-            if (exito) {
-                setPanelEnabled(jPanel4, false);
-                setPanelEnabled(jPanel5, false);
-                sendInfoBtn.setEnabled(false);
-                funcion.msgInfo(1);
-            }else{
-                funcion.msgInfo(0);
-            }
-
-            dao.getCloseC();
         }
     }//GEN-LAST:event_sendInfoBtnMouseClicked
-
-    private void sendInfoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendInfoBtnActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_sendInfoBtnActionPerformed
 
     private void setPanelEnabled(javax.swing.JPanel panel, Boolean isEnabled) {
         panel.setEnabled(isEnabled);
@@ -294,56 +305,54 @@ public class EditUbic extends javax.swing.JPanel {
     }
 
     private void ObtenerUbic(int id, int tipoUbicacion) {
-        DaoConnection dao = new DaoConnection();
-        dao.ExtablecerC();
-        String consulta = "";
-        if (tipoUbicacion == 0) {//Si es una ubicacion principal
-            consulta = String.format("SELECT * FROM ubicaciones WHERE id = %d", id);
-        } else if (tipoUbicacion == 1) {//Si es una ubicacion extra
-            consulta = String.format("SELECT * FROM ubicacion_extra WHERE id = %d", id);
+        if (dao.ExtablecerC() != null) {
+            String consulta = "";
+            if (tipoUbicacion == 0) {//Si es una ubicacion principal
+                consulta = String.format("SELECT * FROM ubicaciones WHERE id = ?");
+            } else if (tipoUbicacion == 1) {//Si es una ubicacion extra
+                consulta = String.format("SELECT * FROM ubicacion_extra WHERE id = ?");
+            }
+            String Ubic = "";
+            java.sql.ResultSet rs = dao.QueryById(consulta, id);
+            try {
+                if (rs.next()) {
+                    Ubic = rs.getString("ubic");
+                    stock = rs.getInt("exist");
+                    //System.out.println("stock "+ stock);
+                }
+
+            } catch (java.sql.SQLException ex) {
+
+            }
+
+            for (int i = 0; i < Ubic.length(); i++) {
+                if (i == 0) {
+                    s = String.valueOf(Ubic.charAt(i));
+                }
+                if (i > 0 && i < 3) {
+                    p += String.valueOf(Ubic.charAt(i));
+                }
+                if (i > 3 && i < 6) {
+                    e += String.valueOf(Ubic.charAt(i));
+                }
+                if (i > 5 && i < 8) {
+                    c += String.valueOf(Ubic.charAt(i));
+                }
+                if (i > 8) {
+                    a += String.valueOf(Ubic.charAt(i));
+                }
+            }
+
+            stocktxt.setValue(stock);
+            SelSector.setValue(s);
+            SelPasillo.setValue(Integer.valueOf(p));
+            SelEstante.setValue(Integer.valueOf(e));
+            SelCajon.setValue(Integer.valueOf(c));
+            SelAltura.setValue(Integer.valueOf(a));
+
+            consulta=null;
+            dao.getCloseC();
         }
-        String Ubic = "";
-
-        try {
-
-            java.sql.ResultSet rs = dao.ConsultaG(consulta);
-
-            if (rs.next()) {
-                Ubic = rs.getString("ubic");
-                stock = rs.getInt("exist");
-                //System.out.println("stock "+ stock);
-            }
-
-        } catch (java.sql.SQLException ex) {
-
-        }
-
-        for (int i = 0; i < Ubic.length(); i++) {
-            if (i == 0) {
-                s = String.valueOf(Ubic.charAt(i));
-            }
-            if (i > 0 && i < 3) {
-                p += String.valueOf(Ubic.charAt(i));
-            }
-            if (i > 3 && i < 6) {
-                e += String.valueOf(Ubic.charAt(i));
-            }
-            if (i > 5 && i < 8) {
-                c += String.valueOf(Ubic.charAt(i));
-            }
-            if (i > 8) {
-                a += String.valueOf(Ubic.charAt(i));
-            }
-        }
-
-        stocktxt.setValue(stock);
-        SelSector.setValue(s);
-        SelPasillo.setValue(Integer.valueOf(p));
-        SelEstante.setValue(Integer.valueOf(e));
-        SelCajon.setValue(Integer.valueOf(c));
-        SelAltura.setValue(Integer.valueOf(a));
-
-        dao.getCloseC();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

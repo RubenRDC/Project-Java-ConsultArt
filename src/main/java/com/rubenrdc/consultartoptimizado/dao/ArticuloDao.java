@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.rubenrdc.consultartoptimizado.dao;
 
 import com.rubenrdc.consultartoptimizado.funtionsComp.funtionsCom;
@@ -32,12 +28,13 @@ public class ArticuloDao {
         int i = 0;
         DepositosDao depDao = new DepositosDao();
         String[][] stocks = new String[depDao.getLimitDep()][2];
-        String consulta = String.format("SELECT * FROM articulos WHERE codigo = \"%s\";", cod);
+        String query = "SELECT * FROM articulos WHERE codigo = ?;";
 
         if (abc.ExtablecerC() != null) {
-            //System.out.println("abc.ExtablecerC() " + abc.ExtablecerC());
-            ResultSet rs = abc.ConsultaG(consulta);
             try {
+                paramsSql.add(cod);
+                ResultSet rs = abc.GenericQuery(query, paramsSql);
+
                 if (rs.next()) {
                     int idArt = rs.getInt("id");
                     String code = rs.getString("codigo");
@@ -46,8 +43,8 @@ public class ArticuloDao {
 
                     art = new Articulo(idArt, code, desc, foto);
 
-                    String CStock = String.format("SELECT * FROM ubicaciones INNER JOIN depositos ON depositos.id=ubicaciones.idDep WHERE idArt = %d;", idArt);
-                    ResultSet rs3 = abc.ConsultaG(CStock);
+                    String CStock = "SELECT * FROM ubicaciones INNER JOIN depositos ON depositos.id=ubicaciones.idDep WHERE idArt = ?;";
+                    ResultSet rs3 = abc.QueryById(CStock, idArt);
                     while (rs3.next()) {
 
                         stocks[i][0] = (rs3.getString("depositos.descrip"));
@@ -59,17 +56,11 @@ public class ArticuloDao {
                     }
                 } else {
                     art = null;
-                    /*art.setCodigo(null);
-                art.setDesc(null);
-                art.setStocks(null);
-                art.setFoto(null);
-                art.setUbicConcat(null);
-                Relacion = null;*/
                 }
             } catch (SQLException ex) {
 
             }
-
+            paramsSql.clear();
             abc.getCloseC();
         }
 
@@ -142,17 +133,14 @@ public class ArticuloDao {
 
     public List enlistarArt(String code, int limiteLista) {
         Articulo art;
-        String Query = "SELECT * FROM articulos WHERE codigo LIKE ? OR descripcion LIKE ? LIMIT "+limiteLista;
+        String Query = "SELECT * FROM articulos WHERE codigo LIKE ? OR descripcion LIKE ? LIMIT " + limiteLista;
         List<Articulo> list = new ArrayList<Articulo>();
 
         if (abc.ExtablecerC() != null) {
+            paramsSql.add("%" + code + "%");
+            paramsSql.add("%" + code + "%");
+            ResultSet rs = abc.GenericQuery(Query, paramsSql);
             try {
-                paramsSql.add("%"+code+"%");
-                paramsSql.add("%"+code+"%");
-               
-
-                ResultSet rs = abc.GenericQuery(Query, paramsSql);
-
                 while (rs.next()) {
                     int id = rs.getInt("id");
                     String cod = rs.getString("codigo");
@@ -179,8 +167,8 @@ public class ArticuloDao {
 
         if (abc.ExtablecerC() != null) {
             paramsSql.add(cod);
+            ResultSet rs = abc.GenericQuery(Query, paramsSql);
             try {
-                ResultSet rs = abc.GenericQuery(Query, paramsSql);
                 if (rs.next()) {
                     int id = rs.getInt("id");
                     String codigo = rs.getString("codigo");
@@ -193,9 +181,10 @@ public class ArticuloDao {
             } catch (SQLException e) {
                 System.out.println("SQLException " + e);
             }
+            paramsSql.clear();
             abc.getCloseC();
         }
-        paramsSql.clear();
+
         return art;
     }
 
@@ -249,34 +238,26 @@ public class ArticuloDao {
         if (abc.ExtablecerC() != null) {
             if (datosArt.size() == 4) {
                 query = "UPDATE articulos SET codigo = ? ,descripcion = ? ,foto = ? WHERE id = ? ;";
-                try {
-                    for (String param : datosArt) {
-                        paramsSql.add(param);
-                    }
-                    return abc.GenericUpdate(query, paramsSql);
-
-                } catch (SQLException ex) {
-                    System.out.println("ex " + ex);
+                for (String param : datosArt) {
+                    paramsSql.add(param);
                 }
+                return abc.GenericUpdate(query, paramsSql);
             }
 
             if (datosArt.size() == 3) {
                 query = "INSERT INTO articulos (codigo,descripcion,foto) VALUES (?,?,?);";
-                try {
-                    for (String param : datosArt) {
-                        paramsSql.add(param);
-                    }
-                    return abc.GenericUpdate(query, paramsSql);
-                } catch (SQLException ex) {
-
+                for (String param : datosArt) {
+                    paramsSql.add(param);
                 }
+                return abc.GenericUpdate(query, paramsSql);
             }
 
             if (datosArt.size() == 1) {
                 query = "SELECT id FROM ubicaciones WHERE idArt = ?";
                 String idArt = datosArt.get(0);
+                ResultSet rs = abc.QueryById(query, (Integer.parseInt(idArt)));
+                
                 try {
-                    ResultSet rs = abc.QueryById(query, (Integer.parseInt(idArt)));
 
                     while (rs.next()) {
                         paramsSql.add(rs.getString("id"));
@@ -299,7 +280,6 @@ public class ArticuloDao {
             paramsSql.clear();
             abc.getCloseC();
         }
-
         return exito;
     }
 }

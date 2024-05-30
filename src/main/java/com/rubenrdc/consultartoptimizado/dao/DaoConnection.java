@@ -44,7 +44,6 @@ public class DaoConnection {
 
     }
 
-
     public ResultSet ConsultaG(String consulta) {
         ResultSet rs = null;
         try {
@@ -83,37 +82,50 @@ public class DaoConnection {
 
     }
 
-    public ResultSet QueryById(String Query, int IdParam) throws SQLException {
-        ResultSet rs = null;
-        
-        PreparedStatement ps = conectar.prepareStatement(Query);
-        ps.setInt(1, IdParam);
-        rs = ps.executeQuery();
-        
-        return rs;
+    public ResultSet QueryById(String Query, int IdParam){
+
+        try {
+            PreparedStatement ps = conectar.prepareStatement(Query);
+            ps.setInt(1, IdParam);
+            ResultSet rs = ps.executeQuery();
+
+            return rs;
+        } catch (SQLException ex) {
+
+        }
+        return null;
     }
 
-    public boolean GenericUpdate(String Query, java.util.List<String> params) throws SQLException {
+    public boolean GenericUpdate(String Query, java.util.List<String> params) {
+        try {
+            PreparedStatement ps = conectar.prepareStatement(Query);
+            int index = 1;
+            for (String param : params) {
+                ps.setString(index, param);
+                index++;
+            }
+            int rs = ps.executeUpdate();
+            return rs > 0;
+        } catch (SQLException ex) {
 
-        PreparedStatement ps = conectar.prepareStatement(Query);
-        int index = 1;
-        for (String param : params) {
-            ps.setString(index, param);
-            index++;
         }
-        int rs = ps.executeUpdate();
-
-        return rs > 0;
+        return false;
 
     }
-    public ResultSet GenericQuery(String Query, java.util.List<String> params)throws SQLException{
-        PreparedStatement ps = conectar.prepareStatement(Query);
-        int index = 1;
-        for (String param : params) {
-            ps.setString(index, param);
-            index++;
+
+    public ResultSet GenericQuery(String Query, java.util.List<String> params) {
+        try {
+            PreparedStatement ps = conectar.prepareStatement(Query);
+            int index = 1;
+            for (String param : params) {
+                ps.setString(index, param);
+                index++;
+            }
+            ResultSet rs = ps.executeQuery();
+            return rs;
+        } catch (SQLException ex) {
+
         }
-        ResultSet rs = ps.executeQuery();
-        return rs;
+        return null;
     }
 }
