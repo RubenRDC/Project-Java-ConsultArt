@@ -12,9 +12,9 @@ import javax.swing.JOptionPane;
  *
  * @author Ruben
  */
-public class funtionsCom {
+public interface funtionsCom {
 
-    public void depositos(javax.swing.JComboBox listDeposito) {
+    default public void depositos(javax.swing.JComboBox listDeposito) {
         listDeposito.removeAllItems();
         DepositosDao depDao = new DepositosDao();
         String[] depositos = depDao.getDepositos();
@@ -26,7 +26,7 @@ public class funtionsCom {
         }
     }
 
-    public void ClearTable(javax.swing.JTable jTable) {
+    default public void ClearTable(javax.swing.JTable jTable) {
         javax.swing.table.DefaultTableModel dm = (javax.swing.table.DefaultTableModel) (jTable.getModel());
         dm.setNumRows(0);
         jTable.setModel(dm);
@@ -38,7 +38,7 @@ public class funtionsCom {
      * @param tipo | 0-Error | 1-Exito | 2-...
      *
      */
-    public void msgInfo(int tipo) {
+    default public void msgInfo(int tipo) {
         if (tipo == 0) {
             JOptionPane.showMessageDialog(null, "Ha Ocurrido un Error a la hora de realizar la operacion solicitada.", "ERROR", JOptionPane.ERROR_MESSAGE);
 
@@ -48,7 +48,7 @@ public class funtionsCom {
     }
     
     
-    public void centrarTable(javax.swing.JTable tb) {
+    default public void centrarTable(javax.swing.JTable tb) {
         javax.swing.table.DefaultTableCellRenderer Alinear = new javax.swing.table.DefaultTableCellRenderer();
         Alinear.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         for (int i = 0; i < tb.getColumnModel().getColumnCount(); i++) {
@@ -57,7 +57,7 @@ public class funtionsCom {
     }
     
     
-    public void llenarTabla(javax.swing.JTable jT, String[][] a) {
+    default public void llenarTabla(javax.swing.JTable jT, String[][] a) {
         ClearTable(jT);
 
         javax.swing.table.DefaultTableModel dm = (javax.swing.table.DefaultTableModel) (jT.getModel());
@@ -83,7 +83,7 @@ public class funtionsCom {
         //
     }
     
-    public void setPanelEnabled(javax.swing.JPanel panel, Boolean isEnabled) {
+    default public void setPanelEnabled(javax.swing.JPanel panel, Boolean isEnabled) {
         panel.setEnabled(isEnabled);
         java.awt.Component[] components = panel.getComponents();
         for (Component component : components) {

@@ -9,11 +9,10 @@ import java.util.List;
  *
  * @author Ruben
  */
-public class EditUbic extends javax.swing.JPanel {
+public class EditUbic extends javax.swing.JPanel implements funtionsCom {
 
     private int stock, idUbic, tipoU, tipoV, idArt;
     private String s = "", p = "", e = "", c = "", a = "", ubicC, Dep;
-    private funtionsCom funcion = new funtionsCom();
     private DaoConnection dao = new DaoConnection();
     private List<String> paramsSQL = new ArrayList<>();
 
@@ -283,9 +282,9 @@ public class EditUbic extends javax.swing.JPanel {
                     setPanelEnabled(jPanel4, false);
                     setPanelEnabled(jPanel5, false);
                     sendInfoBtn.setEnabled(false);
-                    funcion.msgInfo(1);
+                    msgInfo(1);
                 } else {
-                    funcion.msgInfo(0);
+                    msgInfo(0);
                 }
                 querys = null;
                 paramsSQL.clear();
@@ -295,14 +294,6 @@ public class EditUbic extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_sendInfoBtnMouseClicked
 
-    private void setPanelEnabled(javax.swing.JPanel panel, Boolean isEnabled) {
-        panel.setEnabled(isEnabled);
-        java.awt.Component[] components = panel.getComponents();
-        for (java.awt.Component component : components) {
-            //System.out.println(" ... " + component);
-            component.setEnabled(isEnabled);
-        }
-    }
 
     private void ObtenerUbic(int id, int tipoUbicacion) {
         if (dao.ExtablecerC() != null) {

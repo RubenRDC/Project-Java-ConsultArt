@@ -11,14 +11,12 @@ import java.util.List;
  *
  * @author Ruben
  */
-public class ArticuloDao {
+public class ArticuloDao implements funtionsCom{
 
     private List<String> paramsSql = new ArrayList<>();
     private List<String> datos = new ArrayList<>();
 
     private DaoConnection abc = new DaoConnection();
-
-    private funtionsCom funtions = new funtionsCom();
 
     public ArticuloDao() {
     }
@@ -198,9 +196,9 @@ public class ArticuloDao {
 
         boolean exito = UpOrDelectOrInsert(datos);
         if (exito) {
-            funtions.msgInfo(1);
+            msgInfo(1);
         } else {
-            funtions.msgInfo(0);
+            msgInfo(0);
         }
         datos.clear();
     }
@@ -214,9 +212,9 @@ public class ArticuloDao {
 
         boolean exito = UpOrDelectOrInsert(datos);
         if (exito) {
-            funtions.msgInfo(1);
+            msgInfo(1);
         } else {
-            funtions.msgInfo(0);
+            msgInfo(0);
         }
         datos.clear();
     }
@@ -228,9 +226,9 @@ public class ArticuloDao {
 
         datos.clear();
         if (exito) {
-            funtions.msgInfo(1);
+            msgInfo(1);
         } else {
-            funtions.msgInfo(0);
+            msgInfo(0);
         }
     }
 

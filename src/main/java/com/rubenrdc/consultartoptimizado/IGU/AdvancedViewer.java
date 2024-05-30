@@ -1,10 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package com.rubenrdc.consultartoptimizado.IGU;
 
-import java.awt.event.MouseAdapter;
+import com.rubenrdc.consultartoptimizado.dao.ArticuloDao;
 import java.awt.event.MouseEvent;
 
 /**
@@ -356,22 +352,6 @@ public class AdvancedViewer extends javax.swing.JFrame {
             bajaArtBtn.setEnabled(true);
         }
     }
-
-    /*private void showPanel(javax.swing.JPanel addOeditUbic) {
-        addOeditUbic.setSize(419, 390);
-        addOeditUbic.setLocation(0, 0);
-        extraContent.removeAll();
-        extraContent.add(addOeditUbic, BorderLayout.CENTER);
-        extraContent.revalidate();
-        extraContent.repaint();
-}*/
- /*public static void main(String[] args) {
-        AdvancedViewer ventana = new AdvancedViewer();
-        ventana.setVisible(true);
-        ventana.setLocationRelativeTo(null);
-        ventana.setResizable(false);
-
-    }*/
     private void showPanel(javax.swing.JPanel p) {
         p.setSize(521, 472);
         p.setLocation(0, 0);
@@ -382,25 +362,9 @@ public class AdvancedViewer extends javax.swing.JFrame {
     }
 
     private void eliminarArt(int idArt) {
-
-        /*if (C.ExtablecerC() != null) {
-            ResultSet rs = C.ConsultaG(String.format("SELECT id FROM ubicaciones WHERE idArt = %d", idArt));
-            try {
-                while (rs.next()) {
-                    int idUbic = rs.getInt("id");
-
-                    C.DelectUb(String.format("DELETE FROM ubicacion_extra WHERE idUbic = %d", idUbic));
-                    C.DelectUb(String.format("DELETE FROM ubicaciones WHERE id = %d", idUbic));
-                }
-                boolean fin = C.DelectUb(String.format("DELETE FROM articulos WHERE id = %d", idArt));
-
-                if (fin) {
-                    JOptionPane.showMessageDialog(null, "Operacion realizada con exito.", "Exito!!", JOptionPane.INFORMATION_MESSAGE);
-                }
-            } catch (SQLException ex) {
-
-            }
-        }*/
+        ArticuloDao ArtDao = new ArticuloDao();
+        ArtDao.eliminarArt(idArt);
+        ArtDao = null;
     }
 
 

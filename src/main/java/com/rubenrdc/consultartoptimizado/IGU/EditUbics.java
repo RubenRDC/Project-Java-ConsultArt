@@ -14,13 +14,12 @@ import java.awt.Component;
  *
  * @author Ruben
  */
-public class EditUbics extends javax.swing.JPanel {
+public class EditUbics extends javax.swing.JPanel implements funtionsCom{
 
     EditUbic addOeditUbic;
     int idArt, IdUbicP;
     Articulo Art;
     ArticuloDao artDao = new ArticuloDao();
-    funtionsCom funtions = new funtionsCom();
 
     /**
      * Creates new form editUbics01
@@ -29,7 +28,7 @@ public class EditUbics extends javax.swing.JPanel {
         this.Art = Art;
         //System.out.println("Art "+ Art.getCodigo());
         initComponents();
-        funtions.depositos(listDeposito);
+        depositos(listDeposito);
         idArt = Art.getId();
         codigotxt.setText(Art.getCodigo());
         descTxt.setText(Art.getDesc());
@@ -526,13 +525,13 @@ public class EditUbics extends javax.swing.JPanel {
             addOeditUbic = null;
             jPanel1.setVisible(true);
             ContentExtra.setVisible(false);
-            funtions.depositos(listDeposito);
+            depositos(listDeposito);
         }
     }//GEN-LAST:event_previusPageMouseClicked
-    private void llenarTabla(javax.swing.JTable tb, String a[][]) {
+    public void llenarTabla(javax.swing.JTable tb, String a[][]) {
         tb.clearSelection();
         tb.getColumnModel().getColumn(0).setMaxWidth(20);
-        funtions.llenarTabla(tb, a);
+        llenarTabla(tb, a);
     }
 
     

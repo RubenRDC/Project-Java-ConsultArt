@@ -13,11 +13,10 @@ import javax.swing.JOptionPane;
  *
  * @author Ruben
  */
-public class ConsArt extends javax.swing.JFrame {
+public class ConsArt extends javax.swing.JFrame implements funtionsCom{
 
     ArticuloDao ArtDao = new ArticuloDao();
     Articulo Art;
-    funtionsCom funcions = new funtionsCom();
     AdvancedViewer ventana;
     ImageViewer imageV;
 
@@ -402,9 +401,9 @@ public class ConsArt extends javax.swing.JFrame {
                 Art = ArtDao.buscarArt(c);
                 if (Art != null) {
                     descTxt.setText(Art.getDesc());
-                    funcions.llenarTabla(tablaStock, Art.getStocks());
+                    llenarTabla(tablaStock, Art.getStocks());
                     listDeposito.setVisible(true);
-                    funcions.depositos(listDeposito);
+                    depositos(listDeposito);
                     codigoTxt.setEnabled(false);
                 } else {
                     ClearCamp();
@@ -496,7 +495,7 @@ public class ConsArt extends javax.swing.JFrame {
         descTxt.setText("");
         ubicTxt.setText("");
         codigoTxt.setText("");
-        funcions.ClearTable(tablaStock);
+        ClearTable(tablaStock);
         listDeposito.setVisible(false);
         listDeposito.removeAllItems();
     }

@@ -7,8 +7,6 @@ package com.rubenrdc.consultartoptimizado.IGU;
 import com.rubenrdc.consultartoptimizado.dao.ArticuloDao;
 import com.rubenrdc.consultartoptimizado.funtionsComp.funtionsCom;
 import com.rubenrdc.consultartoptimizado.models.Articulo;
-import java.awt.event.MouseEvent;
-import java.sql.ResultSet;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -16,12 +14,11 @@ import javax.swing.JOptionPane;
  *
  * @author Ruben
  */
-public class ListSearcherArt extends javax.swing.JPanel {
+public class ListSearcherArt extends javax.swing.JPanel implements funtionsCom {
 
     private int limitList = 100;
     private boolean cnCorrect = false;
     private ArticuloDao artDao = new ArticuloDao();
-    private funtionsCom funcions = new funtionsCom();
     List<Articulo> lista;
 
     /**
@@ -283,7 +280,7 @@ public class ListSearcherArt extends javax.swing.JPanel {
     }//GEN-LAST:event_descTxtKeyTyped
 
     public void llenarTablaConArt(javax.swing.JTable tb, String code, int limit) {
-        funcions.ClearTable(tb);
+        ClearTable(tb);
 
         lista = artDao.enlistarArt(code, limit);
 
