@@ -5,6 +5,7 @@
 package com.rubenrdc.consultartoptimizado.IGU;
 
 import com.rubenrdc.consultartoptimizado.IGU.Av.AdvancedViewer;
+import com.rubenrdc.consultartoptimizado.IGU.depositos.ListAndSchDepositos;
 import com.rubenrdc.consultartoptimizado.dao.ArticuloDao;
 import com.rubenrdc.consultartoptimizado.funtionsComp.funtionsCom;
 import com.rubenrdc.consultartoptimizado.models.Articulo;
@@ -14,17 +15,18 @@ import javax.swing.JOptionPane;
  *
  * @author Ruben
  */
-public class ConsArt extends javax.swing.JFrame implements funtionsCom{
+public class ConsArt extends javax.swing.JFrame implements funtionsCom {
 
     ArticuloDao ArtDao = new ArticuloDao();
     Articulo Art;
-    AdvancedViewer ventana;
+    AdvancedViewer windowAv;
     ImageViewer imageV;
+    ListAndSchDepositos windowDepList;
 
     public ConsArt() {
 
         initComponents();
-        //VerFoto.setVisible(false);
+        VerFoto.setEnabled(false);
         listDeposito.setVisible(false);
         //ubicTxt.setText("asfa\nasdafgsa");
     }
@@ -372,6 +374,11 @@ public class ConsArt extends javax.swing.JFrame implements funtionsCom{
         jMenu4.setText("Depositos");
 
         listDepItem.setText("Lista de Depositos");
+        listDepItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                listDepItemActionPerformed(evt);
+            }
+        });
         jMenu4.add(listDepItem);
 
         jMenuBar1.add(jMenu4);
@@ -402,10 +409,11 @@ public class ConsArt extends javax.swing.JFrame implements funtionsCom{
                 Art = ArtDao.buscarArt(c);
                 if (Art != null) {
                     descTxt.setText(Art.getDesc());
-                    llenarTabla(tablaStock, Art.getStocks(),2);
+                    llenarTabla(tablaStock, Art.getStocks(), 2);
                     listDeposito.setVisible(true);
                     JComboBoxDepositos(listDeposito);
                     codigoTxt.setEnabled(false);
+                    VerFoto.setEnabled(true);
                 } else {
                     ClearCamp();
                     JOptionPane.showMessageDialog(null, "Articulo no encontrado");
@@ -435,47 +443,39 @@ public class ConsArt extends javax.swing.JFrame implements funtionsCom{
     private void VerFotoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_VerFotoMouseClicked
         String UrlFoto = null;
         if (Art != null) {
+            VerFoto.setEnabled(true);
             if (!Art.getFoto().isEmpty()) {
                 UrlFoto = Art.getFoto();
-                //System.out.println("UrlFoto '" + UrlFoto+"'");
             }
-            //System.out.println("Art != null " + UrlFoto);
-        }
-
-        if (imageV == null) {
-            imageV = new ImageViewer(UrlFoto);
-            imageV.setVisible(true);
-            imageV.setLocationRelativeTo(null);
-            imageV.setResizable(false);
-        } else if (imageV != null) {
-            if (imageV.isShowing()) {
-                imageV.toFront();
-            } else {
-                imageV = null;
+            if (imageV == null) {
                 imageV = new ImageViewer(UrlFoto);
-                imageV.setVisible(true);
-                imageV.setLocationRelativeTo(null);
-                imageV.setResizable(false);
+                pinterJFrame(imageV, true, null, false);
+            } else if (imageV != null) {
+                if (imageV.isShowing()) {
+                    imageV.toFront();
+                } else {
+                    imageV = new ImageViewer(UrlFoto);
+                    pinterJFrame(imageV, true, null, false);
+                }
             }
+
+            //System.out.println("Art != null " + UrlFoto);
         }
     }//GEN-LAST:event_VerFotoMouseClicked
 
     private void InteraccionBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InteraccionBtnActionPerformed
-        if (ventana == null) {//Cuando inicia el programa y la ventana es nula
-            ventana = new AdvancedViewer();
-            ventana.setVisible(true);
-            ventana.setLocationRelativeTo(null);
-            ventana.setResizable(false);
-        } else if (ventana != null) {
-            if (ventana.isShowing()) {//la ventana sigue es visible 
+        if (windowAv == null) {//Cuando inicia el programa y la windowAv es nula
+            windowAv = new AdvancedViewer();
+            pinterJFrame(windowAv, true, null, false);
+
+        } else if (windowAv != null) {
+            if (windowAv.isShowing()) {//la windowAv sigue es visible 
                 System.out.println("Is Showing");
-                ventana.toFront();//envia la ventana activa en frente de todo
-            } else {//ya se cerro la ventana pero se mantuvo la informacion previa en la variable al no asignarle como nulo
+                windowAv.toFront();//envia la windowAv activa en frente de todo
+            } else {//ya se cerro la windowAv pero se mantuvo la informacion previa en la variable al no asignarle como nulo
                 //ventana = null;
                 //ventana = new AdvancedViewer();
-                ventana.setVisible(true);
-                ventana.setLocationRelativeTo(null);
-                ventana.setResizable(false);
+                pinterJFrame(windowAv, true, null, false);
             }
         }
     }//GEN-LAST:event_InteraccionBtnActionPerformed
@@ -491,8 +491,25 @@ public class ConsArt extends javax.swing.JFrame implements funtionsCom{
         codigoTxt.setEnabled(true);
     }//GEN-LAST:event_clearShBtnMouseClicked
 
+    private void listDepItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listDepItemActionPerformed
+        if (windowDepList == null) {//Cuando inicia el programa y la windowAv es nula
+            windowDepList = new ListAndSchDepositos();
+            pinterJFrame(windowDepList, true, null, false);
+        } else if (windowDepList != null) {
+            if (windowDepList.isShowing()) {//la windowAv sigue es visible 
+                System.out.println("Is Showing");
+                windowDepList.toFront();//envia la windowAv activa en frente de todo
+            } else {//ya se cerro la windowAv pero se mantuvo la informacion previa en la variable al no asignarle como nulo
+                //ventana = null;
+                //ventana = new AdvancedViewer();
+                pinterJFrame(windowDepList, true, null, false);
+            }
+        }
+    }//GEN-LAST:event_listDepItemActionPerformed
+
     private void ClearCamp() {
-        Art=null;
+        Art = null;
+        VerFoto.setEnabled(false);
         descTxt.setText("");
         ubicTxt.setText("");
         codigoTxt.setText("");

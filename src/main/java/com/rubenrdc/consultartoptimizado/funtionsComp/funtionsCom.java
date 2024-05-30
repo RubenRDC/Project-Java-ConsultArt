@@ -44,7 +44,7 @@ public interface funtionsCom {
             JOptionPane.showMessageDialog(null, "Operacion realizada con exito.", "Exito!!", JOptionPane.INFORMATION_MESSAGE);
         }
     }
-    
+
     default public void centrarTable(javax.swing.JTable tb) {
         javax.swing.table.DefaultTableCellRenderer Alinear = new javax.swing.table.DefaultTableCellRenderer();
         Alinear.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -52,8 +52,8 @@ public interface funtionsCom {
             tb.getColumnModel().getColumn(i).setCellRenderer(Alinear);
         }
     }
-    
-    default public void llenarTabla(javax.swing.JTable jT, String[][] matrixContents,int columns) {
+
+    default public void llenarTabla(javax.swing.JTable jT, String[][] matrixContents, int columns) {
         ClearTable(jT);
 
         javax.swing.table.DefaultTableModel dm = (javax.swing.table.DefaultTableModel) (jT.getModel());
@@ -77,7 +77,7 @@ public interface funtionsCom {
         }
 
     }
-    
+
     default public void setPanelEnabled(javax.swing.JPanel panel, Boolean isEnabled) {
         panel.setEnabled(isEnabled);
         java.awt.Component[] components = panel.getComponents();
@@ -85,5 +85,11 @@ public interface funtionsCom {
             //System.out.println(" ... " + component);
             component.setEnabled(isEnabled);
         }
+    }
+
+    default public void pinterJFrame(javax.swing.JFrame window, boolean setVisible, Component setLocationRelativeTo, boolean setResizable) {
+        window.setVisible(setVisible);
+        window.setLocationRelativeTo(setLocationRelativeTo);
+        window.setResizable(setResizable);
     }
 }
