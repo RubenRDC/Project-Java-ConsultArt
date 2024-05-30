@@ -401,7 +401,7 @@ public class ConsArt extends javax.swing.JFrame implements funtionsCom{
                 Art = ArtDao.buscarArt(c);
                 if (Art != null) {
                     descTxt.setText(Art.getDesc());
-                    llenarTabla(tablaStock, Art.getStocks());
+                    llenarTabla(tablaStock, Art.getStocks(),2);
                     listDeposito.setVisible(true);
                     depositos(listDeposito);
                     codigoTxt.setEnabled(false);

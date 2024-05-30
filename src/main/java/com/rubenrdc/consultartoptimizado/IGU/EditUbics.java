@@ -501,8 +501,8 @@ public class EditUbics extends javax.swing.JPanel implements funtionsCom{
             artDao.ObtenerUbic(Art, listDeposito.getSelectedItem().toString());
             
             //System.out.println("Valor de la ubicacion principal "+Arrays.toString(Art.getUbicPrinc()));
-            llenarTabla(tabUbP, Art.getUbicPrinc());
-            llenarTabla(tabUbEx, Art.getUbicExtra());
+            llenarTablaUbics(tabUbP, Art.getUbicPrinc());
+            llenarTablaUbics(tabUbEx, Art.getUbicExtra());
 
 
             //System.out.println("jTable1.getRowCount " + jTable1.getRowCount());
@@ -528,10 +528,10 @@ public class EditUbics extends javax.swing.JPanel implements funtionsCom{
             depositos(listDeposito);
         }
     }//GEN-LAST:event_previusPageMouseClicked
-    public void llenarTabla(javax.swing.JTable tb, String a[][]) {
+    public void llenarTablaUbics(javax.swing.JTable tb, String a[][]) {
         tb.clearSelection();
         tb.getColumnModel().getColumn(0).setMaxWidth(20);
-        llenarTabla(tb, a);
+        llenarTabla(tb, a,2);
     }
 
     

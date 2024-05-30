@@ -57,22 +57,22 @@ public interface funtionsCom {
     }
     
     
-    default public void llenarTabla(javax.swing.JTable jT, String[][] a) {
+    default public void llenarTabla(javax.swing.JTable jT, String[][] matrixContents,int columns) {
         ClearTable(jT);
 
         javax.swing.table.DefaultTableModel dm = (javax.swing.table.DefaultTableModel) (jT.getModel());
-        if (a != null) {
-            String Rows[] = new String[2];
-            for (String[] a1 : a) {
+        if (matrixContents != null) {
+            String Rows[] = new String[columns];
+            for (String[] matrixContent : matrixContents) {
 
-                for (int j = 0; j < 2; j++) {
+                for (int j = 0; j < columns; j++) {
                     if (j == 0) {
-                        Rows[j] = a1[j];
+                        Rows[j] = matrixContent[j];
                     } else {
-                        Rows[j] = a1[j];
+                        Rows[j] = matrixContent[j];
                     }
                 }
-                if (a1[0] != null) {
+                if (matrixContent[0] != null) {
                     dm.addRow(Rows);
                 }
 
