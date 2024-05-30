@@ -78,7 +78,7 @@ public class ArticuloDao {
             
             String cUbics = "SELECT * FROM ubicaciones INNER JOIN depositos ON depositos.id=ubicaciones.idDep WHERE idArt = ? AND depositos.descrip=?;";
             paramsSql.add(0,String.valueOf(art.getId()));
-            paramsSql.add(0,Deposito);
+            paramsSql.add(1,Deposito);
             ResultSet rsUbics = abc.GenericQuery(cUbics, paramsSql);
             try {
                 if (rsUbics.next()) {

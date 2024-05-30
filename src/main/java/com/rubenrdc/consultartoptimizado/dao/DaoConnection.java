@@ -55,7 +55,6 @@ public class DaoConnection {
         }
         return rs;
     }*/
-
     public int RetornarId(String Consulta) {
         int id = 0;
         try {
@@ -82,7 +81,7 @@ public class DaoConnection {
 
     }
 
-    public ResultSet QueryById(String Query, int IdParam){
+    public ResultSet QueryById(String Query, int IdParam) {
 
         try {
             PreparedStatement ps = conectar.prepareStatement(Query);
@@ -117,9 +116,11 @@ public class DaoConnection {
         try {
             PreparedStatement ps = conectar.prepareStatement(Query);
             int index = 1;
-            for (String param : params) {
-                ps.setString(index, param);
-                index++;
+            if (params != null) {
+                for (String param : params) {
+                    ps.setString(index, param);
+                    index++;
+                }
             }
             ResultSet rs = ps.executeQuery();
             return rs;

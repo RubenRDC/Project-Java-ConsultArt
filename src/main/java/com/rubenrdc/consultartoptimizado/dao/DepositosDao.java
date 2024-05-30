@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.rubenrdc.consultartoptimizado.dao;
 
 import java.sql.ResultSet;
@@ -22,28 +18,23 @@ public class DepositosDao {
 
     public String[] getDepositos() {
         int f = 0;
-        C.ExtablecerC();
-        ResultSet rsdepositos = C.ConsultaG("SELECT * FROM depositos;");
-        //Consulta cantidad de Depositos
-        try {
-            while (rsdepositos.next()) {
-                Depositos[f] = rsdepositos.getString("descrip");
-                f++;
+        if (C.ExtablecerC() != null) {
+            String Query = "SELECT * FROM depositos;";
+            ResultSet rsdepositos = C.GenericQuery(Query, null);
+            //Consulta cantidad de Depositos
+            try {
+                while (rsdepositos.next()) {
+                    Depositos[f] = rsdepositos.getString("descrip");
+                    f++;
+                }
+            } catch (SQLException ex) {
+
             }
-        } catch (SQLException ex) {
-
+            C.getCloseC();
+            return Depositos;
         }
-
-        C.getCloseC();
-        
-        return Depositos; 
-    }
-
-    /*public String[] getDepositos() {
         return Depositos;
-
-    }*/
-
+    }
     public int getLimitDep() {
         return limitDep;
     }

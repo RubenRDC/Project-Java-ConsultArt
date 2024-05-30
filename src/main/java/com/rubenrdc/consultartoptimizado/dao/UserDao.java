@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class UserDao {
 
-    DaoConnection abc = new DaoConnection();
+    private DaoConnection abc = new DaoConnection();
     private List<String> paramsSql = new ArrayList<>();
 
     public UserDao() {
