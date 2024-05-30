@@ -75,11 +75,12 @@ public class ArticuloDao {
             String[][] UbicPrinc = new String[1][2];
             String[][] UbicExtra = new String[10][2];
             String ubicConcat;
-            String cUbics = String.format("SELECT * FROM ubicaciones INNER JOIN depositos ON depositos.id=ubicaciones.idDep WHERE idArt = %d AND depositos.descrip=\"%s\";", art.getId(), Deposito);//INNER JOIN depositos ON depositos.id=ubicaciones.idDep
-            //System.out.println("cUbics= " + cUbics);
+            
+            String cUbics = "SELECT * FROM ubicaciones INNER JOIN depositos ON depositos.id=ubicaciones.idDep WHERE idArt = ? AND depositos.descrip=?;";
+            paramsSql.add(0,String.valueOf(art.getId()));
+            paramsSql.add(0,Deposito);
+            ResultSet rsUbics = abc.GenericQuery(cUbics, paramsSql);
             try {
-                ResultSet rsUbics = abc.ConsultaG(cUbics);
-
                 if (rsUbics.next()) {
                     int idUbicP = rsUbics.getInt("ubicaciones.id");
 
@@ -91,7 +92,7 @@ public class ArticuloDao {
                     ubicConcat = (rsUbics.getString("ubicaciones.ubic")) + " | ";
 
                     String cUbicExt = String.format("SELECT * FROM ubicacion_extra WHERE idUbic = %d", idUbicP);
-                    ResultSet rsUbicExt = abc.ConsultaG(cUbicExt);
+                    ResultSet rsUbicExt = abc.QueryById(cUbicExt, idUbicP);
 
                     while (rsUbicExt.next()) {
                         UbicExtra[u][0] = rsUbicExt.getString("ubicacion_extra.id");

@@ -44,7 +44,7 @@ public class DaoConnection {
 
     }
 
-    public ResultSet ConsultaG(String consulta) {
+    /*public ResultSet ConsultaG(String consulta) {
         ResultSet rs = null;
         try {
             PreparedStatement cs = conectar.prepareStatement(consulta);
@@ -54,7 +54,7 @@ public class DaoConnection {
             //System.out.println("ex= " + ex);
         }
         return rs;
-    }
+    }*/
 
     public int RetornarId(String Consulta) {
         int id = 0;
