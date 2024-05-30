@@ -28,7 +28,7 @@ public class EditUbics extends javax.swing.JPanel implements funtionsCom{
         this.Art = Art;
         //System.out.println("Art "+ Art.getCodigo());
         initComponents();
-        depositos(listDeposito);
+        JComboBoxDepositos(listDeposito);
         idArt = Art.getId();
         codigotxt.setText(Art.getCodigo());
         descTxt.setText(Art.getDesc());
@@ -525,7 +525,7 @@ public class EditUbics extends javax.swing.JPanel implements funtionsCom{
             addOeditUbic = null;
             jPanel1.setVisible(true);
             ContentExtra.setVisible(false);
-            depositos(listDeposito);
+            JComboBoxDepositos(listDeposito);
         }
     }//GEN-LAST:event_previusPageMouseClicked
     public void llenarTablaUbics(javax.swing.JTable tb, String a[][]) {

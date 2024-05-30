@@ -1,11 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.rubenrdc.consultartoptimizado.funtionsComp;
 
 import com.rubenrdc.consultartoptimizado.dao.DepositosDao;
+import com.rubenrdc.consultartoptimizado.models.Deposito;
 import java.awt.Component;
+import java.util.List;
 import javax.swing.JOptionPane;
 
 /**
@@ -14,14 +12,14 @@ import javax.swing.JOptionPane;
  */
 public interface funtionsCom {
 
-    default public void depositos(javax.swing.JComboBox listDeposito) {
+    default public void JComboBoxDepositos(javax.swing.JComboBox listDeposito) {
         listDeposito.removeAllItems();
         DepositosDao depDao = new DepositosDao();
-        String[] depositos = depDao.getDepositos();
+        List<Deposito> depositos = depDao.getDepositos();
 
-        for (String d : depositos) {
+        for (Deposito d : depositos) {
             if (d != null) {
-                listDeposito.addItem(d);
+                listDeposito.addItem(d.getNombre());
             }
         }
     }
@@ -47,7 +45,6 @@ public interface funtionsCom {
         }
     }
     
-    
     default public void centrarTable(javax.swing.JTable tb) {
         javax.swing.table.DefaultTableCellRenderer Alinear = new javax.swing.table.DefaultTableCellRenderer();
         Alinear.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -55,7 +52,6 @@ public interface funtionsCom {
             tb.getColumnModel().getColumn(i).setCellRenderer(Alinear);
         }
     }
-    
     
     default public void llenarTabla(javax.swing.JTable jT, String[][] matrixContents,int columns) {
         ClearTable(jT);
@@ -80,7 +76,6 @@ public interface funtionsCom {
             jT.setModel(dm);
         }
 
-        //
     }
     
     default public void setPanelEnabled(javax.swing.JPanel panel, Boolean isEnabled) {

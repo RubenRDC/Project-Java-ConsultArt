@@ -1,7 +1,10 @@
 package com.rubenrdc.consultartoptimizado.dao;
 
+import com.rubenrdc.consultartoptimizado.models.Deposito;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -11,27 +14,29 @@ public class DepositosDao {
 
     private int limitDep = 10;
     private DaoConnection C = new DaoConnection();
-    private String Depositos[] = new String[limitDep];//Maximo 10 depositos;
-
+    private Deposito dep;
+    private List<Deposito> listDep;
     public DepositosDao() {
     }
 
-    public String[] getDepositos() {
+    public List<Deposito> getDepositos() {
         int f = 0;
         if (C.ExtablecerC() != null) {
+            listDep= new ArrayList<>();
             String Query = "SELECT * FROM depositos;";
             ResultSet rsdepositos = C.GenericQuery(Query, null);
             //Consulta cantidad de Depositos
             try {
                 while (rsdepositos.next()) {
-                    Depositos[f] = rsdepositos.getString("descrip");
+                    dep = new Deposito(rsdepositos.getInt("id"),rsdepositos.getString("descrip"));
+                    listDep.add(dep);
                     f++;
                 }
             } catch (SQLException ex) {
 
             }
             C.getCloseC();
-            return Depositos;
+            return listDep;
         }
         return null;
     }

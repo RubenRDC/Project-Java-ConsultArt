@@ -403,7 +403,7 @@ public class ConsArt extends javax.swing.JFrame implements funtionsCom{
                     descTxt.setText(Art.getDesc());
                     llenarTabla(tablaStock, Art.getStocks(),2);
                     listDeposito.setVisible(true);
-                    depositos(listDeposito);
+                    JComboBoxDepositos(listDeposito);
                     codigoTxt.setEnabled(false);
                 } else {
                     ClearCamp();
