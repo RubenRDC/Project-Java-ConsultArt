@@ -83,7 +83,7 @@ public class DaoConnection {
 
     }
 
-    public ResultSet ConsultPorId(String Query, int IdParam) throws SQLException {
+    public ResultSet QueryById(String Query, int IdParam) throws SQLException {
         ResultSet rs = null;
         
         PreparedStatement ps = conectar.prepareStatement(Query);
@@ -91,20 +91,29 @@ public class DaoConnection {
         rs = ps.executeQuery();
         
         return rs;
-
     }
 
-    public boolean EliminarPorId(String Query, int IdParam) throws SQLException {
+    public boolean GenericUpdate(String Query, java.util.List<String> params) throws SQLException {
 
         PreparedStatement ps = conectar.prepareStatement(Query);
-        ps.setInt(1, IdParam);
+        int index = 1;
+        for (String param : params) {
+            ps.setString(index, param);
+            index++;
+        }
         int rs = ps.executeUpdate();
 
-        if (rs > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return rs > 0;
 
+    }
+    public ResultSet GenericQuery(String Query, java.util.List<String> params)throws SQLException{
+        PreparedStatement ps = conectar.prepareStatement(Query);
+        int index = 1;
+        for (String param : params) {
+            ps.setString(index, param);
+            index++;
+        }
+        ResultSet rs = ps.executeQuery();
+        return rs;
     }
 }

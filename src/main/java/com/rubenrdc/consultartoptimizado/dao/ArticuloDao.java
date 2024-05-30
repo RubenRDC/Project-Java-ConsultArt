@@ -6,12 +6,10 @@ package com.rubenrdc.consultartoptimizado.dao;
 
 import com.rubenrdc.consultartoptimizado.funtionsComp.funtionsCom;
 import com.rubenrdc.consultartoptimizado.models.Articulo;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -19,6 +17,7 @@ import javax.swing.JOptionPane;
  */
 public class ArticuloDao {
 
+    private List<String> paramsSql = new ArrayList<>();
     private List<String> datos = new ArrayList<>();
 
     private DaoConnection abc = new DaoConnection();
@@ -143,12 +142,17 @@ public class ArticuloDao {
 
     public List enlistarArt(String code, int limiteLista) {
         Articulo art;
-        String Query = String.format("SELECT * FROM articulos WHERE codigo LIKE '%%%s%%' OR descripcion LIKE '%%%s%%' LIMIT %d;", code, code, limiteLista);
+        String Query = "SELECT * FROM articulos WHERE codigo LIKE ? OR descripcion LIKE ? LIMIT "+limiteLista;
         List<Articulo> list = new ArrayList<Articulo>();
 
         if (abc.ExtablecerC() != null) {
-            ResultSet rs = abc.ConsultaG(Query);
             try {
+                paramsSql.add("%"+code+"%");
+                paramsSql.add("%"+code+"%");
+               
+
+                ResultSet rs = abc.GenericQuery(Query, paramsSql);
+
                 while (rs.next()) {
                     int id = rs.getInt("id");
                     String cod = rs.getString("codigo");
@@ -162,38 +166,28 @@ public class ArticuloDao {
             } catch (SQLException e) {
                 System.out.println("SQLException " + e);
             }
+            paramsSql.clear();
             abc.getCloseC();
         }
-
         return list;
     }
 
-    /**
-     * Busqueda Estricta por Id o Codigo
-     *
-     * @param iDoCod Id del Articulo o Codigo
-     * @param Por ID(0) | Codigo(1)
-     * @return Un objeto Articulo
-     */
-    public Articulo busquedaEstrictaArt(String iDoCod, int Por) {
+    public Articulo busquedaEstrictaArt(String cod) {
         Articulo art = null;
-        String Query = "";
-        if (Por == 0) {
-            Query = String.format("SELECT * FROM articulos WHERE id = %d", Integer.valueOf(iDoCod));
-        } else {
-            Query = String.format("SELECT * FROM articulos WHERE codigo = '%s'", iDoCod);
-            System.out.println("Query busquedaEstrictaArt Por Codigo" + Query);
-        }
+        String Query = "SELECT * FROM articulos WHERE codigo = ?";
+        System.out.println("Query busquedaEstrictaArt Por Codigo" + Query);
+
         if (abc.ExtablecerC() != null) {
-            ResultSet rs = abc.ConsultaG(Query);
+            paramsSql.add(cod);
             try {
+                ResultSet rs = abc.GenericQuery(Query, paramsSql);
                 if (rs.next()) {
                     int id = rs.getInt("id");
-                    String cod = rs.getString("codigo");
+                    String codigo = rs.getString("codigo");
                     String descrip = rs.getString("descripcion");
                     String foto = rs.getString("foto");
 
-                    art = new Articulo(id, cod, descrip, foto);
+                    art = new Articulo(id, codigo, descrip, foto);
 
                 }
             } catch (SQLException e) {
@@ -201,7 +195,7 @@ public class ArticuloDao {
             }
             abc.getCloseC();
         }
-
+        paramsSql.clear();
         return art;
     }
 
@@ -218,15 +212,14 @@ public class ArticuloDao {
             funtions.msgInfo(0);
         }
         datos.clear();
-
     }
 
     public void updateArticulo(Articulo varArt) {
 
-        datos.add(0, String.valueOf(varArt.getId()));
-        datos.add(1, varArt.getCodigo());
-        datos.add(2, varArt.getDesc());
-        datos.add(3, varArt.getFoto());
+        datos.add(0, varArt.getCodigo());
+        datos.add(1, varArt.getDesc());
+        datos.add(2, varArt.getFoto());
+        datos.add(3, String.valueOf(varArt.getId()));
 
         boolean exito = UpOrDelectOrInsert(datos);
         if (exito) {
@@ -236,6 +229,7 @@ public class ArticuloDao {
         }
         datos.clear();
     }
+
     public void eliminarArt(int idArt) {
         boolean exito = false;
         datos.add(String.valueOf(idArt));
@@ -251,44 +245,28 @@ public class ArticuloDao {
 
     private boolean UpOrDelectOrInsert(List<String> datosArt) {
         String query = "";
-
         boolean exito = false;
         if (abc.ExtablecerC() != null) {
             if (datosArt.size() == 4) {
                 query = "UPDATE articulos SET codigo = ? ,descripcion = ? ,foto = ? WHERE id = ? ;";
                 try {
-                    PreparedStatement cs = abc.ExtablecerC().prepareStatement(query);
-                    cs.setString(1, datosArt.get(1));
-                    cs.setString(2, datosArt.get(2));
-                    cs.setString(3, datosArt.get(3));
-                    cs.setInt(4, Integer.parseInt(datosArt.get(0)));
-                    
-                    
-                    int rs = cs.executeUpdate();
-                    
-                    if (rs > 0) {
-                        return exito = true;
-                    } else {
-                        return exito;
+                    for (String param : datosArt) {
+                        paramsSql.add(param);
                     }
+                    return abc.GenericUpdate(query, paramsSql);
+
                 } catch (SQLException ex) {
-                    System.out.println("ex "+ ex);
+                    System.out.println("ex " + ex);
                 }
             }
 
             if (datosArt.size() == 3) {
                 query = "INSERT INTO articulos (codigo,descripcion,foto) VALUES (?,?,?);";
                 try {
-                    PreparedStatement cs = abc.ExtablecerC().prepareStatement(query);
-                    cs.setString(1, datosArt.get(0));
-                    cs.setString(2, datosArt.get(1));
-                    cs.setString(3, datosArt.get(2));
-                    int rs = cs.executeUpdate();
-                    if (rs > 0) {
-                        return exito = true;
-                    } else {
-                        return exito;
+                    for (String param : datosArt) {
+                        paramsSql.add(param);
                     }
+                    return abc.GenericUpdate(query, paramsSql);
                 } catch (SQLException ex) {
 
                 }
@@ -296,34 +274,32 @@ public class ArticuloDao {
 
             if (datosArt.size() == 1) {
                 query = "SELECT id FROM ubicaciones WHERE idArt = ?";
-                int idArt = Integer.parseInt(datosArt.get(0));
-
+                String idArt = datosArt.get(0);
                 try {
-                    ResultSet rs = abc.ConsultPorId(query, idArt);
+                    ResultSet rs = abc.QueryById(query, (Integer.parseInt(idArt)));
 
                     while (rs.next()) {
+                        paramsSql.add(rs.getString("id"));
 
-                        int idUbic = rs.getInt("id");
                         query = "DELETE FROM ubicacion_extra WHERE idUbic = ?";
-                        abc.EliminarPorId(query, idUbic);
+                        abc.GenericUpdate(query, paramsSql);
 
                         query = "DELETE FROM ubicaciones WHERE id = ?";
-                        abc.EliminarPorId(query, idUbic);
-
+                        abc.GenericUpdate(query, paramsSql);
+                        paramsSql.clear();
                     }
+                    paramsSql.add(idArt);
                     query = "DELETE FROM articulos WHERE id = ?";
-                    exito = abc.EliminarPorId(query, idArt);
+                    exito = abc.GenericUpdate(query, paramsSql);
 
                 } catch (SQLException ex) {
 
                 }
             }
-
+            paramsSql.clear();
+            abc.getCloseC();
         }
 
-        abc.getCloseC();
         return exito;
-
     }
-
 }
