@@ -282,7 +282,7 @@ public class ListSearcherArt extends javax.swing.JPanel implements funtionsCom {
     public void llenarTablaConArt(javax.swing.JTable tb, String code, int limit) {
         ClearTable(tb);
 
-        lista = artDao.enlistarArt(code, limit);
+        lista = artDao.getListArt(code, limit);
 
         tb.getColumnModel().getColumn(0).setMaxWidth(20);//Cambiar tamaño de una columna
         tb.getColumnModel().getColumn(1).setMaxWidth(100);//

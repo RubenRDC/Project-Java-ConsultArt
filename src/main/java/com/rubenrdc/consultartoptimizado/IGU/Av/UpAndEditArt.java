@@ -470,7 +470,7 @@ public class UpAndEditArt extends javax.swing.JPanel {
 
             if (foto.toLowerCase().contains(".jpg") || foto.toLowerCase().contains(".png") || foto.toLowerCase().contains("")) {
                 if (tipo == 0) {//Add Articulo
-                    if (artDao.busquedaEstrictaArt(codigo) == null) {//Si encuentra algun articulo que consida el codigo que se intenta dar de alta no avanzara el programa advirtiendo de que el codigo ya existe.
+                    if (artDao.StrictSearchArt(codigo) == null) {//Si encuentra algun articulo que consida el codigo que se intenta dar de alta no avanzara el programa advirtiendo de que el codigo ya existe.
                         ObjetoArticulo = new Articulo(0, codigo, descripcion, foto);
                         artDao.addArticulo(ObjetoArticulo);
 

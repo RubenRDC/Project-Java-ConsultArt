@@ -131,7 +131,7 @@ public class ArticuloDao implements funtionsCom{
         return art;
     }
 
-    public List enlistarArt(String code, int limiteLista) {
+    public List getListArt(String code, int limiteLista) {
         Articulo art;
         String Query = "SELECT * FROM articulos WHERE codigo LIKE ? OR descripcion LIKE ? LIMIT " + limiteLista;
         List<Articulo> list = new ArrayList<Articulo>();
@@ -160,7 +160,7 @@ public class ArticuloDao implements funtionsCom{
         return list;
     }
 
-    public Articulo busquedaEstrictaArt(String cod) {
+    public Articulo StrictSearchArt(String cod) {
         Articulo art = null;
         String Query = "SELECT * FROM articulos WHERE codigo = ?";
         System.out.println("Query busquedaEstrictaArt Por Codigo" + Query);

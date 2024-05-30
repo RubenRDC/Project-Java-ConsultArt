@@ -6,8 +6,8 @@ package com.rubenrdc.consultartoptimizado.models;
  */
 public class Deposito {
 
-    private int id;
-    private String nombre;
+    private int id,numDireccion;
+    private String nombre,provincia,localidad,direccion;
 
     public Deposito(int idDep, String nameDep) {
         this.id = idDep;
@@ -22,6 +22,14 @@ public class Deposito {
         this.id = id;
     }
 
+    public int getNumDireccion() {
+        return numDireccion;
+    }
+
+    public void setNumDireccion(int numDireccion) {
+        this.numDireccion = numDireccion;
+    }
+
     public String getNombre() {
         return nombre;
     }
@@ -30,4 +38,27 @@ public class Deposito {
         this.nombre = nombre;
     }
 
+    public String getProvincia() {
+        return provincia;
+    }
+
+    public void setProvincia(String provincia) {
+        this.provincia = provincia;
+    }
+
+    public String getLocalidad() {
+        return localidad;
+    }
+
+    public void setLocalidad(String localidad) {
+        this.localidad = localidad;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
 }

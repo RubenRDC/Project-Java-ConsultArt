@@ -15,6 +15,7 @@ public class ListAndSchDepositos extends javax.swing.JFrame {
      */
     public ListAndSchDepositos() {
         initComponents();
+        
     }
 
     @SuppressWarnings("unchecked")
