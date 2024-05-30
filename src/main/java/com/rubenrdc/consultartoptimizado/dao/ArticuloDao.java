@@ -91,7 +91,7 @@ public class ArticuloDao {
 
                     ubicConcat = (rsUbics.getString("ubicaciones.ubic")) + " | ";
 
-                    String cUbicExt = String.format("SELECT * FROM ubicacion_extra WHERE idUbic = %d", idUbicP);
+                    String cUbicExt = "SELECT * FROM ubicacion_extra WHERE idUbic = ?";
                     ResultSet rsUbicExt = abc.QueryById(cUbicExt, idUbicP);
 
                     while (rsUbicExt.next()) {
