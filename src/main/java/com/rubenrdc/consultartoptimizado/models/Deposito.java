@@ -6,12 +6,21 @@ package com.rubenrdc.consultartoptimizado.models;
  */
 public class Deposito {
 
-    private int id,numDireccion;
-    private String nombre,provincia,localidad,direccion;
+    private int id, numDireccion;
+    private String nombre, provincia, localidad, direccion;
 
     public Deposito(int idDep, String nameDep) {
         this.id = idDep;
         this.nombre = nameDep;
+    }
+
+    public Deposito(int id, String nombre, String provincia, String localidad, String direccion, int numDireccion) {
+        this.id = id;
+        this.numDireccion = numDireccion;
+        this.nombre = nombre;
+        this.provincia = provincia;
+        this.localidad = localidad;
+        this.direccion = direccion;
     }
 
     public int getId() {
