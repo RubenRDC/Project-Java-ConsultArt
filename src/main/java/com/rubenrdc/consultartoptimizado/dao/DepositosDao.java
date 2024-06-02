@@ -48,7 +48,7 @@ public class DepositosDao {
         if (C.ExtablecerC() != null) {
             listComplet = new ArrayList<>();
             String Query = "SELECT * FROM depositos WHERE descrip LIKE ? OR id LIKE ? LIMIT " + limiteLista;
-            paramsSql.add(0,desc);
+            paramsSql.add(0,"%"+desc+"%");
             paramsSql.add(1,idDep);
 
             ResultSet rs = C.GenericQuery(Query, paramsSql);

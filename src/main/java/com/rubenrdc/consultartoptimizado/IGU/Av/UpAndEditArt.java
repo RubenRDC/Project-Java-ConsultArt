@@ -462,10 +462,9 @@ public class UpAndEditArt extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void saveBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveBtnMouseClicked
-
-        String codigo = codigotxt.getText().toUpperCase();
-        String descripcion = descTxt.getText();
-        String foto = fotoUrlTxt.getText();
+        String codigo = (codigotxt.getText().toUpperCase()).replaceAll(" ", "");
+        String descripcion = (descTxt.getText()).trim();
+        String foto = (fotoUrlTxt.getText()).replaceAll(" ", "");
         if ((codigo.length() <= 10 && codigo.length() >= 4) && (descripcion.length() >= 5 && descripcion.length() < 65) && (foto.length() < 65)) {
 
             if (foto.toLowerCase().contains(".jpg") || foto.toLowerCase().contains(".png") || foto.toLowerCase().contains("")) {

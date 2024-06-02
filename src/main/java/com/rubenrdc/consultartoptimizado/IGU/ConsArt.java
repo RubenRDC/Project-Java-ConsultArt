@@ -24,11 +24,8 @@ public class ConsArt extends javax.swing.JFrame implements funtionsCom {
     ListAndSchDepositos windowDepList;
 
     public ConsArt() {
-
         initComponents();
-        VerFoto.setEnabled(false);
         listDeposito.setVisible(false);
-        //ubicTxt.setText("asfa\nasdafgsa");
     }
 
     @SuppressWarnings("unchecked")
@@ -196,6 +193,7 @@ public class ConsArt extends javax.swing.JFrame implements funtionsCom {
 
         VerFoto.setText("Ver Foto");
         VerFoto.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        VerFoto.setEnabled(false);
         VerFoto.setFocusPainted(false);
         VerFoto.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {

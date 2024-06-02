@@ -8,6 +8,7 @@ public class Deposito {
 
     private int id, numDireccion;
     private String nombre, provincia, localidad, direccion;
+    private String[] row = new String[3];
 
     public Deposito(int idDep, String nameDep) {
         this.id = idDep;
@@ -70,4 +71,11 @@ public class Deposito {
     public void setDireccion(String direccion) {
         this.direccion = direccion;
     }
+    public String[] getRow(){
+        row[0]=Integer.toString(id);
+        row[1]=nombre;
+        row[2]=provincia;
+        return row;
+    }
+    
 }

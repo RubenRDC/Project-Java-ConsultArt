@@ -1,21 +1,27 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package com.rubenrdc.consultartoptimizado.IGU.depositos;
+
+import com.rubenrdc.consultartoptimizado.dao.DepositosDao;
+import com.rubenrdc.consultartoptimizado.funtionsComp.funtionsCom;
+import com.rubenrdc.consultartoptimizado.models.Deposito;
+import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author Ruben
  */
-public class ListAndSchDepositos extends javax.swing.JFrame {
+public class ListAndSchDepositos extends javax.swing.JFrame implements funtionsCom {
+
+    private int limitList = 100;
+    private DepositosDao depDao = new DepositosDao();
+    private List<Deposito> lista;
 
     /**
      * Creates new form ListAndSchDepositos
      */
     public ListAndSchDepositos() {
         initComponents();
-        
+        llenarTablaConDeps(depsTable, "", "", 10);
     }
 
     @SuppressWarnings("unchecked")
@@ -30,12 +36,12 @@ public class ListAndSchDepositos extends javax.swing.JFrame {
         jPanel6 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        TxtId = new javax.swing.JTextField();
+        IdTxt = new javax.swing.JTextField();
         jPanel8 = new javax.swing.JPanel();
         BtnSh = new javax.swing.JButton();
         jPanel11 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        TxtId1 = new javax.swing.JTextField();
+        descTxt = new javax.swing.JTextField();
         jPanel9 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -91,8 +97,8 @@ public class ListAndSchDepositos extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel3.setText("ID:");
 
-        TxtId.setBorder(null);
-        TxtId.setMinimumSize(new java.awt.Dimension(64, 31));
+        IdTxt.setBorder(null);
+        IdTxt.setMinimumSize(new java.awt.Dimension(64, 31));
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -104,7 +110,7 @@ public class ListAndSchDepositos extends javax.swing.JFrame {
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(TxtId, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE))
+                    .addComponent(IdTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
@@ -113,12 +119,17 @@ public class ListAndSchDepositos extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(TxtId, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(IdTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6))
         );
 
         BtnSh.setText("Buscar");
         BtnSh.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        BtnSh.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BtnShMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
@@ -142,8 +153,8 @@ public class ListAndSchDepositos extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel5.setText("Titulo:");
 
-        TxtId1.setBorder(null);
-        TxtId1.setMinimumSize(new java.awt.Dimension(64, 31));
+        descTxt.setBorder(null);
+        descTxt.setMinimumSize(new java.awt.Dimension(64, 31));
 
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
         jPanel11.setLayout(jPanel11Layout);
@@ -155,7 +166,7 @@ public class ListAndSchDepositos extends javax.swing.JFrame {
                     .addGroup(jPanel11Layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(TxtId1, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE))
+                    .addComponent(descTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel11Layout.setVerticalGroup(
@@ -164,7 +175,7 @@ public class ListAndSchDepositos extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(TxtId1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(descTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6))
         );
 
@@ -187,9 +198,8 @@ public class ListAndSchDepositos extends javax.swing.JFrame {
                 .addGap(0, 0, 0)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                    .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -325,14 +335,38 @@ public class ListAndSchDepositos extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void BtnShMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BtnShMouseClicked
+        if (BtnSh.isEnabled()) {
+            depsTable.clearSelection();
+            String id = IdTxt.getText();
+            String code = descTxt.getText();
+            llenarTablaConDeps(depsTable,id, code, limitList);
+        }
+    }//GEN-LAST:event_BtnShMouseClicked
+    private void llenarTablaConDeps(javax.swing.JTable tb, String idDep, String desc, int limiteLista) {
+        ClearTable(tb);
+        lista = depDao.getListDeps(idDep, desc, limiteLista);
+        javax.swing.table.DefaultTableModel dm = (javax.swing.table.DefaultTableModel) (tb.getModel());
+
+        if (!lista.isEmpty()) {
+            for (int i = 0; i < lista.size(); i++) {
+                dm.addRow(lista.get(i).getRow());
+            }
+            tb.setModel(dm);
+        } else {
+            JOptionPane.showMessageDialog(null, "No se encontraron resultados.");
+            depDao.getListDeps(idDep, desc, limiteLista);
+        }
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnSh;
-    private javax.swing.JTextField TxtId;
-    private javax.swing.JTextField TxtId1;
+    private javax.swing.JTextField IdTxt;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnPreview;
     public javax.swing.JTable depsTable;
+    private javax.swing.JTextField descTxt;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
