@@ -1,4 +1,5 @@
 package com.rubenrdc.consultartoptimizado.dao;
+
 import com.rubenrdc.consultartoptimizado.models.Deposito;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -43,30 +44,49 @@ public class DepositosDao {
         return null;
     }
 
-    public List<Deposito> getListDeps(String idDep, String desc, int limiteLista) {
+    public List<Deposito> getListDepsByTitleAndProv(String provincia, String desc, int limiteLista) {
 
         if (C.ExtablecerC() != null) {
             listComplet = new ArrayList<>();
-            String Query = "SELECT * FROM depositos WHERE descrip LIKE ? OR id LIKE ? LIMIT " + limiteLista;
-            paramsSql.add(0,"%"+desc+"%");
-            paramsSql.add(1,idDep);
+            String Query = "SELECT * FROM depositos WHERE descrip LIKE ? AND id LIKE ? LIMIT " + limiteLista;
+            paramsSql.add(0, "%" + desc + "%");
+            paramsSql.add(1, "%" +provincia+ "%");
 
             ResultSet rs = C.GenericQuery(Query, paramsSql);
             //Consulta cantidad de Depositos
             try {
                 while (rs.next()) {
                     dep = new Deposito(rs.getInt("id"), rs.getString("descrip"), rs.getString("provincia"), rs.getString("localidad"), rs.getString("direccion"), rs.getInt("numero"));
-
+                    
                     listComplet.add(dep);
                 }
             } catch (SQLException ex) {
-
+                
             }
             paramsSql.clear();
             C.getCloseC();
             return listComplet;
         }
 
+        return null;
+    }
+
+    public Deposito getDepById(String idDep) {
+        if (C.ExtablecerC() != null) {
+            String Query = "SELECT * FROM depositos WHERE id = ?";
+            
+            ResultSet rs = C.QueryById(Query, Integer.parseInt(idDep));
+            try {
+                while (rs.next()) {
+                    dep = new Deposito(rs.getInt("id"), rs.getString("descrip"), rs.getString("provincia"), rs.getString("localidad"), rs.getString("direccion"), rs.getInt("numero"));
+                    
+                }
+            } catch (SQLException ex) {
+
+            }
+            C.getCloseC();
+            return dep;
+        }
         return null;
     }
 

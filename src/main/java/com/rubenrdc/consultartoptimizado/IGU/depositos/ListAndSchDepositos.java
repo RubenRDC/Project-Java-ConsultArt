@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
  */
 public class ListAndSchDepositos extends javax.swing.JFrame implements funtionsCom {
 
-    private int limitList = 100;
+    private int limitList = 10;
     private DepositosDao depDao = new DepositosDao();
     private List<Deposito> lista;
 
@@ -21,7 +21,7 @@ public class ListAndSchDepositos extends javax.swing.JFrame implements funtionsC
      */
     public ListAndSchDepositos() {
         initComponents();
-        llenarTablaConDeps(depsTable, "", "", 10);
+        llenarTablaConDeps(depsTable, "", "", limitList);
     }
 
     @SuppressWarnings("unchecked")
@@ -36,7 +36,7 @@ public class ListAndSchDepositos extends javax.swing.JFrame implements funtionsC
         jPanel6 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        IdTxt = new javax.swing.JTextField();
+        ProvinciaTxt = new javax.swing.JTextField();
         jPanel8 = new javax.swing.JPanel();
         BtnSh = new javax.swing.JButton();
         jPanel11 = new javax.swing.JPanel();
@@ -73,16 +73,16 @@ public class ListAndSchDepositos extends javax.swing.JFrame implements funtionsC
         );
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel2.setText("-Buscar Por(id o titulo):");
+        jLabel2.setText("Buscar Por(provincia o titulo):");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(jLabel2)
-                .addContainerGap(243, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap(20, Short.MAX_VALUE)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -95,10 +95,10 @@ public class ListAndSchDepositos extends javax.swing.JFrame implements funtionsC
         jPanel5.setPreferredSize(new java.awt.Dimension(196, 69));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel3.setText("ID:");
+        jLabel3.setText("Provincia:");
 
-        IdTxt.setBorder(null);
-        IdTxt.setMinimumSize(new java.awt.Dimension(64, 31));
+        ProvinciaTxt.setBorder(null);
+        ProvinciaTxt.setMinimumSize(new java.awt.Dimension(64, 31));
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -110,7 +110,7 @@ public class ListAndSchDepositos extends javax.swing.JFrame implements funtionsC
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(IdTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE))
+                    .addComponent(ProvinciaTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
@@ -119,7 +119,7 @@ public class ListAndSchDepositos extends javax.swing.JFrame implements funtionsC
                 .addContainerGap()
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(IdTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(ProvinciaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6))
         );
 
@@ -338,16 +338,17 @@ public class ListAndSchDepositos extends javax.swing.JFrame implements funtionsC
     private void BtnShMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BtnShMouseClicked
         if (BtnSh.isEnabled()) {
             depsTable.clearSelection();
-            String id = IdTxt.getText();
+            String prov = ProvinciaTxt.getText();
             String code = descTxt.getText();
-            llenarTablaConDeps(depsTable,id, code, limitList);
+            llenarTablaConDeps(depsTable,prov, code, limitList);
         }
     }//GEN-LAST:event_BtnShMouseClicked
-    private void llenarTablaConDeps(javax.swing.JTable tb, String idDep, String desc, int limiteLista) {
+    private void llenarTablaConDeps(javax.swing.JTable tb, String provincia, String desc, int limiteLista) {
         ClearTable(tb);
-        lista = depDao.getListDeps(idDep, desc, limiteLista);
         javax.swing.table.DefaultTableModel dm = (javax.swing.table.DefaultTableModel) (tb.getModel());
-
+        
+        lista = depDao.getListDepsByTitleAndProv(provincia, desc, limiteLista);
+        
         if (!lista.isEmpty()) {
             for (int i = 0; i < lista.size(); i++) {
                 dm.addRow(lista.get(i).getRow());
@@ -355,14 +356,14 @@ public class ListAndSchDepositos extends javax.swing.JFrame implements funtionsC
             tb.setModel(dm);
         } else {
             JOptionPane.showMessageDialog(null, "No se encontraron resultados.");
-            depDao.getListDeps(idDep, desc, limiteLista);
+            llenarTablaConDeps(depsTable,"", "", limiteLista);
         }
     }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnSh;
-    private javax.swing.JTextField IdTxt;
+    private javax.swing.JTextField ProvinciaTxt;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnPreview;
     public javax.swing.JTable depsTable;

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.rubenrdc.consultartoptimizado.dao;
 
 import java.awt.HeadlessException;
@@ -43,18 +39,7 @@ public class DaoConnection {
         return conectar;
 
     }
-
-    /*public ResultSet ConsultaG(String consulta) {
-        ResultSet rs = null;
-        try {
-            PreparedStatement cs = conectar.prepareStatement(consulta);
-            rs = cs.executeQuery();
-            return rs;
-        } catch (SQLException | java.lang.NullPointerException ex) {
-            //System.out.println("ex= " + ex);
-        }
-        return rs;
-    }*/
+    
     public int RetornarId(String Consulta) {
         int id = 0;
         try {
@@ -109,7 +94,6 @@ public class DaoConnection {
 
         }
         return false;
-
     }
 
     public ResultSet GenericQuery(String Query, java.util.List<String> params) {
