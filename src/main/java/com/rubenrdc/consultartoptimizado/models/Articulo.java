@@ -9,13 +9,13 @@ package com.rubenrdc.consultartoptimizado.models;
  * @author Ruben
  */
 public class Articulo {
-
+    private final int limitUbicExtra = 10,limitUbicP=1;
     private int id;
     private String codigo, desc, foto,ubicConcat;
-    private String[][] UbicPrinc = new String[1][2];
-    private String[][] UbicExtra = new String[10][2];
+    private String[][] UbicPrinc=new String[limitUbicP][2];
+    private String[][] UbicExtra=new String[limitUbicExtra][2];
     private String[][] stocks;
-    private String[] row = new String[3];
+    private String[] row;
 
     public Articulo(int idArt, String code, String desc, String foto) {
         this.id = idArt;
@@ -27,6 +27,7 @@ public class Articulo {
     public Articulo(){}
     
     public String[] getRow(){
+        row = new String[3];
         row[0]=Integer.toString(id);
         row[1]=codigo;
         row[2]=desc;
@@ -95,6 +96,14 @@ public class Articulo {
 
     public void setUbicExtra(String[][] UbicExtra) {
         this.UbicExtra = UbicExtra;
+    }
+
+    public int getLimitUbicExtra() {
+        return limitUbicExtra;
+    }
+
+    public int getLimitUbicP() {
+        return limitUbicP;
     }
     
 }

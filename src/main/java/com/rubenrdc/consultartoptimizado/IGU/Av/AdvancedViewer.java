@@ -1,13 +1,14 @@
 package com.rubenrdc.consultartoptimizado.IGU.Av;
 
 import com.rubenrdc.consultartoptimizado.dao.ArticuloDao;
+import com.rubenrdc.consultartoptimizado.funtionsComp.funtionsCom;
 import java.awt.event.MouseEvent;
 
 /**
  *
  * @author Ruben
  */
-public class AdvancedViewer extends javax.swing.JFrame {
+public class AdvancedViewer extends javax.swing.JFrame implements funtionsCom{
 
     ListSearcherArt listArts = new ListSearcherArt();
     UpAndEditArt wCrearArt = new UpAndEditArt(0);//Crear
@@ -26,7 +27,7 @@ public class AdvancedViewer extends javax.swing.JFrame {
             }
         };
         //listArts = new ListSearcherArt();
-        showPanel(listArts);
+        showPanel(listArts,521, 472,0,0,content);
 
         listArts.artsTable.addMouseListener(Madapter);
         listArts.schCodBtn.addMouseListener(Madapter);
@@ -260,7 +261,7 @@ public class AdvancedViewer extends javax.swing.JFrame {
             /*if (editarUbicArt != null) {
                     editarUbicArt.addOeditUbic=null;
             }*/
-            showPanel(listArts);
+            showPanel(listArts,521, 472,0,0,content);
         }
 
 
@@ -272,30 +273,13 @@ public class AdvancedViewer extends javax.swing.JFrame {
             altaArt2 = null;
             int indexList = listArts.artsTable.getSelectedRow();
             altaArt2 = new UpAndEditArt(1, listArts.lista.get(indexList));
-            showPanel(altaArt2);
+            showPanel(altaArt2,521, 472,0,0,content);
 
             altaArt2.editUbicBtn.addMouseListener(new java.awt.event.MouseAdapter() {
                 public void mouseClicked(java.awt.event.MouseEvent evt) {
                     altaArt2EditUbicBtnMouseClicked(evt);
                 }
             });
-
-            //Libera cualquier dato almacena en la ventana
-            /*altaArt2 = null;
-            
-            
-            
-            int idArt = Integer.parseInt((listArts.artsTable.getValueAt(listArts.artsTable.getSelectedRow(), 0)).toString());
-            altaArt2 = new UpAndEditArt(1, idArt);
-            showPanel(altaArt2);
-
-            /////////////////////////////////////////////
-            altaArt2.editUbicBtn.addMouseListener(new java.awt.event.MouseAdapter() {
-                public void mouseClicked(java.awt.event.MouseEvent evt) {
-                    altaArt2EditUbicBtnMouseClicked(evt);
-                }
-            });
-             */
         }
     }//GEN-LAST:event_editArtBtnMouseClicked
 
@@ -309,7 +293,7 @@ public class AdvancedViewer extends javax.swing.JFrame {
 
             editArtBtn.setEnabled(false);
             bajaArtBtn.setEnabled(false);
-            showPanel(wCrearArt);
+            showPanel(wCrearArt,521, 472,0,0,content);
         }
     }//GEN-LAST:event_altaArtBtnMouseClicked
 
@@ -320,7 +304,7 @@ public class AdvancedViewer extends javax.swing.JFrame {
             editarUbicArt = null;
             int indexSelectedRow = listArts.artsTable.getSelectedRow();
             editarUbicArt = new EditUbics(listArts.lista.get(indexSelectedRow));
-            showPanel(editarUbicArt);
+            showPanel(editarUbicArt,521, 472,0,0,content);
 
             editarUbicArt.previusPageExt.addMouseListener(new java.awt.event.MouseAdapter() {
                 public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -335,7 +319,7 @@ public class AdvancedViewer extends javax.swing.JFrame {
         if (editarUbicArt.previusPageExt.isDisplayable() && editarUbicArt.previusPageExt.isEnabled()) {
 
             editarUbicArt = null;
-            showPanel(altaArt2);
+            showPanel(altaArt2,521, 472,0,0,content);
         }
     }
 
@@ -351,14 +335,6 @@ public class AdvancedViewer extends javax.swing.JFrame {
             editArtBtn.setEnabled(true);
             bajaArtBtn.setEnabled(true);
         }
-    }
-    private void showPanel(javax.swing.JPanel p) {
-        p.setSize(521, 472);
-        p.setLocation(0, 0);
-        content.removeAll();
-        content.add(p);
-        content.revalidate();
-        content.repaint();
     }
 
     private void eliminarArt(int idArt) {

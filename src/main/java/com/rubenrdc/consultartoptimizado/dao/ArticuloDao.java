@@ -11,10 +11,9 @@ import java.util.List;
  *
  * @author Ruben
  */
-public class ArticuloDao implements funtionsCom{
+public class ArticuloDao implements funtionsCom {
 
-    private List<String> paramsSql = new ArrayList<>();
-    private List<String> datos = new ArrayList<>();
+    private List<String> paramsSql= new ArrayList<>(),datosArt = new ArrayList<>();
 
     private DaoConnection abc = new DaoConnection();
 
@@ -22,7 +21,7 @@ public class ArticuloDao implements funtionsCom{
     }
 
     public Articulo buscarArt(String cod) {
-        Articulo art = null;
+        Articulo art=null;
         int i = 0;
         DepositosDao depDao = new DepositosDao();
         String[][] stocks = new String[depDao.getLimitDep()][2];
@@ -52,31 +51,28 @@ public class ArticuloDao implements funtionsCom{
                         //System.out.println(stocks[i][0] + " " + stocks[i][1]);
                         i++;
                     }
-                } else {
-                    art = null;
                 }
             } catch (SQLException ex) {
 
             }
             paramsSql.clear();
             abc.getCloseC();
+            return art;
         }
 
         return art;
     }
 
     public Articulo ObtenerUbic(Articulo art, String Deposito) {
-        //clearUbic();
-        //System.out.println("Ejecutando setUbic...");
         if (abc.ExtablecerC() != null) {
             int p = 1, u = 0;
-            String[][] UbicPrinc = new String[1][2];
-            String[][] UbicExtra = new String[10][2];
+            String[][] UbicPrinc = new String[art.getLimitUbicP()][2];
+            String[][] UbicExtra = new String[art.getLimitUbicExtra()][2];
             String ubicConcat;
-            
+
             String cUbics = "SELECT * FROM ubicaciones INNER JOIN depositos ON depositos.id=ubicaciones.idDep WHERE idArt = ? AND depositos.descrip=?;";
-            paramsSql.add(0,String.valueOf(art.getId()));
-            paramsSql.add(1,Deposito);
+            paramsSql.add(0, String.valueOf(art.getId()));
+            paramsSql.add(1, Deposito);
             ResultSet rsUbics = abc.GenericQuery(cUbics, paramsSql);
             try {
                 if (rsUbics.next()) {
@@ -109,16 +105,8 @@ public class ArticuloDao implements funtionsCom{
 
                         u++;
                     }
-                    if (UbicExtra == null) {
-                        art.setUbicExtra(null);
-                    } else {
-                        art.setUbicExtra(UbicExtra);
-                    }
+                    art.setUbicExtra(UbicExtra);
                     art.setUbicConcat(ubicConcat);
-                } else {
-                    art.setUbicPrinc(null);
-                    art.setUbicExtra(null);
-                    art.setUbicConcat(null);
                 }
 
             } catch (NumberFormatException | SQLException e) {
@@ -190,41 +178,41 @@ public class ArticuloDao implements funtionsCom{
 
     public void addArticulo(Articulo varArt) {
 
-        datos.add(0, varArt.getCodigo());
-        datos.add(1, varArt.getDesc());
-        datos.add(2, varArt.getFoto());
+        datosArt.add(0, varArt.getCodigo());
+        datosArt.add(1, varArt.getDesc());
+        datosArt.add(2, varArt.getFoto());
 
-        boolean exito = UpOrDelectOrInsert(datos);
+        boolean exito = UpOrDelectOrInsert(datosArt);
         if (exito) {
             msgInfo(1);
         } else {
             msgInfo(0);
         }
-        datos.clear();
+        datosArt.clear();
     }
 
     public void updateArticulo(Articulo varArt) {
 
-        datos.add(0, varArt.getCodigo());
-        datos.add(1, varArt.getDesc());
-        datos.add(2, varArt.getFoto());
-        datos.add(3, String.valueOf(varArt.getId()));
+        datosArt.add(0, varArt.getCodigo());
+        datosArt.add(1, varArt.getDesc());
+        datosArt.add(2, varArt.getFoto());
+        datosArt.add(3, String.valueOf(varArt.getId()));
 
-        boolean exito = UpOrDelectOrInsert(datos);
+        boolean exito = UpOrDelectOrInsert(datosArt);
         if (exito) {
             msgInfo(1);
         } else {
             msgInfo(0);
         }
-        datos.clear();
+        datosArt.clear();
     }
 
     public void eliminarArt(int idArt) {
         boolean exito = false;
-        datos.add(String.valueOf(idArt));
-        exito = UpOrDelectOrInsert(datos);
+        datosArt.add(String.valueOf(idArt));
+        exito = UpOrDelectOrInsert(datosArt);
 
-        datos.clear();
+        datosArt.clear();
         if (exito) {
             msgInfo(1);
         } else {
@@ -238,25 +226,19 @@ public class ArticuloDao implements funtionsCom{
         if (abc.ExtablecerC() != null) {
             if (datosArt.size() == 4) {
                 query = "UPDATE articulos SET codigo = ? ,descripcion = ? ,foto = ? WHERE id = ? ;";
-                for (String param : datosArt) {
-                    paramsSql.add(param);
-                }
-                return abc.GenericUpdate(query, paramsSql);
+                return abc.GenericUpdate(query, datosArt);
             }
 
             if (datosArt.size() == 3) {
                 query = "INSERT INTO articulos (codigo,descripcion,foto) VALUES (?,?,?);";
-                for (String param : datosArt) {
-                    paramsSql.add(param);
-                }
-                return abc.GenericUpdate(query, paramsSql);
+                return abc.GenericUpdate(query, datosArt);
             }
 
             if (datosArt.size() == 1) {
                 query = "SELECT id FROM ubicaciones WHERE idArt = ?";
-                String idArt = datosArt.get(0);
-                ResultSet rs = abc.QueryById(query, (Integer.parseInt(idArt)));
-                
+                int idArt = Integer.parseInt(datosArt.get(0));
+                ResultSet rs = abc.QueryById(query, idArt);
+
                 try {
 
                     while (rs.next()) {
@@ -267,11 +249,9 @@ public class ArticuloDao implements funtionsCom{
 
                         query = "DELETE FROM ubicaciones WHERE id = ?";
                         abc.GenericUpdate(query, paramsSql);
-                        paramsSql.clear();
                     }
-                    paramsSql.add(idArt);
                     query = "DELETE FROM articulos WHERE id = ?";
-                    exito = abc.GenericUpdate(query, paramsSql);
+                    exito = abc.GenericUpdate(query, datosArt);
 
                 } catch (SQLException ex) {
 

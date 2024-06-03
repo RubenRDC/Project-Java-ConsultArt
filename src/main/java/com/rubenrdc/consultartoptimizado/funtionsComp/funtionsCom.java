@@ -2,6 +2,7 @@ package com.rubenrdc.consultartoptimizado.funtionsComp;
 
 import com.rubenrdc.consultartoptimizado.dao.DepositosDao;
 import com.rubenrdc.consultartoptimizado.models.Deposito;
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -60,18 +61,15 @@ public interface funtionsCom {
         if (matrixContents != null) {
             String Rows[] = new String[columns];
             for (String[] matrixContent : matrixContents) {
-
-                for (int j = 0; j < columns; j++) {
-                    if (j == 0) {
-                        Rows[j] = matrixContent[j];
-                    } else {
+                //El primer elemento del Array No puede ser Nulo;
+                if (matrixContent[0] != null) {
+                    for (int j = 0; j < columns; j++) {
                         Rows[j] = matrixContent[j];
                     }
-                }
-                if (matrixContent[0] != null) {
                     dm.addRow(Rows);
+                }else{
+                    break;
                 }
-
             }
             jT.setModel(dm);
         }
@@ -86,10 +84,17 @@ public interface funtionsCom {
             component.setEnabled(isEnabled);
         }
     }
-
     default public void pinterJFrame(javax.swing.JFrame window, boolean setVisible, Component setLocationRelativeTo, boolean setResizable) {
         window.setVisible(setVisible);
         window.setLocationRelativeTo(setLocationRelativeTo);
         window.setResizable(setResizable);
+    }
+    default public void showPanel(javax.swing.JPanel panel,int SizeWhidth,int Sizeheight,int setLocationX,int setLocationY,javax.swing.JPanel InPanel) {
+        panel.setSize(SizeWhidth, Sizeheight);
+        panel.setLocation(setLocationX, setLocationY);
+        InPanel.removeAll();
+        InPanel.add(panel, BorderLayout.CENTER);
+        InPanel.revalidate();
+        InPanel.repaint();
     }
 }
