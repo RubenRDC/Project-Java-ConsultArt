@@ -9,7 +9,7 @@ import java.awt.BorderLayout;
  *
  * @author Ruben
  */
-public class EditUbics extends javax.swing.JPanel implements funtionsCom{
+public class EditUbics extends javax.swing.JPanel implements funtionsCom {
 
     EditUbic addOeditUbic;
     int idArt, IdUbicP;
@@ -21,13 +21,12 @@ public class EditUbics extends javax.swing.JPanel implements funtionsCom{
      */
     public EditUbics(Articulo Art) {
         this.Art = Art;
-        //System.out.println("Art "+ Art.getCodigo());
         initComponents();
         JComboBoxDepositos(listDeposito);
         idArt = Art.getId();
         codigotxt.setText(Art.getCodigo());
         descTxt.setText(Art.getDesc());
-        
+
     }
 
     @SuppressWarnings("unchecked")
@@ -422,10 +421,10 @@ public class EditUbics extends javax.swing.JPanel implements funtionsCom{
 
         if (editBtnEx.isEnabled()) {
             String D = listDeposito.getSelectedItem().toString();
-            addOeditUbic = new EditUbic(idArt, idUbicEx,D, 1,1);
+            addOeditUbic = new EditUbic(idArt, idUbicEx, D, 1, 1);
             jPanel1.setVisible(false);
             ContentExtra.setVisible(true);
-            showPanel(addOeditUbic,419,390,0,0,jPanel3);
+            showPanel(addOeditUbic, 419, 390, 0, 0, jPanel3);
         }
     }//GEN-LAST:event_editBtnExMouseClicked
 
@@ -433,10 +432,10 @@ public class EditUbics extends javax.swing.JPanel implements funtionsCom{
         if (addBtnEx.isEnabled()) {
             String D = listDeposito.getSelectedItem().toString();
             IdUbicP = Integer.parseInt(Art.getUbicPrinc()[0][0]);
-            addOeditUbic = new EditUbic(idArt, IdUbicP,D, 0,1);
+            addOeditUbic = new EditUbic(idArt, IdUbicP, D, 0, 1);
             jPanel1.setVisible(false);
             ContentExtra.setVisible(true);
-            showPanel(addOeditUbic,419,390,0,0,jPanel3);
+            showPanel(addOeditUbic, 419, 390, 0, 0, jPanel3);
         }
     }//GEN-LAST:event_addBtnExMouseClicked
 
@@ -462,34 +461,31 @@ public class EditUbics extends javax.swing.JPanel implements funtionsCom{
 
         if (editBtnP.isEnabled()) {
             String D = listDeposito.getSelectedItem().toString();
-            addOeditUbic = new EditUbic(idArt, idUbicP, D, 1,0);
+            addOeditUbic = new EditUbic(idArt, idUbicP, D, 1, 0);
             jPanel1.setVisible(false);
             ContentExtra.setVisible(true);
-            showPanel(addOeditUbic,419,390,0,0,jPanel3);
+            showPanel(addOeditUbic, 419, 390, 0, 0, jPanel3);
         }
     }//GEN-LAST:event_editBtnPMouseClicked
 
     private void addBtnPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addBtnPMouseClicked
         if (addBtnP.isEnabled()) {
             String D = listDeposito.getSelectedItem().toString();
-            addOeditUbic = new EditUbic(idArt,0, D, 0,0);
+            addOeditUbic = new EditUbic(idArt, 0, D, 0, 0);
             jPanel1.setVisible(false);
             ContentExtra.setVisible(true);
-            showPanel(addOeditUbic,419,390,0,0,jPanel3);
+            showPanel(addOeditUbic, 419, 390, 0, 0, jPanel3);
         }
     }//GEN-LAST:event_addBtnPMouseClicked
 
     private void listDepositoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_listDepositoItemStateChanged
-        
+
         if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
             artDao.ObtenerUbic(Art, listDeposito.getSelectedItem().toString());
-            
-            //System.out.println("Valor de la ubicacion principal "+Arrays.toString(Art.getUbicPrinc()));
+
             llenarTablaUbics(tabUbP, Art.getUbicPrinc());
             llenarTablaUbics(tabUbEx, Art.getUbicExtra());
-
-
-            //System.out.println("jTable1.getRowCount " + jTable1.getRowCount());
+            
             if (tabUbP.getRowCount() == 0) {
                 addBtnP.setEnabled(true);
                 addBtnEx.setEnabled(false);
@@ -514,9 +510,9 @@ public class EditUbics extends javax.swing.JPanel implements funtionsCom{
     public void llenarTablaUbics(javax.swing.JTable tb, String a[][]) {
         tb.clearSelection();
         tb.getColumnModel().getColumn(0).setMaxWidth(20);
-        llenarTabla(tb, a,2);
+        llenarTabla(tb, a, 2);
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel ContentExtra;
     private javax.swing.JPanel TableUbicExtra;

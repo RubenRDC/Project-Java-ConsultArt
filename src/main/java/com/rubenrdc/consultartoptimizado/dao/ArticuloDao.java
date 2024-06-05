@@ -107,6 +107,10 @@ public class ArticuloDao implements funtionsCom {
                     }
                     art.setUbicExtra(UbicExtra);
                     art.setUbicConcat(ubicConcat);
+                }else{
+                    art.setUbicPrinc(null);
+                    art.setUbicExtra(null);
+                    art.setUbicConcat(null);
                 }
 
             } catch (NumberFormatException | SQLException e) {
