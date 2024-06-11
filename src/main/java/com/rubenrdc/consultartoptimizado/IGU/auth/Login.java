@@ -1,12 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package com.rubenrdc.consultartoptimizado.IGU.auth;
-
 import com.rubenrdc.consultartoptimizado.IGU.ConsArt;
 import com.rubenrdc.consultartoptimizado.dao.UserDao;
 import com.rubenrdc.consultartoptimizado.models.User;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -22,6 +18,8 @@ public class Login extends javax.swing.JFrame {
 
     public Login() {
         initComponents();
+        ImageIcon img = new ImageIcon("src/main/java/com/rubenrdc/consultartoptimizado/miselaneos/icon.png");
+        setIconImage(img.getImage());
         UserTxt.setText("Ruben");
         PsstTxt.setText("1234");
         //
@@ -45,6 +43,7 @@ public class Login extends javax.swing.JFrame {
         btnLogin = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Iniciar Sesion");
         setIconImages(null);
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N

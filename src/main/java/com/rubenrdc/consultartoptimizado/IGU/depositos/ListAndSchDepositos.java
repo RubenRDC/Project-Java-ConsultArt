@@ -4,6 +4,7 @@ import com.rubenrdc.consultartoptimizado.dao.DepositosDao;
 import com.rubenrdc.consultartoptimizado.funtionsComp.funtionsCom;
 import com.rubenrdc.consultartoptimizado.models.Deposito;
 import java.util.List;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -21,6 +22,8 @@ public class ListAndSchDepositos extends javax.swing.JFrame implements funtionsC
      */
     public ListAndSchDepositos() {
         initComponents();
+        ImageIcon img = new ImageIcon("src/main/java/com/rubenrdc/consultartoptimizado/miselaneos/icon.png");
+        setIconImage(img.getImage());
         llenarTablaConDeps(depsTable, "", "", limitList);
     }
 
@@ -51,6 +54,7 @@ public class ListAndSchDepositos extends javax.swing.JFrame implements funtionsC
         btnDelete = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Listado de Depositos");
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("Lista de depositos:");

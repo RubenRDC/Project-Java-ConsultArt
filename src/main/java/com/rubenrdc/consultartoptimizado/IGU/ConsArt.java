@@ -9,6 +9,7 @@ import com.rubenrdc.consultartoptimizado.IGU.depositos.ListAndSchDepositos;
 import com.rubenrdc.consultartoptimizado.dao.ArticuloDao;
 import com.rubenrdc.consultartoptimizado.funtionsComp.funtionsCom;
 import com.rubenrdc.consultartoptimizado.models.Articulo;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -25,6 +26,8 @@ public class ConsArt extends javax.swing.JFrame implements funtionsCom {
 
     public ConsArt() {
         initComponents();
+        ImageIcon img = new ImageIcon("src/main/java/com/rubenrdc/consultartoptimizado/miselaneos/icon.png");
+        setIconImage(img.getImage());
         listDeposito.setVisible(false);
     }
 
@@ -67,6 +70,7 @@ public class ConsArt extends javax.swing.JFrame implements funtionsCom {
         listDepItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Consulta de Articulos");
         setIconImages(null);
         setMinimumSize(null);
 
