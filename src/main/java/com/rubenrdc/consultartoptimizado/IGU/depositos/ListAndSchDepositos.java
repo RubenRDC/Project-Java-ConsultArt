@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
  *
  * @author Ruben
  */
-public class ListAndSchDepositos extends javax.swing.JFrame implements funtionsCom {
+public class ListAndSchDepositos extends javax.swing.JFrame implements funtionsCom{
 
     private int limitList = 10;
     private DepositosDao depDao = new DepositosDao();
@@ -344,15 +344,15 @@ public class ListAndSchDepositos extends javax.swing.JFrame implements funtionsC
             depsTable.clearSelection();
             String prov = ProvinciaTxt.getText();
             String code = descTxt.getText();
-            llenarTablaConDeps(depsTable,prov, code, limitList);
+            llenarTablaConDeps(depsTable, prov, code, limitList);
         }
     }//GEN-LAST:event_BtnShMouseClicked
     private void llenarTablaConDeps(javax.swing.JTable tb, String provincia, String desc, int limiteLista) {
         ClearTable(tb);
         javax.swing.table.DefaultTableModel dm = (javax.swing.table.DefaultTableModel) (tb.getModel());
-        
+
         lista = depDao.getListDepsByTitleAndProv(provincia, desc, limiteLista);
-        
+
         if (!lista.isEmpty()) {
             for (int i = 0; i < lista.size(); i++) {
                 dm.addRow(lista.get(i).getRow());
@@ -360,7 +360,7 @@ public class ListAndSchDepositos extends javax.swing.JFrame implements funtionsC
             tb.setModel(dm);
         } else {
             JOptionPane.showMessageDialog(null, "No se encontraron resultados.");
-            llenarTablaConDeps(depsTable,"", "", limiteLista);
+            llenarTablaConDeps(depsTable, "", "", limiteLista);
         }
     }
 
@@ -388,4 +388,5 @@ public class ListAndSchDepositos extends javax.swing.JFrame implements funtionsC
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
+
 }

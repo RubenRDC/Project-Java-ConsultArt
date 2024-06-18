@@ -13,44 +13,36 @@ import java.util.List;
  */
 public class ArticuloDao implements funtionsCom {
 
-    private List<String> paramsSql= new ArrayList<>(),datosArt = new ArrayList<>();
+    private List<String> paramsSql = new ArrayList<>(), datosArt = new ArrayList<>();
 
     private DaoConnection abc = new DaoConnection();
+    private Articulo art;
+    private List<Articulo> list = new ArrayList<>();
 
     public ArticuloDao() {
     }
 
     public Articulo buscarArt(String cod) {
-        Articulo art=null;
         int i = 0;
         DepositosDao depDao = new DepositosDao();
         String[][] stocks = new String[depDao.getLimitDep()][2];
-        String query = "SELECT * FROM articulos WHERE codigo = ?;";
+
+        art = null;
+
+        art = StrictSearchArt(cod);
 
         if (abc.ExtablecerC() != null) {
             try {
-                paramsSql.add(cod);
-                ResultSet rs = abc.GenericQuery(query, paramsSql);
+                String CStock = "SELECT * FROM ubicaciones INNER JOIN depositos ON depositos.id=ubicaciones.idDep WHERE idArt = ?;";
+                ResultSet rs3 = abc.QueryById(CStock, art.getId());
+                while (rs3.next()) {
 
-                if (rs.next()) {
-                    int idArt = rs.getInt("id");
-                    String code = rs.getString("codigo");
-                    String desc = rs.getString("descripcion");
-                    String foto = rs.getString("foto");
+                    stocks[i][0] = (rs3.getString("depositos.descrip"));
+                    stocks[i][1] = (rs3.getString("ubicaciones.exist"));
 
-                    art = new Articulo(idArt, code, desc, foto);
-
-                    String CStock = "SELECT * FROM ubicaciones INNER JOIN depositos ON depositos.id=ubicaciones.idDep WHERE idArt = ?;";
-                    ResultSet rs3 = abc.QueryById(CStock, idArt);
-                    while (rs3.next()) {
-
-                        stocks[i][0] = (rs3.getString("depositos.descrip"));
-                        stocks[i][1] = (rs3.getString("ubicaciones.exist"));
-
-                        art.setStocks(stocks);
-                        //System.out.println(stocks[i][0] + " " + stocks[i][1]);
-                        i++;
-                    }
+                    art.setStocks(stocks);
+                    //System.out.println(stocks[i][0] + " " + stocks[i][1]);
+                    i++;
                 }
             } catch (SQLException ex) {
 
@@ -107,7 +99,7 @@ public class ArticuloDao implements funtionsCom {
                     }
                     art.setUbicExtra(UbicExtra);
                     art.setUbicConcat(ubicConcat);
-                }else{
+                } else {
                     art.setUbicPrinc(null);
                     art.setUbicExtra(null);
                     art.setUbicConcat(null);
@@ -124,9 +116,8 @@ public class ArticuloDao implements funtionsCom {
     }
 
     public List getListArt(String code, int limiteLista) {
-        Articulo art;
+        list.clear();
         String Query = "SELECT * FROM articulos WHERE codigo LIKE ? OR descripcion LIKE ? LIMIT " + limiteLista;
-        List<Articulo> list = new ArrayList<Articulo>();
 
         if (abc.ExtablecerC() != null) {
             paramsSql.add("%" + code + "%");
@@ -134,6 +125,7 @@ public class ArticuloDao implements funtionsCom {
             ResultSet rs = abc.GenericQuery(Query, paramsSql);
             try {
                 while (rs.next()) {
+                    art = null;//Me aseguro q la variable articulo que resiba no contenga informacion
                     int id = rs.getInt("id");
                     String cod = rs.getString("codigo");
                     String descrip = rs.getString("descripcion");
@@ -153,9 +145,9 @@ public class ArticuloDao implements funtionsCom {
     }
 
     public Articulo StrictSearchArt(String cod) {
-        Articulo art = null;
+        art = null;
         String Query = "SELECT * FROM articulos WHERE codigo = ?";
-        System.out.println("Query busquedaEstrictaArt Por Codigo" + Query);
+        //System.out.println("Query busquedaEstrictaArt Por Codigo" + Query);
 
         if (abc.ExtablecerC() != null) {
             paramsSql.add(cod);
@@ -176,7 +168,6 @@ public class ArticuloDao implements funtionsCom {
             paramsSql.clear();
             abc.getCloseC();
         }
-
         return art;
     }
 

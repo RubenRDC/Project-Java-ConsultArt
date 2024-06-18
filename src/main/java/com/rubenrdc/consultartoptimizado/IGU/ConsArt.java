@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package com.rubenrdc.consultartoptimizado.IGU;
 
 import com.rubenrdc.consultartoptimizado.IGU.Av.AdvancedViewer;
@@ -18,11 +14,11 @@ import javax.swing.JOptionPane;
  */
 public class ConsArt extends javax.swing.JFrame implements funtionsCom {
 
-    ArticuloDao ArtDao = new ArticuloDao();
-    Articulo Art;
-    AdvancedViewer windowAv;
-    ImageViewer imageV;
-    ListAndSchDepositos windowDepList;
+    private ArticuloDao ArtDao = new ArticuloDao();
+    private Articulo Art;
+    private AdvancedViewer windowAv;
+    private ImageViewer imageV;
+    private ListAndSchDepositos windowDepList;
 
     public ConsArt() {
         initComponents();
@@ -453,15 +449,15 @@ public class ConsArt extends javax.swing.JFrame implements funtionsCom {
                 imageV = new ImageViewer(UrlFoto);
                 pinterJFrame(imageV, true, null, false);
             } else if (imageV != null) {
+                if (!(imageV.getImgUrl().equals(UrlFoto))) {
+                    imageV.setImg(UrlFoto);
+                }
                 if (imageV.isShowing()) {
                     imageV.toFront();
                 } else {
-                    imageV = new ImageViewer(UrlFoto);
                     pinterJFrame(imageV, true, null, false);
                 }
             }
-
-            //System.out.println("Art != null " + UrlFoto);
         }
     }//GEN-LAST:event_VerFotoMouseClicked
 
@@ -511,6 +507,7 @@ public class ConsArt extends javax.swing.JFrame implements funtionsCom {
 
     private void ClearCamp() {
         Art = null;
+        imageV.dispose();
         VerFoto.setEnabled(false);
         descTxt.setText("");
         ubicTxt.setText("");
@@ -522,38 +519,38 @@ public class ConsArt extends javax.swing.JFrame implements funtionsCom {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    javax.swing.JMenuItem InteraccionBtn;
-    javax.swing.JButton VerFoto;
-    javax.swing.JButton clearShBtn;
-    javax.swing.JTextField codigoTxt;
-    javax.swing.JLabel descTxt;
-    javax.swing.JLabel jLabel1;
-    javax.swing.JLabel jLabel3;
-    javax.swing.JMenu jMenu1;
-    javax.swing.JMenu jMenu2;
-    javax.swing.JMenu jMenu3;
-    javax.swing.JMenu jMenu4;
-    javax.swing.JMenuBar jMenuBar1;
-    javax.swing.JMenuItem jMenuItem1;
-    javax.swing.JMenuItem jMenuItem2;
-    javax.swing.JPanel jPanel1;
-    javax.swing.JPanel jPanel2;
-    javax.swing.JPanel jPanel3;
-    javax.swing.JPanel jPanel4;
-    javax.swing.JPanel jPanel5;
-    javax.swing.JScrollPane jScrollPane1;
-    javax.swing.JScrollPane jScrollPane2;
-    javax.swing.JScrollPane jScrollPane4;
-    javax.swing.JTable jTable4;
-    javax.swing.JMenuItem listDepItem;
-    javax.swing.JComboBox<String> listDeposito;
-    javax.swing.JLabel relacionTxt;
-    javax.swing.JTable tablaStock;
-    javax.swing.JLabel titleCod;
-    javax.swing.JLabel titleDesc;
-    javax.swing.JLabel titleRelacion;
-    javax.swing.JLabel titleRelacion1;
-    javax.swing.JLabel titleUbic;
-    javax.swing.JTextArea ubicTxt;
+    private javax.swing.JMenuItem InteraccionBtn;
+    private javax.swing.JButton VerFoto;
+    private javax.swing.JButton clearShBtn;
+    private javax.swing.JTextField codigoTxt;
+    private javax.swing.JLabel descTxt;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JTable jTable4;
+    private javax.swing.JMenuItem listDepItem;
+    private javax.swing.JComboBox<String> listDeposito;
+    private javax.swing.JLabel relacionTxt;
+    private javax.swing.JTable tablaStock;
+    private javax.swing.JLabel titleCod;
+    private javax.swing.JLabel titleDesc;
+    private javax.swing.JLabel titleRelacion;
+    private javax.swing.JLabel titleRelacion1;
+    private javax.swing.JLabel titleUbic;
+    private javax.swing.JTextArea ubicTxt;
     // End of variables declaration//GEN-END:variables
 }

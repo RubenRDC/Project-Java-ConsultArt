@@ -12,30 +12,16 @@ import javax.swing.ImageIcon;
  * @author Ruben
  */
 public class ImageViewer extends javax.swing.JFrame {
-
+    private javax.swing.ImageIcon icon;
+    private String ImgUrl;
     /**
      * Creates new form ImageViewer
      */
     public ImageViewer(String imgUrl) {
         initComponents();
-        javax.swing.ImageIcon icon;
         //icon = new javax.swing.ImageIcon("src/main/java/com/rubenrdc/consultartoptimizado/miselaneos/icon-image-not-found.jpg");
         //jLabel1.setIcon(icon);
-
-        if (imgUrl != null) {
-            //System.out.println("imgUrl "+imgUrl);
-            icon = createImageIcon(imgUrl);
-            //System.out.println("icon "+icon);
-            if (icon != null) {
-                java.awt.Image img = icon.getImage();
-                java.awt.Image imgS = img.getScaledInstance(jLabel1.getWidth(), jLabel1.getHeight(), java.awt.Image.SCALE_SMOOTH);
-                javax.swing.ImageIcon iconS = new javax.swing.ImageIcon(imgS);
-                jLabel1.setIcon(iconS);
-            } else {
-                icon = new javax.swing.ImageIcon("src/main/java/com/rubenrdc/consultartoptimizado/miselaneos/icon-image-not-found.jpg");
-                jLabel1.setIcon(icon);
-            }
-        }
+        setImg(imgUrl);
     }
 
     /**
@@ -114,6 +100,28 @@ public class ImageViewer extends javax.swing.JFrame {
         java.awt.Image imgS = img.getScaledInstance(jLabel1.getWidth(), jLabel1.getHeight(), java.awt.Image.SCALE_SMOOTH);
         javax.swing.ImageIcon iconS = new javax.swing.ImageIcon(imgS);
         return iconS;
+    }
+    public void setImg(String imgUrl){
+        ImgUrl = imgUrl;
+        
+        if (imgUrl != null) {
+            //System.out.println("imgUrl "+imgUrl);
+            icon = createImageIcon(imgUrl);
+            //System.out.println("icon "+icon);
+            if (icon != null) {
+                java.awt.Image img = icon.getImage();
+                java.awt.Image imgS = img.getScaledInstance(jLabel1.getWidth(), jLabel1.getHeight(), java.awt.Image.SCALE_SMOOTH);
+                javax.swing.ImageIcon iconS = new javax.swing.ImageIcon(imgS);
+                jLabel1.setIcon(iconS);
+            } else {
+                icon = new javax.swing.ImageIcon("src/main/java/com/rubenrdc/consultartoptimizado/miselaneos/icon-image-not-found.jpg");
+                jLabel1.setIcon(icon);
+            }
+        }
+        
+    }
+    public String getImgUrl(){
+        return ImgUrl;
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;

@@ -2,7 +2,6 @@ package com.rubenrdc.consultartoptimizado.IGU.Av;
 
 import com.rubenrdc.consultartoptimizado.dao.ArticuloDao;
 import com.rubenrdc.consultartoptimizado.funtionsComp.funtionsCom;
-import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
 
 /**
@@ -11,10 +10,15 @@ import javax.swing.ImageIcon;
  */
 public class AdvancedViewer extends javax.swing.JFrame implements funtionsCom {
 
-    ListSearcherArt listArts = new ListSearcherArt();
-    UpAndEditArt wCrearArt = new UpAndEditArt(0);//Crear
-    EditUbics editarUbicArt;
-    UpAndEditArt altaArt2;
+    private ListSearcherArt listArts = new ListSearcherArt();
+    private UpAndEditArt wCrearArt = new UpAndEditArt(0);//Crear
+    private EditUbics editarUbicArt;
+    private UpAndEditArt altaArt2;
+    private java.awt.event.MouseAdapter Madapter = new java.awt.event.MouseAdapter() {
+        public void mouseClicked(java.awt.event.MouseEvent evt) {
+            listArtsMouseClicked(evt);
+        }
+    };
 
     public AdvancedViewer() {
         initComponents();
@@ -22,11 +26,6 @@ public class AdvancedViewer extends javax.swing.JFrame implements funtionsCom {
         ImageIcon img = new ImageIcon("src/main/java/com/rubenrdc/consultartoptimizado/miselaneos/icon.png");
         setIconImage(img.getImage());
 
-        java.awt.event.MouseAdapter Madapter = new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                listArtsMouseClicked(evt);
-            }
-        };
         showPanel(listArts, 521, 472, 0, 0, content);
 
         listArts.artsTable.addMouseListener(Madapter);
@@ -291,7 +290,7 @@ public class AdvancedViewer extends javax.swing.JFrame implements funtionsCom {
         }
     }//GEN-LAST:event_altaArtBtnMouseClicked
 
-    private void altaArt2EditUbicBtnMouseClicked(MouseEvent evt) {
+    private void altaArt2EditUbicBtnMouseClicked(java.awt.event.MouseEvent evt) {
 
         if (altaArt2.editUbicBtn.isDisplayable()) {
 
@@ -309,7 +308,7 @@ public class AdvancedViewer extends javax.swing.JFrame implements funtionsCom {
         }
     }
 
-    private void previusPageExtMouseClicked(MouseEvent evt) {
+    private void previusPageExtMouseClicked(java.awt.event.MouseEvent evt) {
         if (editarUbicArt.previusPageExt.isDisplayable() && editarUbicArt.previusPageExt.isEnabled()) {
 
             editarUbicArt = null;
@@ -317,7 +316,7 @@ public class AdvancedViewer extends javax.swing.JFrame implements funtionsCom {
         }
     }
 
-    private void listArtsMouseClicked(MouseEvent evt) {
+    private void listArtsMouseClicked(java.awt.event.MouseEvent evt) {
         int selectedRow = listArts.artsTable.getSelectedRow();
         //System.out.println("listArts.artsTable.getSelectedRow() " + listArts.artsTable.getSelectedRow());
         //System.out.println("jTable1 selectedRow" + selectedRow);
