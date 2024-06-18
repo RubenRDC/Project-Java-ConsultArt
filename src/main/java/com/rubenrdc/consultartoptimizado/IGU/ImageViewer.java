@@ -1,6 +1,4 @@
 package com.rubenrdc.consultartoptimizado.IGU;
-
-import java.net.MalformedURLException;
 import javax.swing.ImageIcon;
 
 /**
@@ -8,8 +6,9 @@ import javax.swing.ImageIcon;
  * @author Ruben
  */
 public class ImageViewer extends javax.swing.JFrame {
+
     private javax.swing.ImageIcon icon;
-    private String ImgUrl="";
+    private String ImgUrl = "";
 
     public ImageViewer(String imgUrl) {
         initComponents();
@@ -66,8 +65,7 @@ public class ImageViewer extends javax.swing.JFrame {
             //java.net.URL imgURL = getClass().getResource(path);
             try {
                 java.net.URL imgURL = new java.net.URL(path);
-                if (imgURL != null) {
-                    //System.out.println("new ImageIcon(imgURL) "+new ImageIcon(imgURL));
+                if (path != null) {
                     return new ImageIcon(imgURL);
 
                 } else {
@@ -88,26 +86,22 @@ public class ImageViewer extends javax.swing.JFrame {
         javax.swing.ImageIcon iconS = new javax.swing.ImageIcon(imgS);
         return iconS;
     }
-    public void setImg(String imgUrl){
+
+    public void setImg(String imgUrl) {
         ImgUrl = imgUrl;
-        
-        if (imgUrl != null) {
-            //System.out.println("imgUrl "+imgUrl);
-            icon = createImageIcon(imgUrl);
-            //System.out.println("icon "+icon);
-            if (icon != null) {
-                java.awt.Image img = icon.getImage();
-                java.awt.Image imgS = img.getScaledInstance(jLabel1.getWidth(), jLabel1.getHeight(), java.awt.Image.SCALE_SMOOTH);
-                javax.swing.ImageIcon iconS = new javax.swing.ImageIcon(imgS);
-                jLabel1.setIcon(iconS);
-            } else {
-                icon = new javax.swing.ImageIcon("src/main/java/com/rubenrdc/consultartoptimizado/miselaneos/icon-image-not-found.jpg");
-                jLabel1.setIcon(icon);
-            }
+        icon = createImageIcon(imgUrl);
+        if (icon != null) {
+            java.awt.Image img = icon.getImage();
+            java.awt.Image imgS = img.getScaledInstance(jLabel1.getWidth(), jLabel1.getHeight(), java.awt.Image.SCALE_SMOOTH);
+            javax.swing.ImageIcon iconS = new javax.swing.ImageIcon(imgS);
+            jLabel1.setIcon(iconS);
+        } else {
+            icon = new javax.swing.ImageIcon("src/main/java/com/rubenrdc/consultartoptimizado/miselaneos/icon-image-not-found.jpg");
+            jLabel1.setIcon(icon);
         }
-        
     }
-    public String getImgUrl(){
+
+    public String getImgUrl() {
         return ImgUrl;
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables

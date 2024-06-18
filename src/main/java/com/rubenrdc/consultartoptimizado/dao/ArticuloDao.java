@@ -28,30 +28,28 @@ public class ArticuloDao implements funtionsCom {
         String[][] stocks = new String[depDao.getLimitDep()][2];
 
         art = null;
-
         art = StrictSearchArt(cod);
+        if (art != null) {
+            if (abc.ExtablecerC() != null) {
+                try {
+                    String CStock = "SELECT * FROM ubicaciones INNER JOIN depositos ON depositos.id=ubicaciones.idDep WHERE idArt = ?;";
+                    ResultSet rs3 = abc.QueryById(CStock, art.getId());
+                    while (rs3.next()) {
 
-        if (abc.ExtablecerC() != null) {
-            try {
-                String CStock = "SELECT * FROM ubicaciones INNER JOIN depositos ON depositos.id=ubicaciones.idDep WHERE idArt = ?;";
-                ResultSet rs3 = abc.QueryById(CStock, art.getId());
-                while (rs3.next()) {
+                        stocks[i][0] = (rs3.getString("depositos.descrip"));
+                        stocks[i][1] = (rs3.getString("ubicaciones.exist"));
 
-                    stocks[i][0] = (rs3.getString("depositos.descrip"));
-                    stocks[i][1] = (rs3.getString("ubicaciones.exist"));
+                        art.setStocks(stocks);
+                        i++;
+                    }
+                } catch (SQLException ex) {
 
-                    art.setStocks(stocks);
-                    //System.out.println(stocks[i][0] + " " + stocks[i][1]);
-                    i++;
                 }
-            } catch (SQLException ex) {
-
+                paramsSql.clear();
+                abc.getCloseC();
+                return art;
             }
-            paramsSql.clear();
-            abc.getCloseC();
-            return art;
         }
-
         return art;
     }
 
