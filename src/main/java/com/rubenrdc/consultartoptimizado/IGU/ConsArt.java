@@ -5,6 +5,9 @@ import com.rubenrdc.consultartoptimizado.IGU.depositos.ListAndSchDepositos;
 import com.rubenrdc.consultartoptimizado.dao.ArticuloDao;
 import com.rubenrdc.consultartoptimizado.funtionsComp.funtionsCom;
 import com.rubenrdc.consultartoptimizado.models.Articulo;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
@@ -19,6 +22,7 @@ public class ConsArt extends javax.swing.JFrame implements funtionsCom {
     private AdvancedViewer windowAv;
     private ImageViewer imageV;
     private ListAndSchDepositos windowDepList;
+    private ReentrantLock lock = new ReentrantLock();
 
     public ConsArt() {
         initComponents();
@@ -47,7 +51,6 @@ public class ConsArt extends javax.swing.JFrame implements funtionsCom {
         titleRelacion1 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        VerFoto = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaStock = new javax.swing.JTable();
         jPanel4 = new javax.swing.JPanel();
@@ -55,6 +58,8 @@ public class ConsArt extends javax.swing.JFrame implements funtionsCom {
         jTable4 = new javax.swing.JTable();
         jPanel5 = new javax.swing.JPanel();
         clearShBtn = new javax.swing.JButton();
+        jPanel7 = new javax.swing.JPanel();
+        VerFoto = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -191,16 +196,6 @@ public class ConsArt extends javax.swing.JFrame implements funtionsCom {
         jLabel3.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel3.setText("Stock:");
 
-        VerFoto.setText("Ver Foto");
-        VerFoto.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        VerFoto.setEnabled(false);
-        VerFoto.setFocusPainted(false);
-        VerFoto.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                VerFotoMouseClicked(evt);
-            }
-        });
-
         javax.swing.table.DefaultTableModel tableModel = new javax.swing.table.DefaultTableModel(
 
             new Object [][] {
@@ -229,23 +224,17 @@ public class ConsArt extends javax.swing.JFrame implements funtionsCom {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel3)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addGap(0, 149, Short.MAX_VALUE)
-                        .addComponent(VerFoto)))
-                .addGap(0, 0, 0))
+                        .addGap(0, 180, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(VerFoto)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, 0))
         );
 
         jPanel4.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -307,6 +296,31 @@ public class ConsArt extends javax.swing.JFrame implements funtionsCom {
                 .addComponent(clearShBtn))
         );
 
+        VerFoto.setText("Ver Foto");
+        VerFoto.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        VerFoto.setEnabled(false);
+        VerFoto.setFocusPainted(false);
+        VerFoto.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                VerFotoMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(VerFoto))
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addComponent(VerFoto)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -323,7 +337,9 @@ public class ConsArt extends javax.swing.JFrame implements funtionsCom {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addContainerGap())))
@@ -334,8 +350,11 @@ public class ConsArt extends javax.swing.JFrame implements funtionsCom {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
@@ -439,25 +458,38 @@ public class ConsArt extends javax.swing.JFrame implements funtionsCom {
     }//GEN-LAST:event_listDepositoItemStateChanged
 
     private void VerFotoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_VerFotoMouseClicked
-        String UrlFoto = null;
         if (Art != null) {
-            VerFoto.setEnabled(true);
-            if (!Art.getFoto().isEmpty()) {
-                UrlFoto = Art.getFoto();
-            }
-            if (imageV == null) {
-                imageV = new ImageViewer(UrlFoto);
-                pinterJFrame(imageV, true, null, false);
-            } else if (imageV != null) {
-                if (!(imageV.getImgUrl().equals(UrlFoto))) {
-                    imageV.setImg(UrlFoto);
+            Thread t = new Thread(new Runnable() {
+                public void run() {
+                    lock.lock();
+                    String UrlFoto = null;
+                    try {
+                        VerFoto.setEnabled(false);
+                        VerFoto.setText("...");
+                        if (!Art.getFoto().isEmpty()) {
+                            UrlFoto = Art.getFoto();
+                        }
+                        if (imageV == null) {
+                            imageV = new ImageViewer(UrlFoto);
+                            pinterJFrame(imageV, true, null, false);
+                        } else if (imageV != null) {
+                            if (!(imageV.getImgUrl().equals(UrlFoto))) {
+                                imageV.setImg(UrlFoto);
+                            }
+                            if (imageV.isShowing()) {
+                                imageV.toFront();
+                            } else {
+                                pinterJFrame(imageV, true, null, false);
+                            }
+                        }
+                    } finally {
+                        VerFoto.setText("Ver Foto");
+                        VerFoto.setEnabled(true);
+                        lock.unlock();
+                    }
                 }
-                if (imageV.isShowing()) {
-                    imageV.toFront();
-                } else {
-                    pinterJFrame(imageV, true, null, false);
-                }
-            }
+            });
+            t.start();
         }
     }//GEN-LAST:event_VerFotoMouseClicked
 
@@ -507,7 +539,9 @@ public class ConsArt extends javax.swing.JFrame implements funtionsCom {
 
     private void ClearCamp() {
         Art = null;
-        imageV.dispose();
+        if (imageV != null) {
+            imageV.dispose();
+        }
         VerFoto.setEnabled(false);
         descTxt.setText("");
         ubicTxt.setText("");
@@ -538,6 +572,7 @@ public class ConsArt extends javax.swing.JFrame implements funtionsCom {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;
