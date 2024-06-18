@@ -6,8 +6,6 @@ import com.rubenrdc.consultartoptimizado.dao.ArticuloDao;
 import com.rubenrdc.consultartoptimizado.funtionsComp.funtionsCom;
 import com.rubenrdc.consultartoptimizado.models.Articulo;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
@@ -473,7 +471,11 @@ public class ConsArt extends javax.swing.JFrame implements funtionsCom {
                             imageV = new ImageViewer(UrlFoto);
                             pinterJFrame(imageV, true, null, false);
                         } else if (imageV != null) {
-                            if (!(imageV.getImgUrl().equals(UrlFoto))) {
+                            if (UrlFoto != null & imageV.getImgUrl() != null) {
+                                if (!(imageV.getImgUrl().equals(UrlFoto))) {
+                                    imageV.setImg(UrlFoto);
+                                }
+                            } else {
                                 imageV.setImg(UrlFoto);
                             }
                             if (imageV.isShowing()) {
@@ -529,9 +531,7 @@ public class ConsArt extends javax.swing.JFrame implements funtionsCom {
             if (windowDepList.isShowing()) {//la windowAv sigue es visible 
                 System.out.println("Is Showing");
                 windowDepList.toFront();//envia la windowAv activa en frente de todo
-            } else {//ya se cerro la windowAv pero se mantuvo la informacion previa en la variable al no asignarle como nulo
-                //ventana = null;
-                //ventana = new AdvancedViewer();
+            } else {
                 pinterJFrame(windowDepList, true, null, false);
             }
         }
@@ -572,7 +572,7 @@ public class ConsArt extends javax.swing.JFrame implements funtionsCom {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;

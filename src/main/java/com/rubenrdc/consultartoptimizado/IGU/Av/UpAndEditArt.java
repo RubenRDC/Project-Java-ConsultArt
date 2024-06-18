@@ -250,6 +250,7 @@ public class UpAndEditArt extends javax.swing.JPanel {
         );
 
         fotoUrlTxt.setFont(new java.awt.Font("Nirmala UI", 1, 14)); // NOI18N
+        fotoUrlTxt.setText("*");
         fotoUrlTxt.setPreferredSize(new java.awt.Dimension(64, 30));
 
         jLabel7.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
@@ -466,8 +467,15 @@ public class UpAndEditArt extends javax.swing.JPanel {
         String descripcion = (descTxt.getText()).trim();
         String foto = (fotoUrlTxt.getText()).replaceAll(" ", "");
         if ((codigo.length() <= 10 && codigo.length() >= 4) && (descripcion.length() >= 5 && descripcion.length() < 65) && (foto.length() < 65)) {
-
-            if (foto.toLowerCase().contains(".jpg") || foto.toLowerCase().contains(".png") || foto.toLowerCase().contains("")) {
+            foto = foto.toLowerCase();
+            if ((foto.contains(".jpg") || foto.contains(".png")) || foto.contains("*")) {
+                if (foto.contains("https://")) {
+                    foto = foto.replace("https://", "");
+                } else if (foto.contains("http://")) {
+                    foto = foto.replace("http://", "");
+                }else{
+                    foto = foto.replace("*","");
+                }
                 if (tipo == 0) {//Add Articulo
                     if (artDao.StrictSearchArt(codigo) == null) {//Si encuentra algun articulo que consida el codigo que se intenta dar de alta no avanzara el programa advirtiendo de que el codigo ya existe.
                         ObjetoArticulo = new Articulo(0, codigo, descripcion, foto);
@@ -486,7 +494,6 @@ public class UpAndEditArt extends javax.swing.JPanel {
                     ObjetoArticulo.setFoto(foto);
 
                     artDao.updateArticulo(ObjetoArticulo);
-
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "La URL ingresada debe de contener una imagen en formato JPG o PNG\nEn caso de que la URL termine en '.webp' o otro formato, reemplazar por el formato permitido. ", "Advertencia!", JOptionPane.ERROR_MESSAGE);
