@@ -1,14 +1,17 @@
 package com.rubenrdc.consultartoptimizado.models;
 
+import com.rubenrdc.consultartoptimizado.models.interfaces.Exportables;
+
 /**
  *
  * @author Ruben
  */
-public class Deposito {
+public class Deposito implements Exportables{
 
     private int id, numDireccion;
     private String nombre, provincia, localidad, direccion;
-    private String[] row = new String[3];
+    private Object[] row = new Object[3];
+    private String[] RowAtributos = new String[3];
 
     public Deposito(int idDep, String nameDep) {
         this.id = idDep;
@@ -22,6 +25,21 @@ public class Deposito {
         this.provincia = provincia;
         this.localidad = localidad;
         this.direccion = direccion;
+    }
+
+    public Object[] getRow() {
+        row[0] = id;
+        row[1] = nombre;
+        row[2] = provincia;
+        return row;
+    }
+
+    public String[] getTitulosAtributos() {
+
+        RowAtributos[0] = "ID";
+        RowAtributos[1] = "Nombre";
+        RowAtributos[2] = "Provincia";
+        return RowAtributos;
     }
 
     public int getId() {
@@ -71,11 +89,5 @@ public class Deposito {
     public void setDireccion(String direccion) {
         this.direccion = direccion;
     }
-    public String[] getRow(){
-        row[0]=Integer.toString(id);
-        row[1]=nombre;
-        row[2]=provincia;
-        return row;
-    }
-    
+
 }

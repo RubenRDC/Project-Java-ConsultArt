@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.rubenrdc.consultartoptimizado.models;
 
 /**
@@ -9,13 +5,15 @@ package com.rubenrdc.consultartoptimizado.models;
  * @author Ruben
  */
 public class Articulo {
-    private final int limitUbicExtra = 10,limitUbicP=1;
+
+    private final int limitUbicExtra = 10, limitUbicP = 1;
     private int id;
-    private String codigo, desc, foto,ubicConcat;
-    private String[][] UbicPrinc=new String[limitUbicP][2];
-    private String[][] UbicExtra=new String[limitUbicExtra][2];
+    private String codigo, desc, foto, ubicConcat;
+    private String[][] UbicPrinc = new String[limitUbicP][2];
+    private String[][] UbicExtra = new String[limitUbicExtra][2];
     private String[][] stocks;
-    private String[] row;
+    private Object[] row = new Object[4];
+    private String[] RowAtributos = new String[4];
 
     public Articulo(int idArt, String code, String desc, String foto) {
         this.id = idArt;
@@ -23,15 +21,25 @@ public class Articulo {
         this.desc = desc;
         this.foto = foto;
     }
-    
-    public Articulo(){}
-    
-    public String[] getRow(){
-        row = new String[3];
-        row[0]=Integer.toString(id);
-        row[1]=codigo;
-        row[2]=desc;
+
+    public Articulo() {
+    }
+
+    public Object[] getRow() {
+        row[0] = id;
+        row[1] = codigo;
+        row[2] = desc;
+        row[3]= foto;
         return row;
+    }
+
+    public String[] getTitulosAtributos() {
+        
+        RowAtributos[0] = "ID";
+        RowAtributos[1] = "Codigo";
+        RowAtributos[2] = "Descripcion";
+        RowAtributos[3] = "URL Foto";
+        return RowAtributos;
     }
 
     public int getId() {
@@ -105,5 +113,5 @@ public class Articulo {
     public int getLimitUbicP() {
         return limitUbicP;
     }
-    
+
 }
