@@ -2,9 +2,12 @@ package com.rubenrdc.consultartoptimizado.dao;
 
 import com.rubenrdc.consultartoptimizado.funtionsComp.funtionsCom;
 import com.rubenrdc.consultartoptimizado.models.Articulo;
+import com.rubenrdc.consultartoptimizado.models.UbicacionExtra;
+import com.rubenrdc.consultartoptimizado.models.UbicacionPrincipal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -19,38 +22,9 @@ public class ArticuloDao implements funtionsCom {
     private Articulo art;
     private List<Articulo> list = new ArrayList<>();
 
+    private UbicacionPrincDao ubicPrincDao = new UbicacionPrincDao();
+    
     public ArticuloDao() {
-    }
-
-    public Articulo buscarArt(String cod) {
-        int i = 0;
-        DepositosDao depDao = new DepositosDao();
-        String[][] stocks = new String[depDao.getLimitDep()][2];
-
-        art = null;
-        art = StrictSearchArt(cod);
-        if (art != null) {
-            if (abc.ExtablecerC() != null) {
-                try {
-                    String CStock = "SELECT * FROM ubicaciones INNER JOIN depositos ON depositos.id=ubicaciones.idDep WHERE idArt = ?;";
-                    ResultSet rs3 = abc.QueryById(CStock, art.getId());
-                    while (rs3.next()) {
-
-                        stocks[i][0] = (rs3.getString("depositos.descrip"));
-                        stocks[i][1] = (rs3.getString("ubicaciones.exist"));
-
-                        art.setStocks(stocks);
-                        i++;
-                    }
-                } catch (SQLException ex) {
-
-                }
-                paramsSql.clear();
-                abc.getCloseC();
-                return art;
-            }
-        }
-        return art;
     }
 
     public Articulo ObtenerUbic(Articulo art, String Deposito) {
@@ -112,6 +86,13 @@ public class ArticuloDao implements funtionsCom {
 
         return art;
     }
+    
+    public HashMap ObtenerUbicV2(Articulo art){
+        
+        
+        
+        return ubicPrincDao.ObtenerUbic(art);
+    }
 
     public List getListArt(String code, int limiteLista) {
         list.clear();
@@ -158,7 +139,7 @@ public class ArticuloDao implements funtionsCom {
                     String foto = rs.getString("foto");
 
                     art = new Articulo(id, codigo, descrip, foto);
-
+                    art.setUbicacion(ObtenerUbicV2(art));
                 }
             } catch (SQLException e) {
                 System.out.println("SQLException " + e);

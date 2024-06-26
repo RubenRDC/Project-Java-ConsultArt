@@ -24,8 +24,8 @@ public class ConsArt extends javax.swing.JFrame implements funtionsCom {
 
     public ConsArt() {
         initComponents();
-        ImageIcon img = new ImageIcon("src/main/java/com/rubenrdc/consultartoptimizado/miselaneos/icon.png");
-        setIconImage(img.getImage());
+        //ImageIcon img = new ImageIcon("src/main/java/com/rubenrdc/consultartoptimizado/miselaneos/icon.png");
+        //setIconImage(img.getImage());
         listDeposito.setVisible(false);
     }
 
@@ -70,7 +70,7 @@ public class ConsArt extends javax.swing.JFrame implements funtionsCom {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Consulta de Articulos");
-        setIconImages(null);
+        setIconImage((new ImageIcon("src/main/java/com/rubenrdc/consultartoptimizado/miselaneos/icon.png")).getImage());
         setMinimumSize(null);
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
@@ -421,7 +421,7 @@ public class ConsArt extends javax.swing.JFrame implements funtionsCom {
             String c = codigoTxt.getText().toUpperCase();
             if (c.length() > 3 && c.length() <= 10) {
 
-                Art = ArtDao.buscarArt(c);
+                Art = ArtDao.StrictSearchArt(c);
                 if (Art != null) {
                     descTxt.setText(Art.getDesc());
                     llenarTabla(tablaStock, Art.getStocks(), 2);
@@ -446,11 +446,9 @@ public class ConsArt extends javax.swing.JFrame implements funtionsCom {
     private void listDepositoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_listDepositoItemStateChanged
         if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
             if (listDeposito.getItemCount() != 0) {
+               
+                ubicTxt.setText(Art.getUbicsConcat(listDeposito.getSelectedItem().toString()));
 
-                String nombreDeposito = listDeposito.getSelectedItem().toString();
-                ArtDao.ObtenerUbic(Art, nombreDeposito);
-
-                ubicTxt.setText(Art.getUbicConcat());
             }
         }
     }//GEN-LAST:event_listDepositoItemStateChanged
@@ -479,6 +477,7 @@ public class ConsArt extends javax.swing.JFrame implements funtionsCom {
                                 imageV.setImg(UrlFoto);
                             }
                             if (imageV.isShowing()) {
+                                imageV.setExtendedState(NORMAL);
                                 imageV.toFront();
                             } else {
                                 pinterJFrame(imageV, true, null, false);
@@ -502,8 +501,8 @@ public class ConsArt extends javax.swing.JFrame implements funtionsCom {
 
         } else if (windowAv != null) {
             if (windowAv.isShowing()) {//la windowAv sigue es visible 
-                System.out.println("Is Showing");
-                windowAv.toFront();//envia la windowAv activa en frente de todo
+                windowAv.setExtendedState(NORMAL);//envia la windowAv activa en frente de todo
+                windowAv.toFront();
             } else {//ya se cerro la windowAv pero se mantuvo la informacion previa en la variable al no asignarle como nulo
                 //ventana = null;
                 //ventana = new AdvancedViewer();
@@ -528,9 +527,9 @@ public class ConsArt extends javax.swing.JFrame implements funtionsCom {
             windowDepList = new ListAndSchDepositos();
             pinterJFrame(windowDepList, true, null, false);
         } else if (windowDepList != null) {
-            if (windowDepList.isShowing()) {//la windowAv sigue es visible 
-                System.out.println("Is Showing");
-                windowDepList.toFront();//envia la windowAv activa en frente de todo
+            if (windowDepList.isShowing()) {//la windowAv sigue es visible
+                windowDepList.toFront();
+                windowDepList.setExtendedState(NORMAL);//envia la windowAv activa en frente de todo
             } else {
                 pinterJFrame(windowDepList, true, null, false);
             }

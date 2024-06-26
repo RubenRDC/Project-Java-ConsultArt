@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class DepositosDao {
 
-    private int limitDep = 10;
+    private final static int limitDep = 10;
     private DaoConnection C = new DaoConnection();
     private Deposito dep;
     private List<Deposito> listDepSimple;
@@ -90,7 +90,7 @@ public class DepositosDao {
         return null;
     }
 
-    public int getLimitDep() {
+    public static int getLimitDep() {
         return limitDep;
     }
 }

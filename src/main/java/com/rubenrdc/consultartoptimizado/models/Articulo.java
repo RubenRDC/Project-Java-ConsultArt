@@ -1,10 +1,14 @@
 package com.rubenrdc.consultartoptimizado.models;
 
+import com.rubenrdc.consultartoptimizado.models.interfaces.Exportables;
+import java.util.HashMap;
+import java.util.List;
+
 /**
  *
  * @author Ruben
  */
-public class Articulo {
+public class Articulo implements Exportables {
 
     private final int limitUbicExtra = 10, limitUbicP = 1;
     private int id;
@@ -14,6 +18,7 @@ public class Articulo {
     private String[][] stocks;
     private Object[] row = new Object[4];
     private String[] RowAtributos = new String[4];
+    private HashMap Ubicacion;
 
     public Articulo(int idArt, String code, String desc, String foto) {
         this.id = idArt;
@@ -29,12 +34,12 @@ public class Articulo {
         row[0] = id;
         row[1] = codigo;
         row[2] = desc;
-        row[3]= foto;
+        row[3] = foto;
         return row;
     }
 
     public String[] getTitulosAtributos() {
-        
+
         RowAtributos[0] = "ID";
         RowAtributos[1] = "Codigo";
         RowAtributos[2] = "Descripcion";
@@ -82,12 +87,30 @@ public class Articulo {
         this.stocks = stocks;
     }
 
-    public String getUbicConcat() {
-        return ubicConcat;
-    }
-
-    public void setUbicConcat(String ubicConcat) {
-        this.ubicConcat = ubicConcat;
+    public String getUbicsConcat(String DepName) {
+        UbicacionPrincipal ubicPrinc = (UbicacionPrincipal) Ubicacion.get(DepName);
+        if (ubicPrinc != null) {
+            List<UbicacionExtra> listUbicacionesExtras = ubicPrinc.getListUbicacionesExtras();
+            ubicConcat = ubicPrinc.getConcatUbic();
+            if (!listUbicacionesExtras.isEmpty()) {
+                int p = 1;
+                for (UbicacionExtra listUbicacionesExtra : listUbicacionesExtras) {
+                    if (p < 3) {
+                        ubicConcat += " | ";
+                        ubicConcat += listUbicacionesExtra.getConcatUbic();
+                        p++;
+                    } else {
+                        ubicConcat += "\n";
+                        ubicConcat += listUbicacionesExtra.getConcatUbic();
+                        p = 1;
+                    }
+                }
+                return ubicConcat;
+            }else{
+               return ubicConcat; 
+            }
+        }
+        return null;
     }
 
     public String[][] getUbicPrinc() {
@@ -112,6 +135,18 @@ public class Articulo {
 
     public int getLimitUbicP() {
         return limitUbicP;
+    }
+
+    public HashMap getUbicacion() {
+        return Ubicacion;
+    }
+
+    public void setUbicacion(HashMap Ubicacion) {
+        this.Ubicacion = Ubicacion;
+    }
+
+    public void setUbicConcat(String ubicConcat) {
+        this.ubicConcat=ubicConcat;
     }
 
 }
