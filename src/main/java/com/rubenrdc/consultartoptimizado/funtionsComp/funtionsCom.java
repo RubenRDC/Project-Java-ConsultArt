@@ -1,6 +1,5 @@
 package com.rubenrdc.consultartoptimizado.funtionsComp;
 
-import com.rubenrdc.consultartoptimizado.dao.DepositosDao;
 import com.rubenrdc.consultartoptimizado.models.Deposito;
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -13,12 +12,9 @@ import javax.swing.JOptionPane;
  */
 public interface funtionsCom {
 
-    default public void JComboBoxDepositos(javax.swing.JComboBox listDeposito) {
+    default public void JComboBoxDepositos(javax.swing.JComboBox listDeposito,List<Deposito> listDeps) {
         listDeposito.removeAllItems();
-        DepositosDao depDao = new DepositosDao();
-        List<Deposito> depositos = depDao.getDepositos();
-
-        for (Deposito d : depositos) {
+        for (Deposito d : listDeps) {
             if (d != null) {
                 listDeposito.addItem(d.getNombre());
             }

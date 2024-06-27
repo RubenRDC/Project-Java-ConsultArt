@@ -1,9 +1,11 @@
 package com.rubenrdc.consultartoptimizado.IGU.Av;
 
-import com.rubenrdc.consultartoptimizado.dao.ArticuloDao;
+import com.rubenrdc.consultartoptimizado.dao.DepositosDao;
 import com.rubenrdc.consultartoptimizado.funtionsComp.funtionsCom;
 import com.rubenrdc.consultartoptimizado.models.Articulo;
-import java.awt.BorderLayout;
+import com.rubenrdc.consultartoptimizado.models.interfaces.Exportables;
+import java.util.List;
+import javax.swing.JTable;
 
 /**
  *
@@ -11,18 +13,15 @@ import java.awt.BorderLayout;
  */
 public class EditUbics extends javax.swing.JPanel implements funtionsCom {
 
-    EditUbic addOeditUbic;
-    int idArt, IdUbicP;
-    Articulo Art;
-    ArticuloDao artDao = new ArticuloDao();
+    protected EditUbic addOeditUbic;
+    private int idArt, IdUbicP;
+    private Articulo Art;
+    private String DepSelected;
 
-    /**
-     * Creates new form editUbics01
-     */
     public EditUbics(Articulo Art) {
         this.Art = Art;
         initComponents();
-        JComboBoxDepositos(listDeposito);
+        JComboBoxDepositos(listDeposito, DepositosDao.getListDeps());
         idArt = Art.getId();
         codigotxt.setText(Art.getCodigo());
         descTxt.setText(Art.getDesc());
@@ -78,7 +77,7 @@ public class EditUbics extends javax.swing.JPanel implements funtionsCom {
         javax.swing.table.DefaultTableModel tableModel2 = new javax.swing.table.DefaultTableModel(
 
             new Object [][] {
-                {6,7},{8, 4}, {0,2}, {5,2}
+                {null,null}
             },
             new String [] {
                 "id","Ubicaciones Extras"
@@ -397,19 +396,13 @@ public class EditUbics extends javax.swing.JPanel implements funtionsCom {
     private void tabUbExMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabUbExMouseClicked
         int selectedRow = tabUbEx.getSelectedRow();
         addBtnEx.setEnabled(true);
-        /*int adad = Integer.parseInt((tabUbEx.getValueAt(tabUbEx.getSelectedRow(),0)).toString());
-        System.out.println("adad: "+adad+"es del tipo de dato: "+ ((Object)adad).getClass().getSimpleName());*/
-        //tabUbEx.isFocusOwner();
-        //System.out.println("jTable2 selectedRow" + selectedRow);
         if (selectedRow != -1) {
             tabUbP.clearSelection();
             editBtnP.setEnabled(false);
             addBtnP.setEnabled(false);
             editBtnEx.setEnabled(true);
-            //delectBtnEx.setEnabled(true);
 
         } else {
-            //delectBtnEx.setEnabled(false);
             editBtnEx.setEnabled(false);
             addBtnEx.setEnabled(false);
 
@@ -417,11 +410,10 @@ public class EditUbics extends javax.swing.JPanel implements funtionsCom {
     }//GEN-LAST:event_tabUbExMouseClicked
 
     private void editBtnExMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editBtnExMouseClicked
-        int idUbicEx = Integer.parseInt((tabUbEx.getValueAt(tabUbEx.getSelectedRow(), 0)).toString());
-
         if (editBtnEx.isEnabled()) {
-            String D = listDeposito.getSelectedItem().toString();
-            addOeditUbic = new EditUbic(idArt, idUbicEx, D, 1, 1);
+            int idUbicEx = Integer.parseInt((tabUbEx.getValueAt(tabUbEx.getSelectedRow(), 0)).toString());
+            DepSelected = listDeposito.getSelectedItem().toString();
+            addOeditUbic = new EditUbic(idArt, idUbicEx, DepSelected, EditUbic.EDIT, EditUbic.EXTRA);
             jPanel1.setVisible(false);
             ContentExtra.setVisible(true);
             showPanel(addOeditUbic, 419, 390, 0, 0, jPanel3);
@@ -430,9 +422,10 @@ public class EditUbics extends javax.swing.JPanel implements funtionsCom {
 
     private void addBtnExMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addBtnExMouseClicked
         if (addBtnEx.isEnabled()) {
-            String D = listDeposito.getSelectedItem().toString();
-            IdUbicP = Integer.parseInt(Art.getUbicPrinc()[0][0]);
-            addOeditUbic = new EditUbic(idArt, IdUbicP, D, 0, 1);
+            DepSelected = listDeposito.getSelectedItem().toString();
+//POR CORREGIR            
+//IdUbicP = Integer.parseInt(Art.getUbicPrinc()[0][0]);
+            addOeditUbic = new EditUbic(idArt, IdUbicP, DepSelected, EditUbic.ADD, EditUbic.EXTRA);
             jPanel1.setVisible(false);
             ContentExtra.setVisible(true);
             showPanel(addOeditUbic, 419, 390, 0, 0, jPanel3);
@@ -442,8 +435,6 @@ public class EditUbics extends javax.swing.JPanel implements funtionsCom {
     private void tabUbPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabUbPMouseClicked
         int selectedRow = tabUbP.getSelectedRow();
 
-        //System.out.println("jTable1 selectedRow" + selectedRow);
-        //jTable1.clearSelection();
         if (selectedRow != -1) {
             tabUbEx.clearSelection();
             editBtnP.setEnabled(true);
@@ -460,8 +451,8 @@ public class EditUbics extends javax.swing.JPanel implements funtionsCom {
         int idUbicP = Integer.parseInt((tabUbP.getValueAt(tabUbP.getSelectedRow(), 0)).toString());
 
         if (editBtnP.isEnabled()) {
-            String D = listDeposito.getSelectedItem().toString();
-            addOeditUbic = new EditUbic(idArt, idUbicP, D, 1, 0);
+            DepSelected = listDeposito.getSelectedItem().toString();
+            addOeditUbic = new EditUbic(idArt, idUbicP, DepSelected, EditUbic.EDIT, EditUbic.PRINCIPAL);
             jPanel1.setVisible(false);
             ContentExtra.setVisible(true);
             showPanel(addOeditUbic, 419, 390, 0, 0, jPanel3);
@@ -470,8 +461,8 @@ public class EditUbics extends javax.swing.JPanel implements funtionsCom {
 
     private void addBtnPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addBtnPMouseClicked
         if (addBtnP.isEnabled()) {
-            String D = listDeposito.getSelectedItem().toString();
-            addOeditUbic = new EditUbic(idArt, 0, D, 0, 0);
+            DepSelected = listDeposito.getSelectedItem().toString();
+            addOeditUbic = new EditUbic(idArt, 0, DepSelected, EditUbic.ADD, EditUbic.PRINCIPAL);
             jPanel1.setVisible(false);
             ContentExtra.setVisible(true);
             showPanel(addOeditUbic, 419, 390, 0, 0, jPanel3);
@@ -481,11 +472,10 @@ public class EditUbics extends javax.swing.JPanel implements funtionsCom {
     private void listDepositoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_listDepositoItemStateChanged
 
         if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
-            artDao.ObtenerUbic(Art, listDeposito.getSelectedItem().toString());
+            String DepSelect = listDeposito.getSelectedItem().toString();
+            llenarTablaUbics(tabUbEx, Art.getUbicacionExtra(DepSelect));
+            llenarTablaUbics(tabUbP, Art.getUbicacionPrincipal(DepSelect));
 
-            llenarTablaUbics(tabUbP, Art.getUbicPrinc());
-            llenarTablaUbics(tabUbEx, Art.getUbicExtra());
-            
             if (tabUbP.getRowCount() == 0) {
                 addBtnP.setEnabled(true);
                 addBtnEx.setEnabled(false);
@@ -493,7 +483,6 @@ public class EditUbics extends javax.swing.JPanel implements funtionsCom {
                 addBtnEx.setEnabled(true);
                 addBtnP.setEnabled(false);
             }
-            //delectBtnEx.setEnabled(false);
             editBtnEx.setEnabled(false);
             editBtnP.setEnabled(false);
         }
@@ -504,13 +493,23 @@ public class EditUbics extends javax.swing.JPanel implements funtionsCom {
             addOeditUbic = null;
             jPanel1.setVisible(true);
             ContentExtra.setVisible(false);
-            JComboBoxDepositos(listDeposito);
+            JComboBoxDepositos(listDeposito,DepositosDao.getListDeps());
         }
     }//GEN-LAST:event_previusPageMouseClicked
-    public void llenarTablaUbics(javax.swing.JTable tb, String a[][]) {
+
+    public <T extends Exportables> void llenarTablaUbics(JTable tb, List<T> a) {
         tb.clearSelection();
-        tb.getColumnModel().getColumn(0).setMaxWidth(20);
-        llenarTabla(tb, a, 2);
+        ClearTable(tb);
+        if (a != null) {
+            if (a.get(0) != null) {
+                tb.getColumnModel().getColumn(0).setMaxWidth(20);
+                javax.swing.table.DefaultTableModel dm = (javax.swing.table.DefaultTableModel) (tb.getModel());
+                for (T t : a) {
+                    dm.addRow(t.getRow());
+                }
+                tb.setModel(dm);
+            }
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

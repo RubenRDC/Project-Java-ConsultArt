@@ -3,6 +3,7 @@ package com.rubenrdc.consultartoptimizado.IGU;
 import com.rubenrdc.consultartoptimizado.IGU.Av.AdvancedViewer;
 import com.rubenrdc.consultartoptimizado.IGU.depositos.ListAndSchDepositos;
 import com.rubenrdc.consultartoptimizado.dao.ArticuloDao;
+import com.rubenrdc.consultartoptimizado.dao.DepositosDao;
 import com.rubenrdc.consultartoptimizado.funtionsComp.funtionsCom;
 import com.rubenrdc.consultartoptimizado.models.Articulo;
 import java.util.concurrent.locks.ReentrantLock;
@@ -24,9 +25,6 @@ public class ConsArt extends javax.swing.JFrame implements funtionsCom {
 
     public ConsArt() {
         initComponents();
-        //ImageIcon img = new ImageIcon("src/main/java/com/rubenrdc/consultartoptimizado/miselaneos/icon.png");
-        //setIconImage(img.getImage());
-        listDeposito.setVisible(false);
     }
 
     @SuppressWarnings("unchecked")
@@ -59,10 +57,6 @@ public class ConsArt extends javax.swing.JFrame implements funtionsCom {
         jPanel7 = new javax.swing.JPanel();
         VerFoto = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
-        jMenuItem2 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         InteraccionBtn = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
@@ -120,6 +114,7 @@ public class ConsArt extends javax.swing.JFrame implements funtionsCom {
         ubicTxt.setSelectionColor(new java.awt.Color(0, 0, 0));
         jScrollPane2.setViewportView(ubicTxt);
 
+        listDeposito.setVisible(false);
         listDeposito.setBorder(null);
         listDeposito.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         listDeposito.addItemListener(new java.awt.event.ItemListener() {
@@ -360,20 +355,6 @@ public class ConsArt extends javax.swing.JFrame implements funtionsCom {
                 .addContainerGap())
         );
 
-        jMenu1.setText("Usuarios");
-
-        jMenuItem1.setText("Lista de Usuarios");
-        jMenu1.add(jMenuItem1);
-
-        jMenuBar1.add(jMenu1);
-
-        jMenu2.setText("Pedidos");
-
-        jMenuItem2.setText("Lista de Pedidos");
-        jMenu2.add(jMenuItem2);
-
-        jMenuBar1.add(jMenu2);
-
         jMenu3.setText("Articulos");
 
         InteraccionBtn.setText("Interacion Avanzada");
@@ -426,7 +407,7 @@ public class ConsArt extends javax.swing.JFrame implements funtionsCom {
                     descTxt.setText(Art.getDesc());
                     llenarTabla(tablaStock, Art.getStocks(), 2);
                     listDeposito.setVisible(true);
-                    JComboBoxDepositos(listDeposito);
+                    JComboBoxDepositos(listDeposito,DepositosDao.getListDeps());
                     codigoTxt.setEnabled(false);
                     VerFoto.setEnabled(true);
                 } else {
@@ -442,6 +423,11 @@ public class ConsArt extends javax.swing.JFrame implements funtionsCom {
 
     }//GEN-LAST:event_codigoTxtKeyPressed
 
+    private void codigoTxtKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codigoTxtKeyTyped
+        if (codigoTxt.getText().length() > 9) {
+            evt.setKeyChar((char) 0);
+        }
+    }//GEN-LAST:event_codigoTxtKeyTyped
 
     private void listDepositoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_listDepositoItemStateChanged
         if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
@@ -511,12 +497,6 @@ public class ConsArt extends javax.swing.JFrame implements funtionsCom {
         }
     }//GEN-LAST:event_InteraccionBtnActionPerformed
 
-    private void codigoTxtKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codigoTxtKeyTyped
-        if (codigoTxt.getText().length() > 9) {
-            evt.setKeyChar((char) 0);
-        }
-    }//GEN-LAST:event_codigoTxtKeyTyped
-
     private void clearShBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clearShBtnMouseClicked
         ClearCamp();
         codigoTxt.setEnabled(true);
@@ -559,13 +539,9 @@ public class ConsArt extends javax.swing.JFrame implements funtionsCom {
     private javax.swing.JLabel descTxt;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

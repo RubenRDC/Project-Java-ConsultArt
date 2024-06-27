@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
  */
 public class ListSearcherArt extends javax.swing.JPanel implements funtionsCom {
 
-    private int limitList = 100;
+    protected int limitList = 100;
     private ArticuloDao artDao = new ArticuloDao();
     protected List<Articulo> lista;
 

@@ -2,8 +2,6 @@ package com.rubenrdc.consultartoptimizado.dao;
 
 import com.rubenrdc.consultartoptimizado.funtionsComp.funtionsCom;
 import com.rubenrdc.consultartoptimizado.models.Articulo;
-import com.rubenrdc.consultartoptimizado.models.UbicacionExtra;
-import com.rubenrdc.consultartoptimizado.models.UbicacionPrincipal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -17,80 +15,14 @@ import java.util.List;
 public class ArticuloDao implements funtionsCom {
 
     private List<String> paramsSql = new ArrayList<>(), datosArt = new ArrayList<>();
-
     private DaoConnection abc = new DaoConnection();
-    private Articulo art;
     private List<Articulo> list = new ArrayList<>();
-
     private UbicacionPrincDao ubicPrincDao = new UbicacionPrincDao();
-    
+
     public ArticuloDao() {
     }
 
-    public Articulo ObtenerUbic(Articulo art, String Deposito) {
-        if (abc.ExtablecerC() != null) {
-            int p = 1, u = 0;
-            String[][] UbicPrinc = new String[art.getLimitUbicP()][2];
-            String[][] UbicExtra = new String[art.getLimitUbicExtra()][2];
-            String ubicConcat;
-
-            String cUbics = "SELECT * FROM ubicaciones INNER JOIN depositos ON depositos.id=ubicaciones.idDep WHERE idArt = ? AND depositos.descrip=?;";
-            paramsSql.add(0, String.valueOf(art.getId()));
-            paramsSql.add(1, Deposito);
-            ResultSet rsUbics = abc.GenericQuery(cUbics, paramsSql);
-            try {
-                if (rsUbics.next()) {
-                    int idUbicP = rsUbics.getInt("ubicaciones.id");
-
-                    UbicPrinc[0][0] = Integer.toString(idUbicP);
-                    UbicPrinc[0][1] = rsUbics.getString("ubicaciones.ubic");
-
-                    art.setUbicPrinc(UbicPrinc);
-
-                    ubicConcat = (rsUbics.getString("ubicaciones.ubic")) + " | ";
-
-                    String cUbicExt = "SELECT * FROM ubicacion_extra WHERE idUbic = ?";
-                    ResultSet rsUbicExt = abc.QueryById(cUbicExt, idUbicP);
-
-                    while (rsUbicExt.next()) {
-                        UbicExtra[u][0] = rsUbicExt.getString("ubicacion_extra.id");
-                        UbicExtra[u][1] = rsUbicExt.getString("ubicacion_extra.ubic");
-
-                        if (p < 3) {
-                            ubicConcat += rsUbicExt.getString("ubicacion_extra.ubic");
-                            ubicConcat += " | ";
-                            p++;
-                        } else {
-                            ubicConcat += "\n";
-                            ubicConcat += rsUbicExt.getString("ubicacion_extra.ubic");
-                            ubicConcat += " | ";
-                            p = 1;
-                        }
-
-                        u++;
-                    }
-                    art.setUbicExtra(UbicExtra);
-                    art.setUbicConcat(ubicConcat);
-                } else {
-                    art.setUbicPrinc(null);
-                    art.setUbicExtra(null);
-                    art.setUbicConcat(null);
-                }
-
-            } catch (NumberFormatException | SQLException e) {
-                System.out.println(e);
-            }
-            paramsSql.clear();
-            abc.getCloseC();
-        }
-
-        return art;
-    }
-    
-    public HashMap ObtenerUbicV2(Articulo art){
-        
-        
-        
+    public HashMap ObtenerUbicHashMap(Articulo art) {
         return ubicPrincDao.ObtenerUbic(art);
     }
 
@@ -104,15 +36,12 @@ public class ArticuloDao implements funtionsCom {
             ResultSet rs = abc.GenericQuery(Query, paramsSql);
             try {
                 while (rs.next()) {
-                    art = null;//Me aseguro q la variable articulo que resiba no contenga informacion
                     int id = rs.getInt("id");
                     String cod = rs.getString("codigo");
                     String descrip = rs.getString("descripcion");
                     String foto = rs.getString("foto");
 
-                    art = new Articulo(id, cod, descrip, foto);
-
-                    list.add(art);
+                    list.add(new Articulo(id, cod, descrip, foto));
                 }
             } catch (SQLException e) {
                 System.out.println("SQLException " + e);
@@ -124,11 +53,10 @@ public class ArticuloDao implements funtionsCom {
     }
 
     public Articulo StrictSearchArt(String cod) {
-        art = null;
-        String Query = "SELECT * FROM articulos WHERE codigo = ?";
-        //System.out.println("Query busquedaEstrictaArt Por Codigo" + Query);
 
         if (abc.ExtablecerC() != null) {
+            String Query = "SELECT * FROM articulos WHERE codigo = ?";
+            Articulo art = null;
             paramsSql.add(cod);
             ResultSet rs = abc.GenericQuery(Query, paramsSql);
             try {
@@ -139,15 +67,16 @@ public class ArticuloDao implements funtionsCom {
                     String foto = rs.getString("foto");
 
                     art = new Articulo(id, codigo, descrip, foto);
-                    art.setUbicacion(ObtenerUbicV2(art));
+                    art.setUbicacion(ObtenerUbicHashMap(art));
                 }
             } catch (SQLException e) {
                 System.out.println("SQLException " + e);
             }
             paramsSql.clear();
             abc.getCloseC();
+            return art;
         }
-        return art;
+        return null;
     }
 
     public void addArticulo(Articulo varArt) {

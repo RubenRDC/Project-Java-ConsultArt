@@ -1,6 +1,7 @@
 package com.rubenrdc.consultartoptimizado.models;
 
 import com.rubenrdc.consultartoptimizado.models.interfaces.Exportables;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -13,8 +14,6 @@ public class Articulo implements Exportables {
     private final int limitUbicExtra = 10, limitUbicP = 1;
     private int id;
     private String codigo, desc, foto, ubicConcat;
-    private String[][] UbicPrinc = new String[limitUbicP][2];
-    private String[][] UbicExtra = new String[limitUbicExtra][2];
     private String[][] stocks;
     private Object[] row = new Object[4];
     private String[] RowAtributos = new String[4];
@@ -106,27 +105,11 @@ public class Articulo implements Exportables {
                     }
                 }
                 return ubicConcat;
-            }else{
-               return ubicConcat; 
+            } else {
+                return ubicConcat;
             }
         }
         return null;
-    }
-
-    public String[][] getUbicPrinc() {
-        return UbicPrinc;
-    }
-
-    public void setUbicPrinc(String[][] UbicPrinc) {
-        this.UbicPrinc = UbicPrinc;
-    }
-
-    public String[][] getUbicExtra() {
-        return UbicExtra;
-    }
-
-    public void setUbicExtra(String[][] UbicExtra) {
-        this.UbicExtra = UbicExtra;
     }
 
     public int getLimitUbicExtra() {
@@ -137,8 +120,30 @@ public class Articulo implements Exportables {
         return limitUbicP;
     }
 
-    public HashMap getUbicacion() {
+    public HashMap getUbicacionHashMap() {
         return Ubicacion;
+    }
+
+    public List<UbicacionExtra> getUbicacionExtra(String DepName) {
+        if (this.getUbicacionPrincipal(DepName) != null) {
+            UbicacionPrincipal UbicP = this.getUbicacionPrincipal(DepName).get(0);
+            if (UbicP != null) {
+                if (!UbicP.getListUbicacionesExtras().isEmpty()) {
+                    return UbicP.getListUbicacionesExtras();
+                }
+            }
+        }
+        return null;
+    }
+
+    public List<UbicacionPrincipal> getUbicacionPrincipal(String DepName) {
+        UbicacionPrincipal ubicPrinc = (UbicacionPrincipal) Ubicacion.get(DepName);
+        if (ubicPrinc != null) {
+            List<UbicacionPrincipal> listaUbicP = new ArrayList<>();
+            listaUbicP.add(ubicPrinc);
+            return listaUbicP;
+        }
+        return null;
     }
 
     public void setUbicacion(HashMap Ubicacion) {
@@ -146,7 +151,7 @@ public class Articulo implements Exportables {
     }
 
     public void setUbicConcat(String ubicConcat) {
-        this.ubicConcat=ubicConcat;
+        this.ubicConcat = ubicConcat;
     }
 
 }

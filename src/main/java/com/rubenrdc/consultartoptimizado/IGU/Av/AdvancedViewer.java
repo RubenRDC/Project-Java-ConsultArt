@@ -23,9 +23,6 @@ public class AdvancedViewer extends javax.swing.JFrame implements funtionsCom {
     public AdvancedViewer() {
         initComponents();
 
-        ImageIcon img = new ImageIcon("src/main/java/com/rubenrdc/consultartoptimizado/miselaneos/icon.png");
-        setIconImage(img.getImage());
-
         showPanel(listArts, 521, 472, 0, 0, content);
 
         listArts.artsTable.addMouseListener(Madapter);
@@ -50,6 +47,7 @@ public class AdvancedViewer extends javax.swing.JFrame implements funtionsCom {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Busqueda Avanzada");
+        setIconImage(new ImageIcon("src/main/java/com/rubenrdc/consultartoptimizado/miselaneos/icon.png").getImage());
 
         jPanel2.setBackground(new java.awt.Color(0, 0, 255));
 
@@ -220,24 +218,6 @@ public class AdvancedViewer extends javax.swing.JFrame implements funtionsCom {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-
-    private void bajaArtBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bajaArtBtnActionPerformed
-
-        if (bajaArtBtn.isEnabled()) {
-
-            int idArt = Integer.parseInt((listArts.artsTable.getValueAt(listArts.artsTable.getSelectedRow(), 0)).toString());
-            int input = javax.swing.JOptionPane.showConfirmDialog(null,
-                    "Estas seguro que desea eliminar el articulo seleccionada?", "Eliminar Articulo", javax.swing.JOptionPane.YES_NO_OPTION);
-            if (input == 0) {//yes
-                eliminarArt(idArt);
-                //listArts.llenarTablaConArt(listArts.artsTable, "", listArts.limitList);
-            } else {
-
-            }
-
-        }
-    }//GEN-LAST:event_bajaArtBtnActionPerformed
-
     private void listArtBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listArtBtnMouseClicked
         //System.out.println("listArts.isDisplayable() "+listArts.isDisplayable());
         if (listArtBtn.isEnabled()) {
@@ -246,19 +226,24 @@ public class AdvancedViewer extends javax.swing.JFrame implements funtionsCom {
             editArtBtn.setEnabled(false);
             bajaArtBtn.setEnabled(false);
 
-            if (!listArts.isDisplayable()) {
-                //listArts.llenarTablaConArt(listArts.artsTable, "", listArts.limitList);
-            }
-
-            //en caso de que un inadaptado cambie de ventana mientras esta editando la ubicacion esto borra la informacion de esta ventana
-            /*if (editarUbicArt != null) {
-                    editarUbicArt.addOeditUbic=null;
-            }*/
             showPanel(listArts, 521, 472, 0, 0, content);
         }
 
-
     }//GEN-LAST:event_listArtBtnMouseClicked
+
+    private void altaArtBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_altaArtBtnMouseClicked
+        if (altaArtBtn.isEnabled()) {
+
+            //en caso de que un inadaptado cambie de ventana mientras esta editando la ubicacion esto borra la informacion de esta ventana
+            if (editarUbicArt != null) {
+                editarUbicArt.addOeditUbic = null;
+            }
+
+            editArtBtn.setEnabled(false);
+            bajaArtBtn.setEnabled(false);
+            showPanel(wCrearArt, 521, 472, 0, 0, content);
+        }
+    }//GEN-LAST:event_altaArtBtnMouseClicked
 
     private void editArtBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editArtBtnMouseClicked
         if (editArtBtn.isEnabled()) {
@@ -276,19 +261,19 @@ public class AdvancedViewer extends javax.swing.JFrame implements funtionsCom {
         }
     }//GEN-LAST:event_editArtBtnMouseClicked
 
-    private void altaArtBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_altaArtBtnMouseClicked
-        if (altaArtBtn.isEnabled()) {
+    private void bajaArtBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bajaArtBtnActionPerformed
 
-            //en caso de que un inadaptado cambie de ventana mientras esta editando la ubicacion esto borra la informacion de esta ventana
-            if (editarUbicArt != null) {
-                editarUbicArt.addOeditUbic = null;
+        if (bajaArtBtn.isEnabled()) {
+
+            int idArt = Integer.parseInt((listArts.artsTable.getValueAt(listArts.artsTable.getSelectedRow(), 0)).toString());
+            int input = javax.swing.JOptionPane.showConfirmDialog(null,
+                    "Estas seguro que desea eliminar el articulo seleccionada?", "Eliminar Articulo", javax.swing.JOptionPane.YES_NO_OPTION);
+            if (input == 0) {//yes
+                eliminarArt(idArt);
+                listArts.llenarTablaConArt(listArts.artsTable, "", listArts.limitList);
             }
-
-            editArtBtn.setEnabled(false);
-            bajaArtBtn.setEnabled(false);
-            showPanel(wCrearArt, 521, 472, 0, 0, content);
         }
-    }//GEN-LAST:event_altaArtBtnMouseClicked
+    }//GEN-LAST:event_bajaArtBtnActionPerformed
 
     private void altaArt2EditUbicBtnMouseClicked(java.awt.event.MouseEvent evt) {
 
@@ -318,9 +303,6 @@ public class AdvancedViewer extends javax.swing.JFrame implements funtionsCom {
 
     private void listArtsMouseClicked(java.awt.event.MouseEvent evt) {
         int selectedRow = listArts.artsTable.getSelectedRow();
-        //System.out.println("listArts.artsTable.getSelectedRow() " + listArts.artsTable.getSelectedRow());
-        //System.out.println("jTable1 selectedRow" + selectedRow);
-        //jTable1.clearSelection();
         editArtBtn.setEnabled(false);
         bajaArtBtn.setEnabled(false);
         if (selectedRow > -1) {

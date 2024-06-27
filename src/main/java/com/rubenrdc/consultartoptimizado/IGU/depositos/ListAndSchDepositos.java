@@ -14,12 +14,8 @@ import javax.swing.JOptionPane;
 public class ListAndSchDepositos extends javax.swing.JFrame implements funtionsCom{
 
     private int limitList = 10;
-    private DepositosDao depDao = new DepositosDao();
     private List<Deposito> lista;
 
-    /**
-     * Creates new form ListAndSchDepositos
-     */
     public ListAndSchDepositos() {
         initComponents();
         ImageIcon img = new ImageIcon("src/main/java/com/rubenrdc/consultartoptimizado/miselaneos/icon.png");
@@ -351,7 +347,7 @@ public class ListAndSchDepositos extends javax.swing.JFrame implements funtionsC
         ClearTable(tb);
         javax.swing.table.DefaultTableModel dm = (javax.swing.table.DefaultTableModel) (tb.getModel());
 
-        lista = depDao.getListDepsByTitleAndProv(provincia, desc, limiteLista);
+        lista = DepositosDao.getListDepsByTitleAndProv(provincia, desc, limiteLista);
 
         if (!lista.isEmpty()) {
             for (int i = 0; i < lista.size(); i++) {
