@@ -13,7 +13,6 @@ import javax.swing.JOptionPane;
 public class ListSearcherArt extends javax.swing.JPanel implements funtionsCom {
 
     protected int limitList = 100;
-    private ArticuloDao artDao = new ArticuloDao();
     protected List<Articulo> lista;
 
     public ListSearcherArt() {
@@ -269,7 +268,7 @@ public class ListSearcherArt extends javax.swing.JPanel implements funtionsCom {
     public void llenarTablaConArt(javax.swing.JTable tb, String code, int limit) {
         ClearTable(tb);
 
-        lista = artDao.getListArt(code, limit);
+        lista = ArticuloDao.getListArt(code, limit);
 
         tb.getColumnModel().getColumn(0).setMaxWidth(20);//Cambiar tamaño de una columna
         tb.getColumnModel().getColumn(1).setMaxWidth(100);//
@@ -277,7 +276,7 @@ public class ListSearcherArt extends javax.swing.JPanel implements funtionsCom {
         javax.swing.table.DefaultTableModel dm = (javax.swing.table.DefaultTableModel) (tb.getModel());
 
         //System.out.println("-- Lista recibida en llenarTablaConArt: " + Arrays.deepToString(lista));
-        if (!lista.isEmpty()) {
+        if (lista!=null) {
             for (int i = 0; i < lista.size(); i++) {
                 dm.addRow(lista.get(i).getRow());
             }

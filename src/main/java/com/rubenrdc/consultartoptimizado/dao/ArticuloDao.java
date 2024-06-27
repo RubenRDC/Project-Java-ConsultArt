@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -14,23 +15,21 @@ import java.util.List;
  */
 public class ArticuloDao implements funtionsCom {
 
-    private List<String> paramsSql = new ArrayList<>(), datosArt = new ArrayList<>();
-    private DaoConnection abc = new DaoConnection();
-    private List<Articulo> list = new ArrayList<>();
-    private UbicacionPrincDao ubicPrincDao = new UbicacionPrincDao();
+    private static List<String> paramsSql = new ArrayList<>(), datosArt = new ArrayList<>();
+    private static DaoConnection abc = new DaoConnection();
+    private static UbicacionPrincDao ubicPrincDao = new UbicacionPrincDao();
 
     public ArticuloDao() {
     }
 
-    public HashMap ObtenerUbicHashMap(Articulo art) {
+    public static HashMap ObtenerUbicHashMap(Articulo art) {
         return ubicPrincDao.ObtenerUbic(art);
     }
 
-    public List getListArt(String code, int limiteLista) {
-        list.clear();
-        String Query = "SELECT * FROM articulos WHERE codigo LIKE ? OR descripcion LIKE ? LIMIT " + limiteLista;
-
+    public static List getListArt(String code, int limiteLista) {
         if (abc.ExtablecerC() != null) {
+            List<Articulo> list = new ArrayList<>();
+            String Query = "SELECT * FROM articulos WHERE codigo LIKE ? OR descripcion LIKE ? LIMIT " + limiteLista;
             paramsSql.add("%" + code + "%");
             paramsSql.add("%" + code + "%");
             ResultSet rs = abc.GenericQuery(Query, paramsSql);
@@ -48,11 +47,12 @@ public class ArticuloDao implements funtionsCom {
             }
             paramsSql.clear();
             abc.getCloseC();
+            return list;
         }
-        return list;
+        return null;
     }
 
-    public Articulo StrictSearchArt(String cod) {
+    public static Articulo StrictSearchArt(String cod) {
 
         if (abc.ExtablecerC() != null) {
             String Query = "SELECT * FROM articulos WHERE codigo = ?";
@@ -79,7 +79,7 @@ public class ArticuloDao implements funtionsCom {
         return null;
     }
 
-    public void addArticulo(Articulo varArt) {
+    public static void addArticulo(Articulo varArt) {
 
         datosArt.add(0, varArt.getCodigo());
         datosArt.add(1, varArt.getDesc());
@@ -87,14 +87,14 @@ public class ArticuloDao implements funtionsCom {
 
         boolean exito = UpOrDelectOrInsert(datosArt);
         if (exito) {
-            msgInfo(1);
+            JOptionPane.showMessageDialog(null, "Operacion realizada con exito.", "Exito!!", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            msgInfo(0);
+            JOptionPane.showMessageDialog(null, "Ha Ocurrido un Error a la hora de realizar la operacion solicitada.", "ERROR", JOptionPane.ERROR_MESSAGE);
         }
         datosArt.clear();
     }
 
-    public void updateArticulo(Articulo varArt) {
+    public static void updateArticulo(Articulo varArt) {
 
         datosArt.add(0, varArt.getCodigo());
         datosArt.add(1, varArt.getDesc());
@@ -103,27 +103,27 @@ public class ArticuloDao implements funtionsCom {
 
         boolean exito = UpOrDelectOrInsert(datosArt);
         if (exito) {
-            msgInfo(1);
+            JOptionPane.showMessageDialog(null, "Operacion realizada con exito.", "Exito!!", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            msgInfo(0);
+            JOptionPane.showMessageDialog(null, "Ha Ocurrido un Error a la hora de realizar la operacion solicitada.", "ERROR", JOptionPane.ERROR_MESSAGE);
         }
         datosArt.clear();
     }
 
-    public void eliminarArt(int idArt) {
+    public static void eliminarArt(int idArt) {
         boolean exito = false;
         datosArt.add(String.valueOf(idArt));
         exito = UpOrDelectOrInsert(datosArt);
 
         datosArt.clear();
         if (exito) {
-            msgInfo(1);
+            JOptionPane.showMessageDialog(null, "Operacion realizada con exito.", "Exito!!", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            msgInfo(0);
+            JOptionPane.showMessageDialog(null, "Ha Ocurrido un Error a la hora de realizar la operacion solicitada.", "ERROR", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    private boolean UpOrDelectOrInsert(List<String> datosArt) {
+    private static boolean UpOrDelectOrInsert(List<String> datosArt) {
         String query = "";
         boolean exito = false;
         if (abc.ExtablecerC() != null) {

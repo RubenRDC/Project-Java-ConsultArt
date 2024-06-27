@@ -313,9 +313,7 @@ public class AdvancedViewer extends javax.swing.JFrame implements funtionsCom {
     }
 
     private void eliminarArt(int idArt) {
-        ArticuloDao ArtDao = new ArticuloDao();
-        ArtDao.eliminarArt(idArt);
-        ArtDao = null;
+        ArticuloDao.eliminarArt(idArt);
     }
 
 

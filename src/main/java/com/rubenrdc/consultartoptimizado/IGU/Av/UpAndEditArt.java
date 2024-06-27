@@ -11,7 +11,6 @@ import javax.swing.JOptionPane;
 public class UpAndEditArt extends javax.swing.JPanel {
 
     private int tipo, idArt;
-    private ArticuloDao artDao = new ArticuloDao();
     private Articulo ObjetoArticulo;
 
     public UpAndEditArt(int tipo) {
@@ -31,7 +30,7 @@ public class UpAndEditArt extends javax.swing.JPanel {
         codigotxt.setText(ObjetoArticulo.getCodigo());
         descTxt.setText(ObjetoArticulo.getDesc());
         fotoUrlTxt.setText(ObjetoArticulo.getFoto());
-        ObjetoArticulo.setUbicacion(artDao.ObtenerUbicHashMap(ObjetoArticulo));
+        ObjetoArticulo.setUbicacion(ArticuloDao.ObtenerUbicHashMap(ObjetoArticulo));
 
         if (tipo == 1) {//Editar
             ubicEditPanel.setVisible(true);
@@ -470,9 +469,9 @@ public class UpAndEditArt extends javax.swing.JPanel {
                     foto = foto.replace("*","");
                 }
                 if (tipo == 0) {//Add Articulo
-                    if (artDao.StrictSearchArt(codigo) == null) {//Si encuentra algun articulo que consida el codigo que se intenta dar de alta no avanzara el programa advirtiendo de que el codigo ya existe.
+                    if (ArticuloDao.StrictSearchArt(codigo) == null) {//Si encuentra algun articulo que consida el codigo que se intenta dar de alta no avanzara el programa advirtiendo de que el codigo ya existe.
                         ObjetoArticulo = new Articulo(0, codigo, descripcion, foto);
-                        artDao.addArticulo(ObjetoArticulo);
+                        ArticuloDao.addArticulo(ObjetoArticulo);
 
                         codigotxt.setText("");
                         descTxt.setText("");
@@ -486,7 +485,7 @@ public class UpAndEditArt extends javax.swing.JPanel {
                     ObjetoArticulo.setDesc(descripcion);
                     ObjetoArticulo.setFoto(foto);
 
-                    artDao.updateArticulo(ObjetoArticulo);
+                    ArticuloDao.updateArticulo(ObjetoArticulo);
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "La URL ingresada debe de contener una imagen en formato JPG o PNG\nEn caso de que la URL termine en '.webp' o otro formato, reemplazar por el formato permitido. ", "Advertencia!", JOptionPane.ERROR_MESSAGE);
