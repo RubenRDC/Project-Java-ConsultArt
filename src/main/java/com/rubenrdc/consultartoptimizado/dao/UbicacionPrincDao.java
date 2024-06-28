@@ -14,11 +14,10 @@ import java.util.List;
  */
 public class UbicacionPrincDao {
 
-    private List<String> paramsSql = new ArrayList<>();
-    private DaoConnection abc = new DaoConnection();
-    private UbicacionExtraDao ubicExtraDao = new UbicacionExtraDao();
+    private static List<String> paramsSql = new ArrayList<>();
+    private static DaoConnection abc = new DaoConnection();
 
-    public HashMap ObtenerUbic(Articulo art) {
+    public static HashMap ObtenerUbic(Articulo art) {
         if (abc.ExtablecerC() != null) {
             int i =0;
             String[][] stocks = new String[DepositosDao.getLimitDep()][2];
@@ -31,7 +30,7 @@ public class UbicacionPrincDao {
                     ubicacion.put(rsUbics.getString("depositos.descrip"),
                             new UbicacionPrincipal(rsUbics.getInt("ubicaciones.id"),
                                     rsUbics.getString("ubic"),
-                                    ubicExtraDao.ObtenerListUbicExtra(rsUbics.getInt("ubicaciones.id"))));
+                                    UbicacionExtraDao.ObtenerListUbicExtra(rsUbics.getInt("ubicaciones.id"))));
                     stocks[i][0]=rsUbics.getString("depositos.descrip");
                     stocks[i][1]=rsUbics.getString("ubicaciones.exist");
                     i++;

@@ -14,9 +14,9 @@ import java.util.logging.Logger;
  */
 public class UbicacionExtraDao {
 
-    private DaoConnection abc = new DaoConnection();
+    private static DaoConnection abc = new DaoConnection();
 
-    public List<UbicacionExtra> ObtenerListUbicExtra(int idUbicPrincipal) {
+    public static List<UbicacionExtra> ObtenerListUbicExtra(int idUbicPrincipal) {
         if (abc.ExtablecerC() != null) {
             String cUbicExt = "SELECT * FROM ubicacion_extra WHERE idUbic = ?";
             ResultSet rsUbicExt = abc.QueryById(cUbicExt, idUbicPrincipal);
@@ -30,7 +30,6 @@ public class UbicacionExtraDao {
             }
             return listaUbicExtra;
         }
-
         return null;
     }
 }

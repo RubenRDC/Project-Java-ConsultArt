@@ -17,13 +17,12 @@ public class ArticuloDao implements funtionsCom {
 
     private static List<String> paramsSql = new ArrayList<>(), datosArt = new ArrayList<>();
     private static DaoConnection abc = new DaoConnection();
-    private static UbicacionPrincDao ubicPrincDao = new UbicacionPrincDao();
 
     public ArticuloDao() {
     }
 
     public static HashMap ObtenerUbicHashMap(Articulo art) {
-        return ubicPrincDao.ObtenerUbic(art);
+        return UbicacionPrincDao.ObtenerUbic(art);
     }
 
     public static List getListArt(String code, int limiteLista) {
