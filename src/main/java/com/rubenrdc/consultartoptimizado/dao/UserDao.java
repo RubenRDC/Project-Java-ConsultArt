@@ -12,14 +12,14 @@ import java.util.List;
  */
 public class UserDao {
 
-    private DaoConnection abc = new DaoConnection();
-    private List<String> paramsSql = new ArrayList<>();
+    private static DaoConnection abc = new DaoConnection();
+    private static List<String> paramsSql = new ArrayList<>();
 
     public UserDao() {
     }
 
-    public boolean existUser(User u) {
-        boolean existe = false;
+    public static boolean checkUser(User u) {
+        
         if (abc.ExtablecerC() != null) {
             String consulta = String.format("Select * From usuarios where User = ? AND Pass = ?;");
             paramsSql.add(u.getUserName());
@@ -27,16 +27,14 @@ public class UserDao {
             ResultSet rs = abc.GenericQuery(consulta, paramsSql);
             try {
                 if (rs.next()) {
-                    existe = true;
-                    return existe;
+                    //Las credenciales coinciden con un usuario existente
+                    return true;
                 }
-
             } catch (SQLException | java.lang.NullPointerException e) {
-
             }
             paramsSql.clear();
             abc.getCloseC();
         }
-        return existe;
+        return false;
     }
 }

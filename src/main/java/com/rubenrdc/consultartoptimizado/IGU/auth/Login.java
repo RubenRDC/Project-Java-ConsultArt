@@ -14,12 +14,8 @@ import javax.swing.ImageIcon;
  */
 public class Login extends javax.swing.JFrame implements funtionsCom {
 
-    private UserDao userDao = new UserDao();
     private ConsArt ventana;
     private ReentrantLock lock = new ReentrantLock();
-
-    private String User = "";
-    private String Pass = "";
 
     public Login() {
         initComponents();
@@ -167,7 +163,7 @@ public class Login extends javax.swing.JFrame implements funtionsCom {
                         String p = PsstTxt.getText();
                         if (u.length() <= 10 && u.length() != 0 && p.length() != 0) {
                             User user = new User(u, p);
-                            if (userDao.existUser(user) == true) {
+                            if (UserDao.checkUser(user) == true) {
                                 dispose();
                                 ventana = new ConsArt();
                                 pinterJFrame(ventana, true, null, false);
