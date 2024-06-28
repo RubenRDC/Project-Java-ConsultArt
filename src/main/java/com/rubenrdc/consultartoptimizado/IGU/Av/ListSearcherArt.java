@@ -182,11 +182,10 @@ public class ListSearcherArt extends javax.swing.JPanel implements funtionsCom {
         artsTable.setFocusable(false);
         artsTable.setRowHeight(25);
         artsTable.setRowMargin(5);
+        artsTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        artsTable.setShowVerticalLines(false);
         artsTable.getTableHeader().setResizingAllowed(false);
         artsTable.getTableHeader().setReorderingAllowed(false);
-        artsTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        artsTable.setColumnSelectionAllowed(false);
-        artsTable.setShowVerticalLines(false);
         jScrollPane1.setViewportView(artsTable);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
