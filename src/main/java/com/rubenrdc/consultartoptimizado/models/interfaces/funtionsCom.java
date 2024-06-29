@@ -1,7 +1,6 @@
-package com.rubenrdc.consultartoptimizado.funtionsComp;
+package com.rubenrdc.consultartoptimizado.models.interfaces;
 
 import com.rubenrdc.consultartoptimizado.models.Deposito;
-import com.rubenrdc.consultartoptimizado.models.interfaces.Exportables;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.util.List;
@@ -12,8 +11,6 @@ import javax.swing.JOptionPane;
  * @author Ruben
  */
 public interface funtionsCom {
-    
-    public static final int AAA=0;
 
     default public void JComboBoxDepositos(javax.swing.JComboBox listDeposito, List<Deposito> listDeps) {
         listDeposito.removeAllItems();
@@ -28,21 +25,6 @@ public interface funtionsCom {
         javax.swing.table.DefaultTableModel dm = (javax.swing.table.DefaultTableModel) (jTable.getModel());
         dm.setNumRows(0);
         jTable.setModel(dm);
-    }
-
-    /**
-     * msgInfo Mensaje Emergente dependiendo del tipo
-     *
-     * @param tipo | 0-Error | 1-Exito | 2-...
-     *
-     */
-    default public void msgInfo(int tipo) {
-        if (tipo == 0) {
-            JOptionPane.showMessageDialog(null, "Ha Ocurrido un Error a la hora de realizar la operacion solicitada.", "ERROR", JOptionPane.ERROR_MESSAGE);
-
-        } else if (tipo == 1) {//Exito
-            JOptionPane.showMessageDialog(null, "Operacion realizada con exito.", "Exito!!", JOptionPane.INFORMATION_MESSAGE);
-        }
     }
 
     default public void centrarTable(javax.swing.JTable tb) {

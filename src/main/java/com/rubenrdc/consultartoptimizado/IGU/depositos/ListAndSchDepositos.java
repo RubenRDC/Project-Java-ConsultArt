@@ -2,7 +2,7 @@ package com.rubenrdc.consultartoptimizado.IGU.depositos;
 
 import com.rubenrdc.consultartoptimizado.IGU.Av.AdvancedViewer;
 import com.rubenrdc.consultartoptimizado.dao.DepositosDao;
-import com.rubenrdc.consultartoptimizado.funtionsComp.funtionsCom;
+import com.rubenrdc.consultartoptimizado.models.interfaces.funtionsCom;
 import com.rubenrdc.consultartoptimizado.models.Deposito;
 import static java.awt.Frame.NORMAL;
 import java.util.List;

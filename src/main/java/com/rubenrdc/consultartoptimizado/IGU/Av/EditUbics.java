@@ -2,7 +2,7 @@ package com.rubenrdc.consultartoptimizado.IGU.Av;
 
 import com.rubenrdc.consultartoptimizado.dao.ArticuloDao;
 import com.rubenrdc.consultartoptimizado.dao.DepositosDao;
-import com.rubenrdc.consultartoptimizado.funtionsComp.funtionsCom;
+import com.rubenrdc.consultartoptimizado.models.interfaces.funtionsCom;
 import com.rubenrdc.consultartoptimizado.models.Articulo;
 import com.rubenrdc.consultartoptimizado.models.interfaces.Exportables;
 import java.util.List;

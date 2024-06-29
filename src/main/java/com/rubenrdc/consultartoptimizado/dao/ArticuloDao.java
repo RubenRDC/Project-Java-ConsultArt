@@ -1,6 +1,6 @@
 package com.rubenrdc.consultartoptimizado.dao;
 
-import com.rubenrdc.consultartoptimizado.funtionsComp.funtionsCom;
+import com.rubenrdc.consultartoptimizado.models.interfaces.funtionsCom;
 import com.rubenrdc.consultartoptimizado.models.Articulo;
 import java.sql.ResultSet;
 import java.sql.SQLException;

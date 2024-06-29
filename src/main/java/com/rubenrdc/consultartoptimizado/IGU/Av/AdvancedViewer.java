@@ -1,7 +1,7 @@
 package com.rubenrdc.consultartoptimizado.IGU.Av;
 
 import com.rubenrdc.consultartoptimizado.dao.ArticuloDao;
-import com.rubenrdc.consultartoptimizado.funtionsComp.funtionsCom;
+import com.rubenrdc.consultartoptimizado.models.interfaces.funtionsCom;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 

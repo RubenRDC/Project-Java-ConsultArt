@@ -2,7 +2,7 @@ package com.rubenrdc.consultartoptimizado.IGU.auth;
 
 import com.rubenrdc.consultartoptimizado.IGU.ConsArt;
 import com.rubenrdc.consultartoptimizado.dao.UserDao;
-import com.rubenrdc.consultartoptimizado.funtionsComp.funtionsCom;
+import com.rubenrdc.consultartoptimizado.models.interfaces.funtionsCom;
 import com.rubenrdc.consultartoptimizado.models.User;
 import java.util.concurrent.locks.ReentrantLock;
 import javax.swing.ImageIcon;

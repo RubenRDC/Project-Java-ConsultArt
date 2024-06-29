@@ -1,7 +1,8 @@
 package com.rubenrdc.consultartoptimizado.IGU.Av;
 
 import com.rubenrdc.consultartoptimizado.dao.DaoConnection;
-import com.rubenrdc.consultartoptimizado.funtionsComp.funtionsCom;
+import com.rubenrdc.consultartoptimizado.models.interfaces.funtionsCom;
+import com.rubenrdc.consultartoptimizado.models.interfaces.DialogsFunt;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,14 +10,14 @@ import java.util.List;
  *
  * @author Ruben
  */
-public class EditUbic extends javax.swing.JPanel implements funtionsCom {
+public class EditUbic extends javax.swing.JPanel implements funtionsCom,DialogsFunt {
 
     private int stock, idUbic, tipoU, tipoV, idArt;
     private String s = "", p = "", e = "", c = "", a = "", ubicC, Dep;
     private DaoConnection dao = new DaoConnection();
     private List<String> paramsSQL = new ArrayList<>();
-    public static final int PRINCIPAL = 0,EXTRA=1,ADD=0,EDIT=1;
-    
+    public static final int PRINCIPAL = 0, EXTRA = 1, ADD = 0, EDIT = 1;
+
     /**
      *
      *
@@ -58,7 +59,6 @@ public class EditUbic extends javax.swing.JPanel implements funtionsCom {
         initComponents();
     }
 
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -259,15 +259,15 @@ public class EditUbic extends javax.swing.JPanel implements funtionsCom {
                     if (tipoV == 0) {
                         //Agregar
                         querys = "INSERT INTO ubicacion_extra (idUbic,ubic) VALUES (?,?)";
-                        
+
                         paramsSQL.add(0, String.valueOf(idUbic));
                         paramsSQL.add(1, ubicC);
-                        
+
                         exito = dao.GenericUpdate(querys, paramsSQL);
                         //System.out.println("Tipo Ventana de Add Ubicacion Extra");
                     } else if (tipoV == 1) {
                         //Editar
-                        querys="UPDATE ubicacion_extra SET ubic = ? WHERE id = ?";
+                        querys = "UPDATE ubicacion_extra SET ubic = ? WHERE id = ?";
                         paramsSQL.add(0, ubicC);
                         paramsSQL.add(1, String.valueOf(idUbic));
                         exito = dao.GenericUpdate(querys, paramsSQL);
@@ -279,9 +279,10 @@ public class EditUbic extends javax.swing.JPanel implements funtionsCom {
                     setPanelEnabled(jPanel4, false);
                     setPanelEnabled(jPanel5, false);
                     sendInfoBtn.setEnabled(false);
-                    msgInfo(1);
+
+                    msgInfoOperation(exito);
                 } else {
-                    msgInfo(0);
+                    msgInfoOperation(exito);
                 }
                 querys = null;
                 paramsSQL.clear();
@@ -290,7 +291,6 @@ public class EditUbic extends javax.swing.JPanel implements funtionsCom {
 
         }
     }//GEN-LAST:event_sendInfoBtnMouseClicked
-
 
     private void ObtenerUbic(int id, int tipoUbicacion) {
         if (dao.ExtablecerC() != null) {
@@ -338,7 +338,7 @@ public class EditUbic extends javax.swing.JPanel implements funtionsCom {
             SelCajon.setValue(Integer.valueOf(c));
             SelAltura.setValue(Integer.valueOf(a));
 
-            consulta=null;
+            consulta = null;
             dao.getCloseC();
         }
     }

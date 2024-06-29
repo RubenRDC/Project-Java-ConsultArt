@@ -1,7 +1,7 @@
 package com.rubenrdc.consultartoptimizado.IGU.depositos;
 
 import com.rubenrdc.consultartoptimizado.dao.DepositosDao;
-import com.rubenrdc.consultartoptimizado.funtionsComp.funtionsCom;
+import com.rubenrdc.consultartoptimizado.models.interfaces.funtionsCom;
 import com.rubenrdc.consultartoptimizado.models.Deposito;
 import javax.swing.JOptionPane;
 

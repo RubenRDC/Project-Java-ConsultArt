@@ -4,7 +4,7 @@ import com.rubenrdc.consultartoptimizado.IGU.Av.AdvancedViewer;
 import com.rubenrdc.consultartoptimizado.IGU.depositos.ListAndSchDepositos;
 import com.rubenrdc.consultartoptimizado.dao.ArticuloDao;
 import com.rubenrdc.consultartoptimizado.dao.DepositosDao;
-import com.rubenrdc.consultartoptimizado.funtionsComp.funtionsCom;
+import com.rubenrdc.consultartoptimizado.models.interfaces.funtionsCom;
 import com.rubenrdc.consultartoptimizado.models.Articulo;
 import java.util.concurrent.locks.ReentrantLock;
 import javax.swing.ImageIcon;
