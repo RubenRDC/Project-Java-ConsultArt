@@ -6,12 +6,15 @@ import com.rubenrdc.consultartoptimizado.models.interfaces.Exportables;
  *
  * @author Ruben
  */
-public class Deposito implements Exportables{
+public class Deposito implements Exportables {
 
     private int id, numDireccion;
     private String nombre, provincia, localidad, direccion;
     private Object[] row = new Object[3];
     private String[] RowAtributos = new String[3];
+
+    public Deposito() {
+    }
 
     public Deposito(int idDep, String nameDep) {
         this.id = idDep;
@@ -20,6 +23,14 @@ public class Deposito implements Exportables{
 
     public Deposito(int id, String nombre, String provincia, String localidad, String direccion, int numDireccion) {
         this.id = id;
+        this.numDireccion = numDireccion;
+        this.nombre = nombre;
+        this.provincia = provincia;
+        this.localidad = localidad;
+        this.direccion = direccion;
+    }
+
+    public Deposito(String nombre, String provincia, String localidad, String direccion, int numDireccion) {
         this.numDireccion = numDireccion;
         this.nombre = nombre;
         this.provincia = provincia;

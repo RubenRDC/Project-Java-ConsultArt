@@ -1,5 +1,6 @@
 package com.rubenrdc.consultartoptimizado.IGU.Av;
 
+import com.rubenrdc.consultartoptimizado.dao.ArticuloDao;
 import com.rubenrdc.consultartoptimizado.dao.DepositosDao;
 import com.rubenrdc.consultartoptimizado.funtionsComp.funtionsCom;
 import com.rubenrdc.consultartoptimizado.models.Articulo;
@@ -423,8 +424,7 @@ public class EditUbics extends javax.swing.JPanel implements funtionsCom {
     private void addBtnExMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addBtnExMouseClicked
         if (addBtnEx.isEnabled()) {
             DepSelected = listDeposito.getSelectedItem().toString();
-//POR CORREGIR            
-//IdUbicP = Integer.parseInt(Art.getUbicPrinc()[0][0]);
+            IdUbicP = Art.getUbicacionPrincipal(DepSelected).get(0).getId();
             addOeditUbic = new EditUbic(idArt, IdUbicP, DepSelected, EditUbic.ADD, EditUbic.EXTRA);
             jPanel1.setVisible(false);
             ContentExtra.setVisible(true);
@@ -491,23 +491,19 @@ public class EditUbics extends javax.swing.JPanel implements funtionsCom {
     private void previusPageMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_previusPageMouseClicked
         if (previusPage.isVisible()) {
             addOeditUbic = null;
+            JComboBoxDepositos(listDeposito, DepositosDao.getListDeps());
+            Art.setUbicacion(ArticuloDao.ObtenerUbicHashMap(Art));//Actualizo las ubicaciones del articulo q se esta editando.
             jPanel1.setVisible(true);
             ContentExtra.setVisible(false);
-            JComboBoxDepositos(listDeposito,DepositosDao.getListDeps());
         }
     }//GEN-LAST:event_previusPageMouseClicked
 
     public <T extends Exportables> void llenarTablaUbics(JTable tb, List<T> a) {
         tb.clearSelection();
-        ClearTable(tb);
+        tb.getColumnModel().getColumn(0).setMaxWidth(20);
         if (a != null) {
-            if (a.get(0) != null) {
-                tb.getColumnModel().getColumn(0).setMaxWidth(20);
-                javax.swing.table.DefaultTableModel dm = (javax.swing.table.DefaultTableModel) (tb.getModel());
-                for (T t : a) {
-                    dm.addRow(t.getRow());
-                }
-                tb.setModel(dm);
+            if (!a.isEmpty()) {
+                llenarTabla(tb,a);
             }
         }
     }

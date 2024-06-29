@@ -1,6 +1,7 @@
 package com.rubenrdc.consultartoptimizado.IGU.Av;
 
 import com.rubenrdc.consultartoptimizado.dao.ArticuloDao;
+import com.rubenrdc.consultartoptimizado.funtionsComp.funtionsCom;
 import com.rubenrdc.consultartoptimizado.models.Articulo;
 import javax.swing.JOptionPane;
 
@@ -8,7 +9,7 @@ import javax.swing.JOptionPane;
  *
  * @author Ruben
  */
-public class UpAndEditArt extends javax.swing.JPanel {
+public class UpAndEditArt extends javax.swing.JPanel implements funtionsCom{
 
     private int tipo, idArt;
     private Articulo ObjetoArticulo;
@@ -504,27 +505,6 @@ public class UpAndEditArt extends javax.swing.JPanel {
         filtrarKeyEvent(evt);
     }//GEN-LAST:event_descTxtKeyTyped
 
-    private void filtrarKeyEvent(java.awt.event.KeyEvent evt) {
-        String cadena;
-        char keyAscii;
-        int intKeyAscii;
-
-        cadena = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-" + (char) 32;// + (char)32
-        keyAscii = evt.getKeyChar();
-        intKeyAscii = (int) keyAscii;
-
-        if (intKeyAscii > 26) {
-
-            if (cadena.indexOf(keyAscii) == -1) {
-                evt.setKeyChar((char) 0);//Si el keyAscii recibida no corresponde a ninguno de la cadena de caracteres permitadas setea la key a null para anular la entrada del digito
-                JOptionPane.showMessageDialog(null, "Intento ingresar digitos no permitidos.", "Advertencia!", JOptionPane.ERROR_MESSAGE);
-            } else {
-
-                evt.setKeyChar(keyAscii);
-
-            }
-        }
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField codigoOtxt;

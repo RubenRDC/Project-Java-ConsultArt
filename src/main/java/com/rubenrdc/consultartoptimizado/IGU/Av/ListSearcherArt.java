@@ -245,7 +245,6 @@ public class ListSearcherArt extends javax.swing.JPanel implements funtionsCom {
             llenarTablaConArt(artsTable, code, limitList);
 
         }
-
     }//GEN-LAST:event_schCodBtnMouseClicked
 
     private void schDesBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_schDesBtnMouseClicked
@@ -256,6 +255,21 @@ public class ListSearcherArt extends javax.swing.JPanel implements funtionsCom {
         }
     }//GEN-LAST:event_schDesBtnMouseClicked
 
+    public void llenarTablaConArt(javax.swing.JTable tb, String code, int limit) {
+        lista = ArticuloDao.getListArt(code, limit);
+        tb.getColumnModel().getColumn(0).setMaxWidth(20);//Cambiar tamaño de una columna
+        tb.getColumnModel().getColumn(1).setMaxWidth(100);//
+        tb.getColumnModel().getColumn(2).setMaxWidth(387);//
+        if (lista != null) {
+            if (!lista.isEmpty()) {
+                llenarTabla(tb, lista);
+            } else {
+                JOptionPane.showMessageDialog(null, "No se encontraron resultados.");
+                llenarTablaConArt(tb, "", limit);
+            }
+        }
+    }
+
     private void codeTxtKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codeTxtKeyTyped
         filtrarKeyEvent(evt);
     }//GEN-LAST:event_codeTxtKeyTyped
@@ -263,50 +277,6 @@ public class ListSearcherArt extends javax.swing.JPanel implements funtionsCom {
     private void descTxtKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_descTxtKeyTyped
         filtrarKeyEvent(evt);
     }//GEN-LAST:event_descTxtKeyTyped
-
-    public void llenarTablaConArt(javax.swing.JTable tb, String code, int limit) {
-        ClearTable(tb);
-
-        lista = ArticuloDao.getListArt(code, limit);
-
-        tb.getColumnModel().getColumn(0).setMaxWidth(20);//Cambiar tamaño de una columna
-        tb.getColumnModel().getColumn(1).setMaxWidth(100);//
-        tb.getColumnModel().getColumn(2).setMaxWidth(387);//
-        javax.swing.table.DefaultTableModel dm = (javax.swing.table.DefaultTableModel) (tb.getModel());
-
-        //System.out.println("-- Lista recibida en llenarTablaConArt: " + Arrays.deepToString(lista));
-        if (lista!=null) {
-            for (int i = 0; i < lista.size(); i++) {
-                dm.addRow(lista.get(i).getRow());
-            }
-            tb.setModel(dm);
-        } else {
-            JOptionPane.showMessageDialog(null, "No se encontraron resultados.");
-            llenarTablaConArt(tb, "", limit);
-        }
-    }
-
-    private void filtrarKeyEvent(java.awt.event.KeyEvent evt) {
-        String cadena;
-        char keyAscii;
-        int intKeyAscii;
-
-        cadena = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-" + (char) 32;// + (char)32
-        keyAscii = evt.getKeyChar();
-        intKeyAscii = (int) keyAscii;
-
-        if (intKeyAscii > 26) {
-
-            if (cadena.indexOf(keyAscii) == -1) {
-                evt.setKeyChar((char) 0);//Si el keyAscii recibida no corresponde a ninguno de la cadena de caracteres permitadas setea la key a null para anular la entrada del digito
-                JOptionPane.showMessageDialog(null, "Intento ingresar digitos no permitidos.");
-            } else {
-
-                evt.setKeyChar(keyAscii);
-
-            }
-        }
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JTable artsTable;

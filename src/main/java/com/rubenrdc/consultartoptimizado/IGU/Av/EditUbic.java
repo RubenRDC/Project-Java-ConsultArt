@@ -253,7 +253,7 @@ public class EditUbic extends javax.swing.JPanel implements funtionsCom {
                         paramsSQL.add(2, String.valueOf(idUbic));
                         querys = "UPDATE ubicaciones SET exist = ?,ubic = ? WHERE id=?";
                         exito = dao.GenericUpdate(querys, paramsSQL);
-                        System.out.println("Tipo Ventana de Edit Ubicacion Principal");
+                        //System.out.println("Tipo Ventana de Edit Ubicacion Principal");
                     }
                 } else if (tipoU == 1) {//Tipo Ubicacion Extra
                     if (tipoV == 0) {
@@ -264,14 +264,14 @@ public class EditUbic extends javax.swing.JPanel implements funtionsCom {
                         paramsSQL.add(1, ubicC);
                         
                         exito = dao.GenericUpdate(querys, paramsSQL);
-                        System.out.println("Tipo Ventana de Add Ubicacion Extra");
+                        //System.out.println("Tipo Ventana de Add Ubicacion Extra");
                     } else if (tipoV == 1) {
                         //Editar
                         querys="UPDATE ubicacion_extra SET ubic = ? WHERE id = ?";
                         paramsSQL.add(0, ubicC);
                         paramsSQL.add(1, String.valueOf(idUbic));
                         exito = dao.GenericUpdate(querys, paramsSQL);
-                        System.out.println("Tipo Ventana de Edit Ubicacion Extra");
+                        //System.out.println("Tipo Ventana de Edit Ubicacion Extra");
                     }
                 }
 

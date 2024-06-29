@@ -1,8 +1,10 @@
 package com.rubenrdc.consultartoptimizado.IGU.depositos;
 
+import com.rubenrdc.consultartoptimizado.IGU.Av.AdvancedViewer;
 import com.rubenrdc.consultartoptimizado.dao.DepositosDao;
 import com.rubenrdc.consultartoptimizado.funtionsComp.funtionsCom;
 import com.rubenrdc.consultartoptimizado.models.Deposito;
+import static java.awt.Frame.NORMAL;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -11,10 +13,12 @@ import javax.swing.JOptionPane;
  *
  * @author Ruben
  */
-public class ListAndSchDepositos extends javax.swing.JFrame implements funtionsCom{
+public class ListAndSchDepositos extends javax.swing.JFrame implements funtionsCom {
 
-    private int limitList = 10;
+    private final int limitList = 10;
     private List<Deposito> lista;
+    private PreviewDep PreviewDep;
+    private PreviewDep newDep;////
 
     public ListAndSchDepositos() {
         initComponents();
@@ -41,6 +45,7 @@ public class ListAndSchDepositos extends javax.swing.JFrame implements funtionsC
         jPanel10 = new javax.swing.JPanel();
         btnPreview = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
+        newBtn = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         depsTable = new javax.swing.JTable();
@@ -166,8 +171,27 @@ public class ListAndSchDepositos extends javax.swing.JFrame implements funtionsC
         );
 
         btnPreview.setText("Visualizar");
+        btnPreview.setEnabled(false);
+        btnPreview.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnPreviewMouseClicked(evt);
+            }
+        });
 
         btnDelete.setText("Eliminar");
+        btnDelete.setEnabled(false);
+        btnDelete.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnDeleteMouseClicked(evt);
+            }
+        });
+
+        newBtn.setText("Crear");
+        newBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                newBtnMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
@@ -176,6 +200,7 @@ public class ListAndSchDepositos extends javax.swing.JFrame implements funtionsC
             .addGroup(jPanel10Layout.createSequentialGroup()
                 .addGap(0, 0, 0)
                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(newBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnPreview, javax.swing.GroupLayout.DEFAULT_SIZE, 97, Short.MAX_VALUE)
                     .addComponent(btnDelete, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
@@ -183,8 +208,10 @@ public class ListAndSchDepositos extends javax.swing.JFrame implements funtionsC
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel10Layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(newBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnPreview, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 137, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
                 .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -208,6 +235,11 @@ public class ListAndSchDepositos extends javax.swing.JFrame implements funtionsC
         depsTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         depsTable.getTableHeader().setResizingAllowed(false);
         depsTable.getTableHeader().setReorderingAllowed(false);
+        depsTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                depsTableMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(depsTable);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -309,25 +341,88 @@ public class ListAndSchDepositos extends javax.swing.JFrame implements funtionsC
     private void BtnShMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BtnShMouseClicked
         if (BtnSh.isEnabled()) {
             depsTable.clearSelection();
-            String prov = ProvinciaTxt.getText();
-            String code = descTxt.getText();
-            llenarTablaConDeps(depsTable, prov, code, limitList);
+            llenarTablaConDeps(depsTable, ProvinciaTxt.getText(), descTxt.getText(), limitList);
         }
     }//GEN-LAST:event_BtnShMouseClicked
+
+    private void btnPreviewMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPreviewMouseClicked
+        if (btnPreview.isEnabled()) {
+            if (PreviewDep == null) {
+                PreviewDep = new PreviewDep();
+                PreviewDep.addWindowListener(new java.awt.event.WindowAdapter() {
+                    public void windowClosed(java.awt.event.WindowEvent evt) {
+                        llenarTablaConDeps(depsTable, "", "", limitList);
+                    }
+                });
+                PreviewDep.setDep(lista.get(depsTable.getSelectedRow()));
+                pinterJFrame(PreviewDep, true, null, false);
+            } else if (PreviewDep != null) {
+                if (PreviewDep.isShowing()) {//la PreviewDep sigue es visible 
+                    PreviewDep.setExtendedState(NORMAL);//envia la PreviewDep activa en frente de todo
+                    PreviewDep.toFront();
+                } else {
+                    PreviewDep.setDep(lista.get(depsTable.getSelectedRow()));
+                    pinterJFrame(PreviewDep, true, null, false);
+                }
+            }
+            depsTable.clearSelection();
+            btnPreview.setEnabled(false);
+            btnDelete.setEnabled(false);
+        }
+    }//GEN-LAST:event_btnPreviewMouseClicked
+
+    private void depsTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_depsTableMouseClicked
+        int selectedRow = depsTable.getSelectedRow();
+        if (selectedRow != -1) {
+            btnPreview.setEnabled(true);
+            btnDelete.setEnabled(true);
+        }
+    }//GEN-LAST:event_depsTableMouseClicked
+
+    private void newBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_newBtnMouseClicked
+        if (newBtn.isEnabled()) {
+            if (newDep == null) {//Cuando inicia el programa y la newBtn es nula
+                newDep = new PreviewDep();
+                newDep.addWindowListener(new java.awt.event.WindowAdapter() {
+                    public void windowClosed(java.awt.event.WindowEvent evt) {
+                        llenarTablaConDeps(depsTable, "", "", limitList);
+                    }
+                });
+                pinterJFrame(newDep, true, null, false);
+
+            } else if (newDep != null) {
+                if (newDep.isShowing()) {//la newBtn sigue es visible 
+                    newDep.setExtendedState(NORMAL);//envia la newBtn activa en frente de todo
+                    newDep.toFront();
+                } else {
+                    pinterJFrame(newDep, true, null, false);
+                }
+            }
+        }
+    }//GEN-LAST:event_newBtnMouseClicked
+
+    private void btnDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDeleteMouseClicked
+        if (btnDelete.isEnabled()) {
+            int input = javax.swing.JOptionPane.showConfirmDialog(null,
+                    "Estas seguro que desea eliminar el deposito?\nTambien se eliminaran las ubicaciones creadas en este deposito.", "Eliminar Articulo", javax.swing.JOptionPane.YES_NO_OPTION);
+            if (input == 0) {//yes
+                if (DepositosDao.delectDep(lista.get(depsTable.getSelectedRow()).getId())) {
+                    javax.swing.JOptionPane.showMessageDialog(null, "Operacion Realizada con Exito", "Exito", JOptionPane.INFORMATION_MESSAGE);
+                    llenarTablaConDeps(depsTable, "", "", limitList);
+                }
+            }
+        }
+    }//GEN-LAST:event_btnDeleteMouseClicked
     private void llenarTablaConDeps(javax.swing.JTable tb, String provincia, String desc, int limiteLista) {
-        ClearTable(tb);
-        javax.swing.table.DefaultTableModel dm = (javax.swing.table.DefaultTableModel) (tb.getModel());
         tb.getColumnModel().getColumn(0).setMaxWidth(20);
         lista = DepositosDao.getListDepsByTitleAndProv(provincia, desc, limiteLista);
-
-        if (!lista.isEmpty()) {
-            for (int i = 0; i < lista.size(); i++) {
-                dm.addRow(lista.get(i).getRow());
+        if (lista != null) {//La lista sera nula solo si no se pudo conectar a la base de datos.
+            if (!lista.isEmpty()) {
+                llenarTabla(tb, lista);
+            } else {
+                JOptionPane.showMessageDialog(null, "No se encontraron resultados.");
+                llenarTablaConDeps(tb, "", "", limiteLista);
             }
-            tb.setModel(dm);
-        } else {
-            JOptionPane.showMessageDialog(null, "No se encontraron resultados.");
-            llenarTablaConDeps(depsTable, "", "", limiteLista);
         }
     }
 
@@ -337,7 +432,7 @@ public class ListAndSchDepositos extends javax.swing.JFrame implements funtionsC
     private javax.swing.JTextField ProvinciaTxt;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnPreview;
-    public javax.swing.JTable depsTable;
+    private javax.swing.JTable depsTable;
     private javax.swing.JTextField descTxt;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -353,6 +448,7 @@ public class ListAndSchDepositos extends javax.swing.JFrame implements funtionsC
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton newBtn;
     // End of variables declaration//GEN-END:variables
 
 }

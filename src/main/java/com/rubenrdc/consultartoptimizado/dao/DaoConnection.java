@@ -39,7 +39,7 @@ public class DaoConnection {
         return conectar;
 
     }
-    
+
     public int RetornarId(String Consulta) {
         int id = 0;
         try {
@@ -85,13 +85,13 @@ public class DaoConnection {
             PreparedStatement ps = conectar.prepareStatement(Query);
             int index = 1;
             for (String param : params) {
-                ps.setString(index, param);
+                ps.setString(index, NullOrTxT(param));
                 index++;
             }
             int rs = ps.executeUpdate();
             return rs > 0;
         } catch (SQLException ex) {
-
+            System.out.println(ex);
         }
         return false;
     }
@@ -102,7 +102,7 @@ public class DaoConnection {
             int index = 1;
             if (params != null) {
                 for (String param : params) {
-                    ps.setString(index, param);
+                    ps.setString(index, NullOrTxT(param));
                     index++;
                 }
             }
@@ -110,6 +110,15 @@ public class DaoConnection {
             return rs;
         } catch (SQLException ex) {
 
+        }
+        return null;
+    }
+
+    private String NullOrTxT(String txt) {//Filtro de Texto, Si la cadena no tiene caracteres, se reemplaza por nulo.
+        if (txt != null) {
+            if (txt.length() > 0) {
+                return txt;
+            }
         }
         return null;
     }

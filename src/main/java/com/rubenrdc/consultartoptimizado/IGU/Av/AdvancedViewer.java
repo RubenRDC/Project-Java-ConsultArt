@@ -249,8 +249,7 @@ public class AdvancedViewer extends javax.swing.JFrame implements funtionsCom {
         if (editArtBtn.isEnabled()) {
             bajaArtBtn.setEnabled(false);
             altaArt2 = null;
-            int indexList = listArts.artsTable.getSelectedRow();
-            altaArt2 = new UpAndEditArt(1, listArts.lista.get(indexList));
+            altaArt2 = new UpAndEditArt(1, listArts.lista.get(listArts.artsTable.getSelectedRow()));
             showPanel(altaArt2, 521, 472, 0, 0, content);
 
             altaArt2.editUbicBtn.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -264,8 +263,7 @@ public class AdvancedViewer extends javax.swing.JFrame implements funtionsCom {
     private void bajaArtBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bajaArtBtnActionPerformed
 
         if (bajaArtBtn.isEnabled()) {
-
-            int idArt = Integer.parseInt((listArts.artsTable.getValueAt(listArts.artsTable.getSelectedRow(), 0)).toString());
+            int idArt = (listArts.lista.get(listArts.artsTable.getSelectedRow()).getId());
             int input = javax.swing.JOptionPane.showConfirmDialog(null,
                     "Estas seguro que desea eliminar el articulo seleccionada?", "Eliminar Articulo", javax.swing.JOptionPane.YES_NO_OPTION);
             if (input == 0) {//yes
@@ -280,8 +278,7 @@ public class AdvancedViewer extends javax.swing.JFrame implements funtionsCom {
         if (altaArt2.editUbicBtn.isDisplayable()) {
 
             editarUbicArt = null;
-            int indexSelectedRow = listArts.artsTable.getSelectedRow();
-            editarUbicArt = new EditUbics(listArts.lista.get(indexSelectedRow));
+            editarUbicArt = new EditUbics(listArts.lista.get(listArts.artsTable.getSelectedRow()));
             showPanel(editarUbicArt, 521, 472, 0, 0, content);
 
             editarUbicArt.previusPageExt.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -306,7 +303,6 @@ public class AdvancedViewer extends javax.swing.JFrame implements funtionsCom {
         editArtBtn.setEnabled(false);
         bajaArtBtn.setEnabled(false);
         if (selectedRow > -1) {
-
             editArtBtn.setEnabled(true);
             bajaArtBtn.setEnabled(true);
         }
