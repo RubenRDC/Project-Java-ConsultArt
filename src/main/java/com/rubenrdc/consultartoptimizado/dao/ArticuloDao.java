@@ -7,8 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import javax.swing.JOptionPane;
-
 /**
  *
  * @author Ruben
@@ -17,6 +15,7 @@ public class ArticuloDao implements funtionsCom {
 
     private static List<String> paramsSql = new ArrayList<>(), datosArt = new ArrayList<>();
     private static DaoConnection abc = new DaoConnection();
+    private static String query = "";
 
     public ArticuloDao() {
     }
@@ -78,90 +77,50 @@ public class ArticuloDao implements funtionsCom {
         return null;
     }
 
-    public static void addArticulo(Articulo varArt) {
-
-        datosArt.add(0, varArt.getCodigo());
-        datosArt.add(1, varArt.getDesc());
-        datosArt.add(2, varArt.getFoto());
-
-        boolean exito = UpOrDelectOrInsert(datosArt);
-        if (exito) {
-            JOptionPane.showMessageDialog(null, "Operacion realizada con exito.", "Exito!!", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            JOptionPane.showMessageDialog(null, "Ha Ocurrido un Error a la hora de realizar la operacion solicitada.", "ERROR", JOptionPane.ERROR_MESSAGE);
-        }
-        datosArt.clear();
-    }
-
-    public static void updateArticulo(Articulo varArt) {
-
-        datosArt.add(0, varArt.getCodigo());
-        datosArt.add(1, varArt.getDesc());
-        datosArt.add(2, varArt.getFoto());
-        datosArt.add(3, String.valueOf(varArt.getId()));
-
-        boolean exito = UpOrDelectOrInsert(datosArt);
-        if (exito) {
-            JOptionPane.showMessageDialog(null, "Operacion realizada con exito.", "Exito!!", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            JOptionPane.showMessageDialog(null, "Ha Ocurrido un Error a la hora de realizar la operacion solicitada.", "ERROR", JOptionPane.ERROR_MESSAGE);
-        }
-        datosArt.clear();
-    }
-
-    public static void eliminarArt(int idArt) {
-        boolean exito = false;
-        datosArt.add(String.valueOf(idArt));
-        exito = UpOrDelectOrInsert(datosArt);
-
-        datosArt.clear();
-        if (exito) {
-            JOptionPane.showMessageDialog(null, "Operacion realizada con exito.", "Exito!!", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            JOptionPane.showMessageDialog(null, "Ha Ocurrido un Error a la hora de realizar la operacion solicitada.", "ERROR", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
-    private static boolean UpOrDelectOrInsert(List<String> datosArt) {
-        String query = "";
-        boolean exito = false;
+    public static boolean addArticulo(Articulo varArt) {
         if (abc.ExtablecerC() != null) {
-            if (datosArt.size() == 4) {
-                query = "UPDATE articulos SET codigo = ? ,descripcion = ? ,foto = ? WHERE id = ? ;";
-                return abc.GenericUpdate(query, datosArt);
-            }
-
-            if (datosArt.size() == 3) {
-                query = "INSERT INTO articulos (codigo,descripcion,foto) VALUES (?,?,?);";
-                return abc.GenericUpdate(query, datosArt);
-            }
-
-            if (datosArt.size() == 1) {
-                query = "SELECT id FROM ubicaciones WHERE idArt = ?";
-                int idArt = Integer.parseInt(datosArt.get(0));
-                ResultSet rs = abc.QueryById(query, idArt);
-
-                try {
-
-                    while (rs.next()) {
-                        paramsSql.add(rs.getString("id"));
-
-                        query = "DELETE FROM ubicacion_extra WHERE idUbic = ?";
-                        abc.GenericUpdate(query, paramsSql);
-
-                        query = "DELETE FROM ubicaciones WHERE id = ?";
-                        abc.GenericUpdate(query, paramsSql);
-                    }
-                    query = "DELETE FROM articulos WHERE id = ?";
-                    exito = abc.GenericUpdate(query, datosArt);
-
-                } catch (SQLException ex) {
-
-                }
-            }
-            paramsSql.clear();
+            boolean exito;
+            query = "INSERT INTO articulos (codigo,descripcion,foto) VALUES (?,?,?);";
+            datosArt.add(0, varArt.getCodigo());
+            datosArt.add(1, varArt.getDesc());
+            datosArt.add(2, varArt.getFoto());
+            exito = abc.GenericUpdate(query, datosArt);
+            
             abc.getCloseC();
+            datosArt.clear();
+            return exito;
         }
-        return exito;
+        return false;
+    }
+
+    public static boolean updateArticulo(Articulo varArt) {
+        if (abc.ExtablecerC() != null) {
+            query = "UPDATE articulos SET codigo = ? ,descripcion = ? ,foto = ? WHERE id = ? ;";
+            boolean exito;
+            datosArt.add(0, varArt.getCodigo());
+            datosArt.add(1, varArt.getDesc());
+            datosArt.add(2, varArt.getFoto());
+            datosArt.add(3, String.valueOf(varArt.getId()));
+            exito = abc.GenericUpdate(query, datosArt);
+            
+            abc.getCloseC();
+            datosArt.clear();
+            return exito;
+        }
+        return false;
+    }
+
+    public static boolean eliminarArt(int idArt) {
+        if (abc.ExtablecerC() != null) {
+            boolean exito;
+            query = "DELETE FROM articulos WHERE id = ?";
+            datosArt.add(String.valueOf(idArt));
+            exito = abc.GenericUpdate(query, datosArt);
+            
+            abc.getCloseC();
+            datosArt.clear();
+            return exito;
+        }
+        return false;
     }
 }

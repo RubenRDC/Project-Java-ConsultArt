@@ -3,6 +3,7 @@ package com.rubenrdc.consultartoptimizado.IGU.Av;
 import com.rubenrdc.consultartoptimizado.dao.ArticuloDao;
 import com.rubenrdc.consultartoptimizado.funtionsComp.funtionsCom;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -267,7 +268,11 @@ public class AdvancedViewer extends javax.swing.JFrame implements funtionsCom {
             int input = javax.swing.JOptionPane.showConfirmDialog(null,
                     "Estas seguro que desea eliminar el articulo seleccionada?", "Eliminar Articulo", javax.swing.JOptionPane.YES_NO_OPTION);
             if (input == 0) {//yes
-                eliminarArt(idArt);
+                if (ArticuloDao.eliminarArt(idArt)) {
+                    JOptionPane.showMessageDialog(null, "Operacion realizada con exito.", "Exito!!", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Ha Ocurrido un Error a la hora de realizar la operacion solicitada.", "ERROR", JOptionPane.ERROR_MESSAGE);
+                }
                 listArts.llenarTablaConArt(listArts.artsTable, "", listArts.limitList);
             }
         }
@@ -306,10 +311,6 @@ public class AdvancedViewer extends javax.swing.JFrame implements funtionsCom {
             editArtBtn.setEnabled(true);
             bajaArtBtn.setEnabled(true);
         }
-    }
-
-    private void eliminarArt(int idArt) {
-        ArticuloDao.eliminarArt(idArt);
     }
 
 

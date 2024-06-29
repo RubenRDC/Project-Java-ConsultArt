@@ -9,7 +9,7 @@ import javax.swing.JOptionPane;
  *
  * @author Ruben
  */
-public class UpAndEditArt extends javax.swing.JPanel implements funtionsCom{
+public class UpAndEditArt extends javax.swing.JPanel implements funtionsCom {
 
     private int tipo, idArt;
     private Articulo ObjetoArticulo;
@@ -27,7 +27,7 @@ public class UpAndEditArt extends javax.swing.JPanel implements funtionsCom{
         this.tipo = tipo;
         this.idArt = ObjetoArticulo.getId();
         this.ObjetoArticulo = ObjetoArticulo;
-        
+
         codigotxt.setText(ObjetoArticulo.getCodigo());
         descTxt.setText(ObjetoArticulo.getDesc());
         fotoUrlTxt.setText(ObjetoArticulo.getFoto());
@@ -466,13 +466,18 @@ public class UpAndEditArt extends javax.swing.JPanel implements funtionsCom{
                     foto = foto.replace("https://", "");
                 } else if (foto.contains("http://")) {
                     foto = foto.replace("http://", "");
-                }else{
-                    foto = foto.replace("*","");
+                } else {
+                    foto = foto.replace("*", "");
                 }
                 if (tipo == 0) {//Add Articulo
                     if (ArticuloDao.StrictSearchArt(codigo) == null) {//Si encuentra algun articulo que consida el codigo que se intenta dar de alta no avanzara el programa advirtiendo de que el codigo ya existe.
                         ObjetoArticulo = new Articulo(0, codigo, descripcion, foto);
-                        ArticuloDao.addArticulo(ObjetoArticulo);
+
+                        if (ArticuloDao.addArticulo(ObjetoArticulo)) {
+                            JOptionPane.showMessageDialog(null, "Operacion realizada con exito.", "Exito!!", JOptionPane.INFORMATION_MESSAGE);
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Ha Ocurrido un Error a la hora de realizar la operacion solicitada.", "ERROR", JOptionPane.ERROR_MESSAGE);
+                        }
 
                         codigotxt.setText("");
                         descTxt.setText("");
@@ -486,7 +491,11 @@ public class UpAndEditArt extends javax.swing.JPanel implements funtionsCom{
                     ObjetoArticulo.setDesc(descripcion);
                     ObjetoArticulo.setFoto(foto);
 
-                    ArticuloDao.updateArticulo(ObjetoArticulo);
+                    if (ArticuloDao.updateArticulo(ObjetoArticulo)) {
+                        JOptionPane.showMessageDialog(null, "Operacion realizada con exito.", "Exito!!", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Ha Ocurrido un Error a la hora de realizar la operacion solicitada.", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "La URL ingresada debe de contener una imagen en formato JPG o PNG\nEn caso de que la URL termine en '.webp' o otro formato, reemplazar por el formato permitido. ", "Advertencia!", JOptionPane.ERROR_MESSAGE);
