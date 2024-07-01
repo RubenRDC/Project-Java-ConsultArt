@@ -1,6 +1,5 @@
 package com.rubenrdc.consultartoptimizado.IGU.Av;
 
-import com.rubenrdc.consultartoptimizado.dao.DaoConnection;
 import com.rubenrdc.consultartoptimizado.dao.UbicacionExtraDao;
 import com.rubenrdc.consultartoptimizado.dao.UbicacionPrincDao;
 import com.rubenrdc.consultartoptimizado.models.UbicacionExtra;
@@ -8,8 +7,6 @@ import com.rubenrdc.consultartoptimizado.models.UbicacionPrincipal;
 import com.rubenrdc.consultartoptimizado.models.interfaces.funtionsCom;
 import com.rubenrdc.consultartoptimizado.models.interfaces.DialogsFunt;
 import com.rubenrdc.consultartoptimizado.models.modelAbstract.Ubicaciones;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
@@ -17,10 +14,8 @@ import java.util.List;
  */
 public class EditUbic extends javax.swing.JPanel implements funtionsCom, DialogsFunt {
 
-    private int stock, idUbic, tipoUbicacion, tipoVentana, idArt;
+    private int tipoUbicacion, tipoVentana;
     private String s = "", p = "", e = "", c = "", a = "";
-    private DaoConnection dao = new DaoConnection();
-    private List<String> paramsSQL = new ArrayList<>();
     public static final int PRINCIPAL = 0, EXTRA = 1, ADD = 0, EDIT = 1;
     private Ubicaciones Ubic;
 
@@ -272,7 +267,6 @@ public class EditUbic extends javax.swing.JPanel implements funtionsCom, Dialogs
         e = String.valueOf(SelEstante.getValue());
         c = String.valueOf(SelCajon.getValue());
         a = String.valueOf(SelAltura.getValue());
-        stock = (int) stocktxt.getValue();
 
         if (p.length() < 2) {
             p = "0" + p;
