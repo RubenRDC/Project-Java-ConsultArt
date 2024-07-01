@@ -58,7 +58,6 @@ public interface funtionsCom {
 
     default public <T extends Exportables> void llenarTabla(javax.swing.JTable tb, List<T> lista) {
         //No se va a llamar a este metodo si la lista esta vacia.
-        ClearTable(tb);
         javax.swing.table.DefaultTableModel dm = (javax.swing.table.DefaultTableModel) (tb.getModel());
         for (int i = 0; i < lista.size(); i++) {
             dm.addRow(lista.get(i).getRow());

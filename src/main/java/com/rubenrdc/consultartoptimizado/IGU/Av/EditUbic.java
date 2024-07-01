@@ -1,8 +1,13 @@
 package com.rubenrdc.consultartoptimizado.IGU.Av;
 
 import com.rubenrdc.consultartoptimizado.dao.DaoConnection;
+import com.rubenrdc.consultartoptimizado.dao.UbicacionExtraDao;
+import com.rubenrdc.consultartoptimizado.dao.UbicacionPrincDao;
+import com.rubenrdc.consultartoptimizado.models.UbicacionExtra;
+import com.rubenrdc.consultartoptimizado.models.UbicacionPrincipal;
 import com.rubenrdc.consultartoptimizado.models.interfaces.funtionsCom;
 import com.rubenrdc.consultartoptimizado.models.interfaces.DialogsFunt;
+import com.rubenrdc.consultartoptimizado.models.modelAbstract.Ubicaciones;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,49 +15,40 @@ import java.util.List;
  *
  * @author Ruben
  */
-public class EditUbic extends javax.swing.JPanel implements funtionsCom,DialogsFunt {
+public class EditUbic extends javax.swing.JPanel implements funtionsCom, DialogsFunt {
 
-    private int stock, idUbic, tipoU, tipoV, idArt;
-    private String s = "", p = "", e = "", c = "", a = "", ubicC, Dep;
+    private int stock, idUbic, tipoUbicacion, tipoVentana, idArt;
+    private String s = "", p = "", e = "", c = "", a = "";
     private DaoConnection dao = new DaoConnection();
     private List<String> paramsSQL = new ArrayList<>();
     public static final int PRINCIPAL = 0, EXTRA = 1, ADD = 0, EDIT = 1;
+    private Ubicaciones Ubic;
 
-    /**
-     *
-     *
-     * @param idArt
-     * @param idUbic
-     * @param Dep Deposito
-     * @param tipoV Tipo de Ventana(0-Add | 1-Edit)
-     * @param tipoU Tipo de Ubicacion(0-Principal | 1-Extra)
-     */
-    public EditUbic(int idArt, int idUbic, String Dep, int tipoV, int tipoU) {
+    public <T extends Ubicaciones> EditUbic(T Ubic, int tipoVentana, int tipoUbicacion) {
         initComponents();
-        if (tipoU == PRINCIPAL) {
-            if (tipoV == ADD) {
+        this.Ubic = Ubic;
+        this.tipoUbicacion = tipoUbicacion;
+        this.tipoVentana = tipoVentana;
+
+        if (tipoUbicacion == PRINCIPAL) {
+            if (tipoVentana == ADD) {
                 titletxt.setText("Agregar Ubicacion Principal");
-            } else if (tipoV == EDIT) {
+            } else if (tipoVentana == EDIT) {
                 titletxt.setText("Editar Ubicacion Principal");
-                ObtenerUbic(idUbic, tipoU);
+                setCampos(Ubic);
             }
-        } else if (tipoU == EXTRA) {
+        } else if (tipoUbicacion == EXTRA) {
             stocktxt.setEnabled(false);
             stocktxt.setToolTipText("La asignacion o correccion del Stock solo se encuentra disponible el alta o edicion de la ubicacion principal de cada deposito.");
-            if (tipoV == ADD) {
+            if (tipoVentana == ADD) {
                 titletxt.setText("Agregar Ubicacion Extra");
 
-            } else if (tipoV == EDIT) {
+            } else if (tipoVentana == EDIT) {
                 titletxt.setText("Editar Ubicacion Extra");
-                ObtenerUbic(idUbic, tipoU);
+                setCampos(Ubic);
             }
         }
-        this.idUbic = idUbic;
-        this.tipoU = tipoU;//tipo Ubicacion (Principal)
-        this.tipoV = tipoV;//ti´p
-        this.idArt = idArt;
 
-        this.Dep = Dep;
     }
 
     public EditUbic() {
@@ -211,136 +207,89 @@ public class EditUbic extends javax.swing.JPanel implements funtionsCom,DialogsF
 
     private void sendInfoBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_sendInfoBtnMouseClicked
         if (sendInfoBtn.isEnabled()) {
-            boolean exito = false;
-            String querys = "";
-            if (dao.ExtablecerC() != null) {
+                setCampsInUbic(Ubic);
 
-                s = SelSector.getValue().toString();
-                p = String.valueOf(SelPasillo.getValue());
-                e = String.valueOf(SelEstante.getValue());
-                c = String.valueOf(SelCajon.getValue());
-                a = String.valueOf(SelAltura.getValue());
-                stock = (int) stocktxt.getValue();
-
-                if (p.length() < 2) {
-                    p = "0" + p;
-                }
-                if (e.length() < 2) {
-                    e = "0" + e;
-                }
-                if (c.length() < 2) {
-                    c = "0" + c;
-                }
-
-                ubicC = s + p + "-" + e + c + "-" + a;
-
-                if (tipoU == 0) {//Tipo Ubicacion Principal
-                    if (tipoV == 0) {
+                if (tipoUbicacion == PRINCIPAL) {//Tipo Ubicacion Principal
+                    if (tipoVentana == ADD) {
                         //Tipo Ventana de Add Ubicacion
-                        String ObtenerIdDep = String.format("SELECT id FROM depositos WHERE descrip = \"%s\"", Dep);
-                        int idDep = dao.RetornarId(ObtenerIdDep);
-                        paramsSQL.add(0, String.valueOf(idArt));
-                        paramsSQL.add(1, String.valueOf(idDep));
-                        paramsSQL.add(2, String.valueOf(stock));
-                        paramsSQL.add(3, ubicC);
-                        querys = "INSERT INTO ubicaciones (idArt,idDep,exist, ubic) VALUES (?,?,?,?)";
-                        exito = dao.GenericUpdate(querys, paramsSQL);
+                        msgInfoOperation(UbicacionPrincDao.AddUbicP((UbicacionPrincipal) Ubic));
 
-                    } else if (tipoV == 1) {
+                    } else if (tipoVentana == EDIT) {
                         //Tipo Ventana de Edit Ubicacion
-                        paramsSQL.add(0, String.valueOf(stock));
-                        paramsSQL.add(1, ubicC);
-                        paramsSQL.add(2, String.valueOf(idUbic));
-                        querys = "UPDATE ubicaciones SET exist = ?,ubic = ? WHERE id=?";
-                        exito = dao.GenericUpdate(querys, paramsSQL);
-                        //System.out.println("Tipo Ventana de Edit Ubicacion Principal");
+                        msgInfoOperation(UbicacionPrincDao.UpdateUbicP((UbicacionPrincipal) Ubic));
                     }
-                } else if (tipoU == 1) {//Tipo Ubicacion Extra
-                    if (tipoV == 0) {
+                } else if (tipoUbicacion == EXTRA) {//Tipo Ubicacion Extra
+                    if (tipoVentana == ADD) {
                         //Agregar
-                        querys = "INSERT INTO ubicacion_extra (idUbic,ubic) VALUES (?,?)";
-
-                        paramsSQL.add(0, String.valueOf(idUbic));
-                        paramsSQL.add(1, ubicC);
-
-                        exito = dao.GenericUpdate(querys, paramsSQL);
-                        //System.out.println("Tipo Ventana de Add Ubicacion Extra");
-                    } else if (tipoV == 1) {
+                        msgInfoOperation(UbicacionExtraDao.AddUbicExtra((UbicacionExtra) Ubic));
+                    } else if (tipoVentana == EDIT) {
                         //Editar
-                        querys = "UPDATE ubicacion_extra SET ubic = ? WHERE id = ?";
-                        paramsSQL.add(0, ubicC);
-                        paramsSQL.add(1, String.valueOf(idUbic));
-                        exito = dao.GenericUpdate(querys, paramsSQL);
-                        //System.out.println("Tipo Ventana de Edit Ubicacion Extra");
+                        msgInfoOperation(UbicacionExtraDao.UpdateUbicExtra((UbicacionExtra) Ubic));
                     }
                 }
+                setPanelEnabled(jPanel4, false);
+                setPanelEnabled(jPanel5, false);
+                sendInfoBtn.setEnabled(false);
 
-                if (exito) {
-                    setPanelEnabled(jPanel4, false);
-                    setPanelEnabled(jPanel5, false);
-                    sendInfoBtn.setEnabled(false);
-
-                    msgInfoOperation(exito);
-                } else {
-                    msgInfoOperation(exito);
-                }
-                querys = null;
-                paramsSQL.clear();
-                dao.getCloseC();
-            }
 
         }
     }//GEN-LAST:event_sendInfoBtnMouseClicked
 
-    private void ObtenerUbic(int id, int tipoUbicacion) {
-        if (dao.ExtablecerC() != null) {
-            String consulta = "";
-            if (tipoUbicacion == 0) {//Si es una ubicacion principal
-                consulta = String.format("SELECT * FROM ubicaciones WHERE id = ?");
-            } else if (tipoUbicacion == 1) {//Si es una ubicacion extra
-                consulta = String.format("SELECT * FROM ubicacion_extra WHERE id = ?");
+    private <T extends Ubicaciones> void setCampos(T Ubicacion) {
+
+        String UbicConcat = Ubicacion.getConcatUbic();
+        for (int i = 0; i < UbicConcat.length(); i++) {
+            if (i == 0) {
+                s = String.valueOf(UbicConcat.charAt(i));
             }
-            String Ubic = "";
-            java.sql.ResultSet rs = dao.QueryById(consulta, id);
-            try {
-                if (rs.next()) {
-                    Ubic = rs.getString("ubic");
-                    stock = rs.getInt("exist");
-                    //System.out.println("stock "+ stock);
-                }
-
-            } catch (java.sql.SQLException ex) {
-
+            if (i > 0 && i < 3) {
+                p += String.valueOf(UbicConcat.charAt(i));
             }
-
-            for (int i = 0; i < Ubic.length(); i++) {
-                if (i == 0) {
-                    s = String.valueOf(Ubic.charAt(i));
-                }
-                if (i > 0 && i < 3) {
-                    p += String.valueOf(Ubic.charAt(i));
-                }
-                if (i > 3 && i < 6) {
-                    e += String.valueOf(Ubic.charAt(i));
-                }
-                if (i > 5 && i < 8) {
-                    c += String.valueOf(Ubic.charAt(i));
-                }
-                if (i > 8) {
-                    a += String.valueOf(Ubic.charAt(i));
-                }
+            if (i > 3 && i < 6) {
+                e += String.valueOf(UbicConcat.charAt(i));
             }
-
-            stocktxt.setValue(stock);
-            SelSector.setValue(s);
-            SelPasillo.setValue(Integer.valueOf(p));
-            SelEstante.setValue(Integer.valueOf(e));
-            SelCajon.setValue(Integer.valueOf(c));
-            SelAltura.setValue(Integer.valueOf(a));
-
-            consulta = null;
-            dao.getCloseC();
+            if (i > 5 && i < 8) {
+                c += String.valueOf(UbicConcat.charAt(i));
+            }
+            if (i > 8) {
+                a += String.valueOf(UbicConcat.charAt(i));
+            }
         }
+        if (tipoUbicacion == PRINCIPAL) {
+            stocktxt.setValue(((UbicacionPrincipal) Ubicacion).getExist());
+        }
+        SelSector.setValue(s);
+        SelPasillo.setValue(Integer.valueOf(p));
+        SelEstante.setValue(Integer.valueOf(e));
+        SelCajon.setValue(Integer.valueOf(c));
+        SelAltura.setValue(Integer.valueOf(a));
+    }
+
+    private <T extends Ubicaciones> void setCampsInUbic(T Ubicacion) {
+
+        s = SelSector.getValue().toString();
+        p = String.valueOf(SelPasillo.getValue());
+        e = String.valueOf(SelEstante.getValue());
+        c = String.valueOf(SelCajon.getValue());
+        a = String.valueOf(SelAltura.getValue());
+        stock = (int) stocktxt.getValue();
+
+        if (p.length() < 2) {
+            p = "0" + p;
+        }
+        if (e.length() < 2) {
+            e = "0" + e;
+        }
+        if (c.length() < 2) {
+            c = "0" + c;
+        }
+
+        Ubicacion.setConcatUbic((s + p + "-" + e + c + "-" + a));
+
+        if (tipoUbicacion == PRINCIPAL) {
+            ((UbicacionPrincipal) Ubicacion).setExist((int) stocktxt.getValue());
+        }
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

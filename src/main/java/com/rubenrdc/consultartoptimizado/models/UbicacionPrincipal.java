@@ -1,6 +1,7 @@
 package com.rubenrdc.consultartoptimizado.models;
 
 import com.rubenrdc.consultartoptimizado.models.interfaces.Exportables;
+import com.rubenrdc.consultartoptimizado.models.modelAbstract.Ubicaciones;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,28 +9,32 @@ import java.util.List;
  *
  * @author Ruben
  */
-public class UbicacionPrincipal implements Exportables {
+public class UbicacionPrincipal extends Ubicaciones implements Exportables {
 
-    private int id;
-    private int pasillo, estante, cajon, altura;
+    private int id,idArt,idDep,exist;
     private List<UbicacionExtra> ListUbicacionesExtras;
     private String concatUbic;
     private Object[] row = new Object[2];
     private String[] RowAtributos = new String[2];
 
-    public UbicacionPrincipal(int id, int pasillo, int estante, int cajon, int altura, List<UbicacionExtra> ListUbicacionesExtras) {
+    public UbicacionPrincipal(int id,int idArt,int idDep,int exist, String concatUbic, List<UbicacionExtra> ListUbicacionesExtras) {//Proposito General
         this.id = id;
-        this.pasillo = pasillo;
-        this.estante = estante;
-        this.cajon = cajon;
-        this.altura = altura;
-        this.ListUbicacionesExtras = ListUbicacionesExtras;
-    }
-
-    public UbicacionPrincipal(int id, String concatUbic, List<UbicacionExtra> ListUbicacionesExtras) {
-        this.id = id;
+        this.idArt=idArt;
+        this.idDep=idDep;
+        this.exist=exist;
         this.concatUbic = concatUbic;
         this.ListUbicacionesExtras = ListUbicacionesExtras;
+    }
+    public UbicacionPrincipal(int id,int exist, String concatUbic) {//Para Update
+        this.id=id;
+        this.exist=exist;
+        this.concatUbic = concatUbic;
+    }
+    public UbicacionPrincipal(int idArt,int idDep,int exist, String concatUbic) {//Para Insert
+        this.idArt=idArt;
+        this.idDep=idDep;
+        this.exist=exist;
+        this.concatUbic = concatUbic;
     }
 
     public int getId() {
@@ -38,38 +43,6 @@ public class UbicacionPrincipal implements Exportables {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getPasillo() {
-        return pasillo;
-    }
-
-    public void setPasillo(int pasillo) {
-        this.pasillo = pasillo;
-    }
-
-    public int getEstante() {
-        return estante;
-    }
-
-    public void setEstante(int estante) {
-        this.estante = estante;
-    }
-
-    public int getCajon() {
-        return cajon;
-    }
-
-    public void setCajon(int cajon) {
-        this.cajon = cajon;
-    }
-
-    public int getAltura() {
-        return altura;
-    }
-
-    public void setAltura(int altura) {
-        this.altura = altura;
     }
 
     public List<UbicacionExtra> getListUbicacionesExtras() {
@@ -121,4 +94,28 @@ public class UbicacionPrincipal implements Exportables {
         return RowAtributos;
     }
 
+    public int getIdArt() {
+        return idArt;
+    }
+
+    public void setIdArt(int idArt) {
+        this.idArt = idArt;
+    }
+
+    public int getIdDep() {
+        return idDep;
+    }
+
+    public void setIdDep(int idDep) {
+        this.idDep = idDep;
+    }
+
+    public int getExist() {
+        return exist;
+    }
+
+    public void setExist(int stock) {
+        this.exist = stock;
+    }
+    
 }

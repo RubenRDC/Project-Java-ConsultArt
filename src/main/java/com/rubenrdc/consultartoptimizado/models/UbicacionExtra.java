@@ -1,34 +1,26 @@
 package com.rubenrdc.consultartoptimizado.models;
 
 import com.rubenrdc.consultartoptimizado.models.interfaces.Exportables;
+import com.rubenrdc.consultartoptimizado.models.modelAbstract.Ubicaciones;
 
 /**
  *
  * @author Ruben
  */
-public class UbicacionExtra implements Exportables{
+public class UbicacionExtra extends Ubicaciones implements Exportables{
 
-    private int id;
-    private int idUbicacionPrincipal;
-    private char sector;
-    private int pasillo, estante, cajon, altura;
+    private int id,idUbicP;
     private Object[] row = new Object[2];
     private String[] RowAtributos = new String[2];
-    
     private String concatUbic;
 
-    public UbicacionExtra(int id, int idUbicacionPrincipal, char sector, int pasillo, int estante, int cajon, int altura) {
-        this.id = id;
-        this.idUbicacionPrincipal = idUbicacionPrincipal;
-        this.sector = sector;
-        this.pasillo = pasillo;
-        this.estante = estante;
-        this.cajon = cajon;
-        this.altura = altura;
-    }
-
-    public UbicacionExtra(int id, String concatUbic) {
+    public UbicacionExtra(int id,int idUbicP, String concatUbic) {//Para uso general.
         this.id=id;
+        this.idUbicP=idUbicP;
+        this.concatUbic=concatUbic;
+    }
+    public UbicacionExtra(int idUbicP, String concatUbic) {//Para Inserts
+        this.idUbicP=idUbicP;
         this.concatUbic=concatUbic;
     }
 
@@ -40,46 +32,14 @@ public class UbicacionExtra implements Exportables{
         this.id = id;
     }
 
-    public int getIdUbicacionPrincipal() {
-        return idUbicacionPrincipal;
+    public int getIdUbicP() {
+        return idUbicP;
     }
 
-    public void setIdUbicacionPrincipal(int idUbicacionPrincipal) {
-        this.idUbicacionPrincipal = idUbicacionPrincipal;
+    public void setIdUbicP(int idUbicP) {
+        this.idUbicP = idUbicP;
     }
-
-    public int getPasillo() {
-        return pasillo;
-    }
-
-    public void setPasillo(int pasillo) {
-        this.pasillo = pasillo;
-    }
-
-    public int getEstante() {
-        return estante;
-    }
-
-    public void setEstante(int estante) {
-        this.estante = estante;
-    }
-
-    public int getCajon() {
-        return cajon;
-    }
-
-    public void setCajon(int cajon) {
-        this.cajon = cajon;
-    }
-
-    public int getAltura() {
-        return altura;
-    }
-
-    public void setAltura(int altura) {
-        this.altura = altura;
-    }
-
+    
     public String getConcatUbic() {
         return concatUbic;
     }
@@ -104,14 +64,6 @@ public class UbicacionExtra implements Exportables{
 
     public void setConcatUbic(String ConcatUbic) {
         this.concatUbic = ConcatUbic;
-    }
-
-    public char getSector() {
-        return sector;
-    }
-
-    public void setSector(char sector) {
-        this.sector = sector;
     }
     
     @Override

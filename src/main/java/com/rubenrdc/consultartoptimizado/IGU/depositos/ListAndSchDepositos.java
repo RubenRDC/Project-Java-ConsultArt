@@ -414,6 +414,7 @@ public class ListAndSchDepositos extends javax.swing.JFrame implements funtionsC
         }
     }//GEN-LAST:event_btnDeleteMouseClicked
     private void llenarTablaConDeps(javax.swing.JTable tb, String provincia, String desc, int limiteLista) {
+        ClearTable(tb);
         tb.getColumnModel().getColumn(0).setMaxWidth(20);
         lista = DepositosDao.getListDepsByTitleAndProv(provincia, desc, limiteLista);
         if (lista != null) {//La lista sera nula solo si no se pudo conectar a la base de datos.

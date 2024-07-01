@@ -4,6 +4,9 @@ import com.rubenrdc.consultartoptimizado.dao.ArticuloDao;
 import com.rubenrdc.consultartoptimizado.dao.DepositosDao;
 import com.rubenrdc.consultartoptimizado.models.interfaces.funtionsCom;
 import com.rubenrdc.consultartoptimizado.models.Articulo;
+import com.rubenrdc.consultartoptimizado.models.Deposito;
+import com.rubenrdc.consultartoptimizado.models.UbicacionExtra;
+import com.rubenrdc.consultartoptimizado.models.UbicacionPrincipal;
 import com.rubenrdc.consultartoptimizado.models.interfaces.Exportables;
 import java.util.List;
 import javax.swing.JTable;
@@ -15,14 +18,19 @@ import javax.swing.JTable;
 public class EditUbics extends javax.swing.JPanel implements funtionsCom {
 
     protected EditUbic addOeditUbic;
-    private int idArt, IdUbicP;
-    private Articulo Art;
+    private final int idArt;
+    private int IdUbicP;
+    private final Articulo Art;
     private String DepSelected;
+    private final List<Deposito> listaDeps;
 
     public EditUbics(Articulo Art) {
         this.Art = Art;
+        listaDeps=DepositosDao.getListDeps();
+        
         initComponents();
-        JComboBoxDepositos(listDeposito, DepositosDao.getListDeps());
+
+        JComboBoxDepositos(listDeposito,listaDeps);
         idArt = Art.getId();
         codigotxt.setText(Art.getCodigo());
         descTxt.setText(Art.getDesc());
@@ -394,6 +402,21 @@ public class EditUbics extends javax.swing.JPanel implements funtionsCom {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void tabUbPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabUbPMouseClicked
+        int selectedRow = tabUbP.getSelectedRow();
+
+        if (selectedRow != -1) {
+            tabUbEx.clearSelection();
+            editBtnP.setEnabled(true);
+            editBtnEx.setEnabled(false);
+            addBtnEx.setEnabled(false);
+        } else {
+            editBtnP.setEnabled(false);
+            editBtnEx.setEnabled(true);
+            addBtnEx.setEnabled(true);
+        }
+    }//GEN-LAST:event_tabUbPMouseClicked
+
     private void tabUbExMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabUbExMouseClicked
         int selectedRow = tabUbEx.getSelectedRow();
         addBtnEx.setEnabled(true);
@@ -410,71 +433,54 @@ public class EditUbics extends javax.swing.JPanel implements funtionsCom {
         }
     }//GEN-LAST:event_tabUbExMouseClicked
 
-    private void editBtnExMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editBtnExMouseClicked
-        if (editBtnEx.isEnabled()) {
-            int idUbicEx = Integer.parseInt((tabUbEx.getValueAt(tabUbEx.getSelectedRow(), 0)).toString());
-            DepSelected = listDeposito.getSelectedItem().toString();
-            addOeditUbic = new EditUbic(idArt, idUbicEx, DepSelected, EditUbic.EDIT, EditUbic.EXTRA);
-            jPanel1.setVisible(false);
-            ContentExtra.setVisible(true);
-            showPanel(addOeditUbic, 419, 390, 0, 0, jPanel3);
-        }
-    }//GEN-LAST:event_editBtnExMouseClicked
-
     private void addBtnExMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addBtnExMouseClicked
         if (addBtnEx.isEnabled()) {
             DepSelected = listDeposito.getSelectedItem().toString();
             IdUbicP = Art.getUbicacionPrincipal(DepSelected).get(0).getId();
-            addOeditUbic = new EditUbic(idArt, IdUbicP, DepSelected, EditUbic.ADD, EditUbic.EXTRA);
+            addOeditUbic = new EditUbic(new UbicacionExtra(IdUbicP,null), EditUbic.ADD, EditUbic.EXTRA);
             jPanel1.setVisible(false);
             ContentExtra.setVisible(true);
             showPanel(addOeditUbic, 419, 390, 0, 0, jPanel3);
         }
     }//GEN-LAST:event_addBtnExMouseClicked
 
-    private void tabUbPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabUbPMouseClicked
-        int selectedRow = tabUbP.getSelectedRow();
-
-        if (selectedRow != -1) {
-            tabUbEx.clearSelection();
-            editBtnP.setEnabled(true);
-            editBtnEx.setEnabled(false);
-            addBtnEx.setEnabled(false);
-        } else {
-            editBtnP.setEnabled(false);
-            editBtnEx.setEnabled(true);
-            addBtnEx.setEnabled(true);
-        }
-    }//GEN-LAST:event_tabUbPMouseClicked
-
-    private void editBtnPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editBtnPMouseClicked
-        int idUbicP = Integer.parseInt((tabUbP.getValueAt(tabUbP.getSelectedRow(), 0)).toString());
-
-        if (editBtnP.isEnabled()) {
-            DepSelected = listDeposito.getSelectedItem().toString();
-            addOeditUbic = new EditUbic(idArt, idUbicP, DepSelected, EditUbic.EDIT, EditUbic.PRINCIPAL);
+    private void editBtnExMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editBtnExMouseClicked
+        if (editBtnEx.isEnabled()) {
+            addOeditUbic = new EditUbic(Art.getUbicacionExtra(DepSelected).get(tabUbEx.getSelectedRow()), EditUbic.EDIT, EditUbic.EXTRA);
             jPanel1.setVisible(false);
             ContentExtra.setVisible(true);
             showPanel(addOeditUbic, 419, 390, 0, 0, jPanel3);
         }
-    }//GEN-LAST:event_editBtnPMouseClicked
+    }//GEN-LAST:event_editBtnExMouseClicked
 
     private void addBtnPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addBtnPMouseClicked
         if (addBtnP.isEnabled()) {
             DepSelected = listDeposito.getSelectedItem().toString();
-            addOeditUbic = new EditUbic(idArt, 0, DepSelected, EditUbic.ADD, EditUbic.PRINCIPAL);
+            int idDep = listaDeps.get(listDeposito.getSelectedIndex()).getId();
+            
+            addOeditUbic = new EditUbic(new UbicacionPrincipal(idArt,idDep,0,null), EditUbic.ADD, EditUbic.PRINCIPAL);
             jPanel1.setVisible(false);
             ContentExtra.setVisible(true);
             showPanel(addOeditUbic, 419, 390, 0, 0, jPanel3);
         }
     }//GEN-LAST:event_addBtnPMouseClicked
 
+    private void editBtnPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editBtnPMouseClicked
+        if (editBtnP.isEnabled()) {
+            DepSelected = listDeposito.getSelectedItem().toString();
+            addOeditUbic = new EditUbic(Art.getUbicacionPrincipal(DepSelected).get(tabUbP.getSelectedRow()), EditUbic.EDIT, EditUbic.PRINCIPAL);
+            jPanel1.setVisible(false);
+            ContentExtra.setVisible(true);
+            showPanel(addOeditUbic, 419, 390, 0, 0, jPanel3);
+        }
+    }//GEN-LAST:event_editBtnPMouseClicked
+
     private void listDepositoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_listDepositoItemStateChanged
 
         if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
-            String DepSelect = listDeposito.getSelectedItem().toString();
-            llenarTablaUbics(tabUbEx, Art.getUbicacionExtra(DepSelect));
-            llenarTablaUbics(tabUbP, Art.getUbicacionPrincipal(DepSelect));
+            DepSelected = listDeposito.getSelectedItem().toString();
+            llenarTablaUbics(tabUbEx, Art.getUbicacionExtra(DepSelected));
+            llenarTablaUbics(tabUbP, Art.getUbicacionPrincipal(DepSelected));
 
             if (tabUbP.getRowCount() == 0) {
                 addBtnP.setEnabled(true);
@@ -491,7 +497,7 @@ public class EditUbics extends javax.swing.JPanel implements funtionsCom {
     private void previusPageMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_previusPageMouseClicked
         if (previusPage.isVisible()) {
             addOeditUbic = null;
-            JComboBoxDepositos(listDeposito, DepositosDao.getListDeps());
+            JComboBoxDepositos(listDeposito, listaDeps);
             Art.setUbicacion(ArticuloDao.ObtenerUbicHashMap(Art));//Actualizo las ubicaciones del articulo q se esta editando.
             jPanel1.setVisible(true);
             ContentExtra.setVisible(false);
@@ -499,6 +505,7 @@ public class EditUbics extends javax.swing.JPanel implements funtionsCom {
     }//GEN-LAST:event_previusPageMouseClicked
 
     public <T extends Exportables> void llenarTablaUbics(JTable tb, List<T> a) {
+        ClearTable(tb);
         tb.clearSelection();
         tb.getColumnModel().getColumn(0).setMaxWidth(20);
         if (a != null) {
