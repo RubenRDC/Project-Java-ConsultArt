@@ -20,7 +20,6 @@ public interface funtionsCom {
             }
         }
     }
-
     default public void ClearTable(javax.swing.JTable jTable) {
         javax.swing.table.DefaultTableModel dm = (javax.swing.table.DefaultTableModel) (jTable.getModel());
         dm.setNumRows(0);
@@ -35,28 +34,7 @@ public interface funtionsCom {
         }
     }
 
-    default public void llenarTabla(javax.swing.JTable jT, String[][] matrixContents, int columns) {
-        ClearTable(jT);
-
-        javax.swing.table.DefaultTableModel dm = (javax.swing.table.DefaultTableModel) (jT.getModel());
-        if (matrixContents != null) {
-            String Rows[] = new String[columns];
-            for (String[] matrixContent : matrixContents) {
-                //El primer elemento del Array No puede ser Nulo;
-                if (matrixContent[0] != null) {
-                    for (int j = 0; j < columns; j++) {
-                        Rows[j] = matrixContent[j];
-                    }
-                    dm.addRow(Rows);
-                } else {
-                    break;
-                }
-            }
-            jT.setModel(dm);
-        }
-    }
-
-    default public <T extends Exportables> void llenarTabla(javax.swing.JTable tb, List<T> lista) {
+    default public <T extends Exportable> void llenarTabla(javax.swing.JTable tb, List<T> lista) {
         //No se va a llamar a este metodo si la lista esta vacia.
         javax.swing.table.DefaultTableModel dm = (javax.swing.table.DefaultTableModel) (tb.getModel());
         for (int i = 0; i < lista.size(); i++) {

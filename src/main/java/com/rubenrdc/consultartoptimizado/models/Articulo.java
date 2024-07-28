@@ -1,6 +1,6 @@
 package com.rubenrdc.consultartoptimizado.models;
 
-import com.rubenrdc.consultartoptimizado.models.interfaces.Exportables;
+import com.rubenrdc.consultartoptimizado.models.interfaces.Exportable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,14 +9,13 @@ import java.util.List;
  *
  * @author Ruben
  */
-public class Articulo implements Exportables {
+public class Articulo implements Exportable{
 
     private final int limitUbicExtra = 10, limitUbicP = 1;
     private int id;
     private String codigo, desc, foto, ubicConcat;
-    private String[][] stocks;
-    private Object[] row = new Object[4];
-    private String[] RowAtributos = new String[4];
+    private List<Object[]> stocks;
+    private final Object[] row = new Object[4];
     private HashMap Ubicacion;
 
     public Articulo(int idArt, String code, String desc, String foto) {
@@ -29,21 +28,13 @@ public class Articulo implements Exportables {
     public Articulo() {
     }
 
+    @Override
     public Object[] getRow() {
         row[0] = id;
         row[1] = codigo;
         row[2] = desc;
         row[3] = foto;
         return row;
-    }
-
-    public String[] getTitulosAtributos() {
-
-        RowAtributos[0] = "ID";
-        RowAtributos[1] = "Codigo";
-        RowAtributos[2] = "Descripcion";
-        RowAtributos[3] = "URL Foto";
-        return RowAtributos;
     }
 
     public int getId() {
@@ -78,11 +69,11 @@ public class Articulo implements Exportables {
         this.foto = foto;
     }
 
-    public String[][] getStocks() {
+    public List<Object[]> getStocks() {
         return stocks;
     }
 
-    public void setStocks(String[][] stocks) {
+    public void setStocks(List<Object[]> stocks) {
         this.stocks = stocks;
     }
 

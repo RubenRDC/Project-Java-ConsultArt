@@ -1,17 +1,16 @@
 package com.rubenrdc.consultartoptimizado.models;
 
-import com.rubenrdc.consultartoptimizado.models.interfaces.Exportables;
+import com.rubenrdc.consultartoptimizado.models.interfaces.Exportable;
 import com.rubenrdc.consultartoptimizado.models.modelAbstract.Ubicaciones;
 
 /**
  *
  * @author Ruben
  */
-public class UbicacionExtra extends Ubicaciones implements Exportables{
+public class UbicacionExtra extends Ubicaciones implements Exportable{
 
     private int id,idUbicP;
-    private Object[] row = new Object[2];
-    private String[] RowAtributos = new String[2];
+    private final Object[] row = new Object[2];
     private String concatUbic;
 
     public UbicacionExtra(int id,int idUbicP, String concatUbic) {//Para uso general.
@@ -40,6 +39,7 @@ public class UbicacionExtra extends Ubicaciones implements Exportables{
         this.idUbicP = idUbicP;
     }
     
+    @Override
     public String getConcatUbic() {
         return concatUbic;
     }
@@ -62,6 +62,7 @@ public class UbicacionExtra extends Ubicaciones implements Exportables{
         this.concatUbic = sector + p + "-" + e + c + "-" + a;
     }
 
+    @Override
     public void setConcatUbic(String ConcatUbic) {
         this.concatUbic = ConcatUbic;
     }
@@ -71,13 +72,5 @@ public class UbicacionExtra extends Ubicaciones implements Exportables{
         row[0] = id;
         row[1] = concatUbic;
         return row;
-    }
-
-    @Override
-    public String[] getTitulosAtributos() {
-
-        RowAtributos[0] = "ID";
-        RowAtributos[1] = "Ubicacion";
-        return RowAtributos;
     }
 }

@@ -6,6 +6,7 @@ import com.rubenrdc.consultartoptimizado.dao.ArticuloDao;
 import com.rubenrdc.consultartoptimizado.dao.DepositosDao;
 import com.rubenrdc.consultartoptimizado.models.interfaces.funtionsCom;
 import com.rubenrdc.consultartoptimizado.models.Articulo;
+import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -405,9 +406,9 @@ public class ConsArt extends javax.swing.JFrame implements funtionsCom {
                 Art = ArtDao.StrictSearchArt(c);
                 if (Art != null) {
                     descTxt.setText(Art.getDesc());
-                    llenarTabla(tablaStock, Art.getStocks(), 2);
+                    llenarStockTabla(tablaStock, Art.getStocks());
                     listDeposito.setVisible(true);
-                    JComboBoxDepositos(listDeposito,DepositosDao.getListDeps());
+                    JComboBoxDepositos(listDeposito, DepositosDao.getListDeps());
                     codigoTxt.setEnabled(false);
                     VerFoto.setEnabled(true);
                 } else {
@@ -432,7 +433,7 @@ public class ConsArt extends javax.swing.JFrame implements funtionsCom {
     private void listDepositoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_listDepositoItemStateChanged
         if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
             if (listDeposito.getItemCount() != 0) {
-               
+
                 ubicTxt.setText(Art.getUbicsConcat(listDeposito.getSelectedItem().toString()));
 
             }
@@ -444,13 +445,10 @@ public class ConsArt extends javax.swing.JFrame implements funtionsCom {
             Thread t = new Thread(new Runnable() {
                 public void run() {
                     lock.lock();
-                    String UrlFoto = null;
+                    String UrlFoto = Art.getFoto();
                     try {
                         VerFoto.setEnabled(false);
                         VerFoto.setText("...");
-                        if (!Art.getFoto().isEmpty()) {
-                            UrlFoto = Art.getFoto();
-                        }
                         if (imageV == null) {
                             imageV = new ImageViewer(UrlFoto);
                             pinterJFrame(imageV, true, null, false);
@@ -528,6 +526,19 @@ public class ConsArt extends javax.swing.JFrame implements funtionsCom {
         ClearTable(tablaStock);
         listDeposito.setVisible(false);
         listDeposito.removeAllItems();
+    }
+
+    private void llenarStockTabla(javax.swing.JTable tb, List<Object[]> lista) {
+        ClearTable(tb);
+        if (lista != null) {
+            if (!lista.isEmpty()) {
+                javax.swing.table.DefaultTableModel dm = (javax.swing.table.DefaultTableModel) (tb.getModel());
+                for (int i = 0; i < lista.size(); i++) {
+                    dm.addRow(lista.get(i));
+                }
+                tb.setModel(dm);
+            }
+        }
     }
 
 

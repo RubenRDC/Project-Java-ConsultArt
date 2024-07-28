@@ -7,7 +7,7 @@ import com.rubenrdc.consultartoptimizado.models.Articulo;
 import com.rubenrdc.consultartoptimizado.models.Deposito;
 import com.rubenrdc.consultartoptimizado.models.UbicacionExtra;
 import com.rubenrdc.consultartoptimizado.models.UbicacionPrincipal;
-import com.rubenrdc.consultartoptimizado.models.interfaces.Exportables;
+import com.rubenrdc.consultartoptimizado.models.interfaces.Exportable;
 import java.util.List;
 import javax.swing.JTable;
 
@@ -504,7 +504,7 @@ public class EditUbics extends javax.swing.JPanel implements funtionsCom {
         }
     }//GEN-LAST:event_previusPageMouseClicked
 
-    public <T extends Exportables> void llenarTablaUbics(JTable tb, List<T> a) {
+    public <T extends Exportable> void llenarTablaUbics(JTable tb, List<T> a) {
         ClearTable(tb);
         tb.clearSelection();
         tb.getColumnModel().getColumn(0).setMaxWidth(20);

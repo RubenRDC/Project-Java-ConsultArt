@@ -5,8 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -28,7 +26,6 @@ public class UbicacionExtraDao {
                     listaUbicExtra.add(new UbicacionExtra(rsUbicExt.getInt("id"),rsUbicExt.getInt("idUbic"), rsUbicExt.getString("ubic")));
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(UbicacionExtraDao.class.getName()).log(Level.SEVERE, null, ex);
             }
             abc.getCloseC();
             return listaUbicExtra;

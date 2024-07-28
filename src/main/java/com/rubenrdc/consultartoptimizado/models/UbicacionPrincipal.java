@@ -1,6 +1,6 @@
 package com.rubenrdc.consultartoptimizado.models;
 
-import com.rubenrdc.consultartoptimizado.models.interfaces.Exportables;
+import com.rubenrdc.consultartoptimizado.models.interfaces.Exportable;
 import com.rubenrdc.consultartoptimizado.models.modelAbstract.Ubicaciones;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,13 +9,12 @@ import java.util.List;
  *
  * @author Ruben
  */
-public class UbicacionPrincipal extends Ubicaciones implements Exportables {
+public class UbicacionPrincipal extends Ubicaciones implements Exportable{
 
     private int id,idArt,idDep,exist;
     private List<UbicacionExtra> ListUbicacionesExtras;
     private String concatUbic;
-    private Object[] row = new Object[2];
-    private String[] RowAtributos = new String[2];
+    private final Object[] row = new Object[2];
 
     public UbicacionPrincipal(int id,int idArt,int idDep,int exist, String concatUbic, List<UbicacionExtra> ListUbicacionesExtras) {//Proposito General
         this.id = id;
@@ -53,6 +52,7 @@ public class UbicacionPrincipal extends Ubicaciones implements Exportables {
         this.ListUbicacionesExtras = ListUbicacionesExtras;
     }
 
+    @Override
     public String getConcatUbic() {
         return concatUbic;
     }
@@ -75,6 +75,7 @@ public class UbicacionPrincipal extends Ubicaciones implements Exportables {
         this.concatUbic = sector + p + "-" + e + c + "-" + a;
     }
 
+    @Override
     public void setConcatUbic(String ConcatUbic) {
         this.concatUbic = ConcatUbic;
     }
@@ -84,14 +85,6 @@ public class UbicacionPrincipal extends Ubicaciones implements Exportables {
         row[0] = id;
         row[1] = concatUbic;
         return row;
-    }
-
-    @Override
-    public String[] getTitulosAtributos() {
-
-        RowAtributos[0] = "ID";
-        RowAtributos[1] = "Ubicacion";
-        return RowAtributos;
     }
 
     public int getIdArt() {

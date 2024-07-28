@@ -20,14 +20,15 @@ public class UbicacionPrincDao {
 
     public static HashMap ObtenerUbic(Articulo art) {
         if (abc.ExtablecerC() != null) {
-            int i = 0;
-            String[][] stocks = new String[DepositosDao.getLimitDep()][2];
+            List<Object[]> stock = new ArrayList<>();
+            Object[] aux;
             HashMap ubicacion = new HashMap();
             String cUbics = "SELECT * FROM ubicaciones INNER JOIN depositos ON depositos.id=ubicaciones.idDep WHERE idArt = ?;";
             paramsSql.add(0, String.valueOf(art.getId()));
             ResultSet rsUbics = abc.GenericQuery(cUbics, paramsSql);
             try {
                 while (rsUbics.next()) {
+                    aux = new String[2];
                     ubicacion.put(rsUbics.getString("depositos.descrip"),
                             new UbicacionPrincipal(rsUbics.getInt("ubicaciones.id"),
                                     rsUbics.getInt("ubicaciones.idArt"),
@@ -35,13 +36,13 @@ public class UbicacionPrincDao {
                                     rsUbics.getInt("ubicaciones.exist"),
                                     rsUbics.getString("ubicaciones.ubic"),
                                     UbicacionExtraDao.ObtenerListUbicExtra(rsUbics.getInt("ubicaciones.id"))));
-                    stocks[i][0] = rsUbics.getString("depositos.descrip");
-                    stocks[i][1] = rsUbics.getString("ubicaciones.exist");
-                    i++;
+                    aux[0]=rsUbics.getString("depositos.descrip");
+                    aux[1]=rsUbics.getString("ubicaciones.exist");
+                    stock.add(aux);
                 }
             } catch (SQLException ex) {
             }
-            art.setStocks(stocks);
+            art.setStocks(stock);
             paramsSql.clear();
             return ubicacion;
         }

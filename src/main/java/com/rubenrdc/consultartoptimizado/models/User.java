@@ -1,36 +1,29 @@
 package com.rubenrdc.consultartoptimizado.models;
 
-import com.rubenrdc.consultartoptimizado.models.interfaces.Exportables;
+import com.rubenrdc.consultartoptimizado.models.interfaces.Exportable;
+
 
 /**
  *
  * @author Ruben
  */
-public class User implements Exportables{
+public class User implements Exportable{
 
     private String userName, pass, nameSubname;
     private int id;
-    private Object[] row = new Object[3];
-    private String[] RowAtributos = new String[3];
+    private final Object[] row = new Object[3];
 
     public User(String userName, String pass) {
         this.userName = userName;
         this.pass = pass;
     }
 
+    @Override
     public Object[] getRow() {
         row[0] = id;
         row[1] = userName;
         row[2] = nameSubname;
         return row;
-    }
-
-    public String[] getTitulosAtributos() {
-
-        RowAtributos[0] = "ID";
-        RowAtributos[1] = "UserName";
-        RowAtributos[2] = "NameSubname";
-        return RowAtributos;
     }
 
     public int getId() {
