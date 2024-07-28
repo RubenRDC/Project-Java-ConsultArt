@@ -15,5 +15,14 @@
 <img src ="https://raw.githubusercontent.com/RubenRDC/rdcpictures/master/pictures/Apache_Maven_logo.svg" max-width="40" height="40"></img> 
 </div>
 <h3>Motor de Base de datos:</h3>
-<img src ="https://raw.githubusercontent.com/RubenRDC/rdcpictures/master/pictures/mysql-official.svg?token=GHSAT0AAAAAACRFSMR55RMHMEYJ46VNPO6IZVFTGBA" max-width="40" height="40"></img> 
+<img src ="https://raw.githubusercontent.com/RubenRDC/rdcpictures/master/pictures/mysql-official.svg?token=GHSAT0AAAAAACRFSMR55RMHMEYJ46VNPO6IZVFTGBA" max-width="40" height="40"></img>
+<h2>Librerias de interes utilizadas:</h2>
+
+`java.util.*`
+`java.util.concurrent.locks.ReentrantLock`
+`java.sql.*`
+`java.io.FileInputStream`
+`java.io.InputStream`
+`javax.swing.*`
+
 </div>
