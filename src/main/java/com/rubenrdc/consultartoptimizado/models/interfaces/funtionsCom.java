@@ -21,6 +21,7 @@ public interface funtionsCom {
         }
     }
     default public void ClearTable(javax.swing.JTable jTable) {
+        jTable.clearSelection();
         javax.swing.table.DefaultTableModel dm = (javax.swing.table.DefaultTableModel) (jTable.getModel());
         dm.setNumRows(0);
         jTable.setModel(dm);

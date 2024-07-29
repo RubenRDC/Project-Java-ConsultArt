@@ -11,13 +11,14 @@ import javax.swing.JOptionPane;
  */
 public class AdvancedViewer extends javax.swing.JFrame implements funtionsCom {
 
-    private ListSearcherArt listArts = new ListSearcherArt();
-    private UpAndEditArt wCrearArt = new UpAndEditArt(0);//Crear
+    private final ListSearcherArt listArts = new ListSearcherArt();
+    private final UpAndEditArt wCrearArt = new UpAndEditArt(0);//Crear
     private EditUbics editarUbicArt;
-    private UpAndEditArt altaArt2;
-    private java.awt.event.MouseAdapter Madapter = new java.awt.event.MouseAdapter() {
+    private UpAndEditArt wAltaArt;
+    private final java.awt.event.MouseAdapter Madapter = new java.awt.event.MouseAdapter() {
+        @Override
         public void mouseClicked(java.awt.event.MouseEvent evt) {
-            listArtsMouseClicked(evt);
+            listTableArtsMouseClicked(evt);
         }
     };
 
@@ -116,9 +117,9 @@ public class AdvancedViewer extends javax.swing.JFrame implements funtionsCom {
         bajaArtBtn.setFocusPainted(false);
         bajaArtBtn.setOpaque(true);
         bajaArtBtn.setPreferredSize(new java.awt.Dimension(124, 28));
-        bajaArtBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bajaArtBtnActionPerformed(evt);
+        bajaArtBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                bajaArtBtnMouseClicked(evt);
             }
         });
 
@@ -222,47 +223,40 @@ public class AdvancedViewer extends javax.swing.JFrame implements funtionsCom {
     private void listArtBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listArtBtnMouseClicked
         //System.out.println("listArts.isDisplayable() "+listArts.isDisplayable());
         if (listArtBtn.isEnabled()) {
-            listArts.artsTable.clearSelection();
-
-            editArtBtn.setEnabled(false);
-            bajaArtBtn.setEnabled(false);
-
+            listArts.llenarTablaConArt(listArts.artsTable, "", listArts.limitList);
             showPanel(listArts, 521, 472, 0, 0, content);
+            verificSeletedItem(listArts.artsTable.getSelectedRow());
         }
 
     }//GEN-LAST:event_listArtBtnMouseClicked
 
     private void altaArtBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_altaArtBtnMouseClicked
         if (altaArtBtn.isEnabled()) {
-
-            //en caso de que un inadaptado cambie de ventana mientras esta editando la ubicacion esto borra la informacion de esta ventana
             if (editarUbicArt != null) {
                 editarUbicArt.addOeditUbic = null;
             }
-
-            editArtBtn.setEnabled(false);
-            bajaArtBtn.setEnabled(false);
+            listArts.artsTable.clearSelection();
+            verificSeletedItem(listArts.artsTable.getSelectedRow());
             showPanel(wCrearArt, 521, 472, 0, 0, content);
         }
     }//GEN-LAST:event_altaArtBtnMouseClicked
 
     private void editArtBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editArtBtnMouseClicked
         if (editArtBtn.isEnabled()) {
-            bajaArtBtn.setEnabled(false);
-            altaArt2 = null;
-            altaArt2 = new UpAndEditArt(1, listArts.lista.get(listArts.artsTable.getSelectedRow()));
-            showPanel(altaArt2, 521, 472, 0, 0, content);
-
-            altaArt2.editUbicBtn.addMouseListener(new java.awt.event.MouseAdapter() {
-                public void mouseClicked(java.awt.event.MouseEvent evt) {
-                    altaArt2EditUbicBtnMouseClicked(evt);
-                }
-            });
+            if (listArts.artsTable.getSelectedRow() != -1) {
+                wAltaArt = null;
+                wAltaArt = new UpAndEditArt(1, listArts.lista.get(listArts.artsTable.getSelectedRow()));
+                showPanel(wAltaArt, 521, 472, 0, 0, content);
+                wAltaArt.editUbicBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+                    public void mouseClicked(java.awt.event.MouseEvent evt) {
+                        wAltaArtEditUbicBtnMouseClicked(evt);
+                    }
+                });
+            }
         }
     }//GEN-LAST:event_editArtBtnMouseClicked
 
-    private void bajaArtBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bajaArtBtnActionPerformed
-
+    private void bajaArtBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bajaArtBtnMouseClicked
         if (bajaArtBtn.isEnabled()) {
             int idArt = (listArts.lista.get(listArts.artsTable.getSelectedRow()).getId());
             int input = javax.swing.JOptionPane.showConfirmDialog(null,
@@ -274,14 +268,14 @@ public class AdvancedViewer extends javax.swing.JFrame implements funtionsCom {
                     JOptionPane.showMessageDialog(null, "Ha Ocurrido un Error a la hora de realizar la operacion solicitada.", "ERROR", JOptionPane.ERROR_MESSAGE);
                 }
                 listArts.llenarTablaConArt(listArts.artsTable, "", listArts.limitList);
+                verificSeletedItem(listArts.artsTable.getSelectedRow());
+                showPanel(listArts, 521, 472, 0, 0, content);
             }
         }
-    }//GEN-LAST:event_bajaArtBtnActionPerformed
+    }//GEN-LAST:event_bajaArtBtnMouseClicked
 
-    private void altaArt2EditUbicBtnMouseClicked(java.awt.event.MouseEvent evt) {
-
-        if (altaArt2.editUbicBtn.isDisplayable()) {
-
+    private void wAltaArtEditUbicBtnMouseClicked(java.awt.event.MouseEvent evt) {
+        if (wAltaArt.editUbicBtn.isDisplayable()) {
             editarUbicArt = null;
             editarUbicArt = new EditUbics(listArts.lista.get(listArts.artsTable.getSelectedRow()));
             showPanel(editarUbicArt, 521, 472, 0, 0, content);
@@ -299,21 +293,24 @@ public class AdvancedViewer extends javax.swing.JFrame implements funtionsCom {
         if (editarUbicArt.previusPageExt.isDisplayable() && editarUbicArt.previusPageExt.isEnabled()) {
 
             editarUbicArt = null;
-            showPanel(altaArt2, 521, 472, 0, 0, content);
+            showPanel(wAltaArt, 521, 472, 0, 0, content);
         }
     }
 
-    private void listArtsMouseClicked(java.awt.event.MouseEvent evt) {
+    private void listTableArtsMouseClicked(java.awt.event.MouseEvent evt) {
         int selectedRow = listArts.artsTable.getSelectedRow();
-        editArtBtn.setEnabled(false);
-        bajaArtBtn.setEnabled(false);
-        if (selectedRow > -1) {
+        verificSeletedItem(selectedRow);
+    }
+
+    private void verificSeletedItem(int selectedRow) {
+        if (selectedRow != -1) {
             editArtBtn.setEnabled(true);
             bajaArtBtn.setEnabled(true);
+        } else {
+            editArtBtn.setEnabled(false);
+            bajaArtBtn.setEnabled(false);
         }
     }
-
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton altaArtBtn;
     private javax.swing.JButton bajaArtBtn;
