@@ -160,7 +160,7 @@ public class Login extends javax.swing.JFrame implements funtionsCom {
                         btnLogin.setEnabled(false);
                         btnLogin.setText("...");
                         String u = UserTxt.getText();
-                        String p = PsstTxt.getText();
+                        String p = new String(PsstTxt.getPassword());
                         if (u.length() <= 10 && u.length() != 0 && p.length() != 0) {
                             User user = new User(u, p);
                             if (UserDao.checkUser(user) == true) {

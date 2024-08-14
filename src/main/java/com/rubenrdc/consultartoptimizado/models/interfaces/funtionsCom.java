@@ -5,6 +5,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 /**
  *
@@ -20,6 +21,7 @@ public interface funtionsCom {
             }
         }
     }
+
     default public void ClearTable(javax.swing.JTable jTable) {
         jTable.clearSelection();
         javax.swing.table.DefaultTableModel dm = (javax.swing.table.DefaultTableModel) (jTable.getModel());
@@ -45,11 +47,30 @@ public interface funtionsCom {
     }
 
     default public void setPanelEnabled(javax.swing.JPanel panel, Boolean isEnabled) {
-        panel.setEnabled(isEnabled);
-        java.awt.Component[] components = panel.getComponents();
+        //panel.setEnabled(isEnabled);
+        Component[] components = panel.getComponents();
         for (Component component : components) {
-            //System.out.println(" ... " + component);
-            component.setEnabled(isEnabled);
+            componentsInPanel(component, isEnabled);
+        }
+    }
+
+    private void componentsInPanel(Component component, Boolean isEnabled) {
+        Component[] compsInternos;
+        if (component != null) {
+            if (component instanceof JPanel jPanel) {
+                compsInternos = jPanel.getComponents();
+                for (Component c : compsInternos) {
+                    if (c != null) {
+                        if (c instanceof JPanel) {
+                            componentsInPanel(c, isEnabled);
+                        } else {
+                            c.setEnabled(isEnabled);
+                        }
+                    }
+                }
+            } else {
+                component.setEnabled(isEnabled);
+            }
         }
     }
 

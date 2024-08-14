@@ -1,4 +1,6 @@
 package com.rubenrdc.consultartoptimizado.IGU;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import javax.swing.ImageIcon;
 
 /**
@@ -64,16 +66,18 @@ public class ImageViewer extends javax.swing.JFrame {
             path = "https://" + path;
             //java.net.URL imgURL = getClass().getResource(path);
             try {
-                java.net.URL imgURL = new java.net.URL(path);
+                //java.net.URL imgURL = new java.net.URL(path);
+                java.net.URI imgURL = new java.net.URI(path);
                 if (path != null) {
-                    return new ImageIcon(imgURL);
+                    return new ImageIcon(imgURL.toURL());
 
                 } else {
                     System.err.println("Couldn't find file: " + path);
                     return null;
                 }
-            } catch (Exception ex) {
+            } catch (MalformedURLException ex) {
                 System.out.println("createImageIcon " + ex);
+            } catch (URISyntaxException ex) {
             }
 
         }
