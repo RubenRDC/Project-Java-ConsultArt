@@ -14,7 +14,6 @@ import java.util.List;
  */
 public class UbicacionPrincDao {
 
-    private static List<String> paramsSql = new ArrayList<>();
     private static DaoConnection abc = new DaoConnection();
     private static String Query;
 
@@ -24,8 +23,7 @@ public class UbicacionPrincDao {
             Object[] aux;
             HashMap ubicacion = new HashMap();
             String cUbics = "SELECT * FROM ubicaciones INNER JOIN depositos ON depositos.id=ubicaciones.idDep WHERE idArt = ?;";
-            paramsSql.add(0, String.valueOf(art.getId()));
-            ResultSet rsUbics = abc.GenericQuery(cUbics, paramsSql);
+            ResultSet rsUbics = abc.GenericQuery(cUbics, art.getId());
             try {
                 while (rsUbics.next()) {
                     aux = new String[2];
@@ -43,7 +41,6 @@ public class UbicacionPrincDao {
             } catch (SQLException ex) {
             }
             art.setStocks(stock);
-            paramsSql.clear();
             return ubicacion;
         }
         return null;
@@ -53,10 +50,7 @@ public class UbicacionPrincDao {
         if (abc.ExtablecerC() != null) {
             boolean exito;
             Query = "DELETE FROM ubicaciones WHERE id = ?";
-            paramsSql.add(Integer.toString(idUbicP));
-            exito = abc.GenericUpdate(Query, paramsSql);
-
-            paramsSql.clear();
+            exito = abc.GenericUpdate(Query, idUbicP);
             abc.getCloseC();
             return exito;
         }
@@ -67,14 +61,7 @@ public class UbicacionPrincDao {
         if (abc.ExtablecerC() != null) {
             boolean exito;
             Query = "INSERT INTO ubicaciones (idArt,idDep,exist,ubic) SELECT ?,?,?,? WHERE NOT EXISTS(SELECT 1 FROM ubicaciones WHERE idArt = ? AND idDep = ?);";
-            paramsSql.add(0, String.valueOf(ubicP.getIdArt()));
-            paramsSql.add(1, String.valueOf(ubicP.getIdDep()));
-            paramsSql.add(2, String.valueOf(ubicP.getExist()));
-            paramsSql.add(3, ubicP.getConcatUbic());
-            paramsSql.add(4, String.valueOf(ubicP.getIdArt()));
-            paramsSql.add(5, String.valueOf(ubicP.getIdDep()));
-            exito = abc.GenericUpdate(Query, paramsSql);
-            paramsSql.clear();
+            exito = abc.GenericUpdate(Query, ubicP.getIdArt(),ubicP.getIdDep(),ubicP.getExist(),ubicP.getConcatUbic(),ubicP.getIdArt(),ubicP.getIdDep());
             abc.getCloseC();
             return exito;
         }
@@ -85,12 +72,7 @@ public class UbicacionPrincDao {
         if (abc.ExtablecerC() != null) {
             boolean exito;
             Query = "UPDATE ubicaciones SET exist = ?, ubic = ? WHERE id = ?";
-            paramsSql.add(0, String.valueOf(ubicP.getExist()));
-            paramsSql.add(1, ubicP.getConcatUbic());
-            paramsSql.add(2, String.valueOf(ubicP.getId()));
-            exito = abc.GenericUpdate(Query, paramsSql);
-
-            paramsSql.clear();
+            exito = abc.GenericUpdate(Query, ubicP.getExist(),ubicP.getConcatUbic(),ubicP.getId());
             abc.getCloseC();
             return exito;
         }

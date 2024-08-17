@@ -13,7 +13,6 @@ import java.util.List;
 public class UbicacionExtraDao {
 
     private static DaoConnection abc = new DaoConnection();
-    private static List<String> paramsSql = new ArrayList<>();
     private static String Query;
 
     public static List<UbicacionExtra> ObtenerListUbicExtra(int idUbicPrincipal) {
@@ -37,10 +36,7 @@ public class UbicacionExtraDao {
         if (abc.ExtablecerC() != null) {
             boolean exito;
             Query = "DELETE FROM ubicacion_extra WHERE id = ?";
-            paramsSql.add(Integer.toString(idUbicExtra));
-            exito = abc.GenericUpdate(Query, paramsSql);
-
-            paramsSql.clear();
+            exito = abc.GenericUpdate(Query, idUbicExtra);
             abc.getCloseC();
             return exito;
         }
@@ -51,11 +47,7 @@ public class UbicacionExtraDao {
         if (abc.ExtablecerC() != null) {
             boolean exito;
             Query = "INSERT INTO ubicacion_extra (idUbic,ubic) VALUES (?,?)";
-            paramsSql.add(0, String.valueOf(ubicEx.getIdUbicP()));
-            paramsSql.add(1, ubicEx.getConcatUbic());
-            exito = abc.GenericUpdate(Query, paramsSql);
-
-            paramsSql.clear();
+            exito = abc.GenericUpdate(Query, ubicEx.getIdUbicP(),ubicEx.getConcatUbic());
             abc.getCloseC();
             return exito;
         }
@@ -66,11 +58,7 @@ public class UbicacionExtraDao {
         if (abc.ExtablecerC() != null) {
             boolean exito;
             Query = "UPDATE ubicacion_extra SET ubic = ? WHERE id = ?";
-            paramsSql.add(0, ubicEx.getConcatUbic());
-            paramsSql.add(1, String.valueOf(ubicEx.getId()));
-            exito = abc.GenericUpdate(Query, paramsSql);
-            
-            paramsSql.clear();
+            exito = abc.GenericUpdate(Query, ubicEx.getConcatUbic(),ubicEx.getId());
             abc.getCloseC();
             return exito;
         }

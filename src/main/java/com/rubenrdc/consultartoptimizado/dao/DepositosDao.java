@@ -14,7 +14,6 @@ public class DepositosDao {
 
     private final static int limitDep = 10;
     private static final DaoConnection C = new DaoConnection();
-    private static List<String> paramsSql = new ArrayList<>();
 
     public DepositosDao() {
     }
@@ -23,7 +22,7 @@ public class DepositosDao {
         if (C.ExtablecerC() != null) {
             List<Deposito> listDepSimple = new ArrayList<>();
             String Query = "SELECT * FROM depositos;";
-            ResultSet rsdepositos = C.GenericQuery(Query, null);
+            ResultSet rsdepositos = C.GenericQuery(Query);
             try {
                 while (rsdepositos.next()) {
                     listDepSimple.add(new Deposito(rsdepositos.getInt("id"), rsdepositos.getString("descrip")));
@@ -43,10 +42,7 @@ public class DepositosDao {
             List<Deposito> listComplet = new ArrayList<>();
 
             String Query = "SELECT * FROM depositos WHERE descrip LIKE ? AND id LIKE ? LIMIT " + limiteLista;
-            paramsSql.add(0, "%" + desc + "%");
-            paramsSql.add(1, "%" + provincia + "%");
-
-            ResultSet rs = C.GenericQuery(Query, paramsSql);
+            ResultSet rs = C.GenericQuery(Query, "%" + desc + "%", "%" + provincia + "%");
             try {
                 while (rs.next()) {
                     listComplet.add(new Deposito(rs.getInt("id"), rs.getString("descrip"), rs.getString("provincia"), rs.getString("localidad"), rs.getString("direccion"), rs.getInt("numero")));
@@ -54,7 +50,6 @@ public class DepositosDao {
             } catch (SQLException ex) {
 
             }
-            paramsSql.clear();
             C.getCloseC();
             return listComplet;
         }
@@ -86,47 +81,34 @@ public class DepositosDao {
     }
 
     public static boolean delectDep(int idDep) {
-        boolean exito = false;
         if (C.ExtablecerC() != null) {
             String Query = "DELETE FROM depositos where depositos.id = ?;";
-            paramsSql.add(Integer.toString(idDep));
-            exito = C.GenericUpdate(Query, paramsSql);
+            boolean exito = C.GenericUpdate(Query, idDep);
+            C.getCloseC();
+            return exito;
         }
-        paramsSql.clear();
-        C.getCloseC();
-        return exito;
+        return false;
     }
 
     public static boolean insertNewDep(Deposito dep) {
-        boolean exito = false;
+
         if (C.ExtablecerC() != null) {
             String Query = "INSERT INTO depositos (descrip,provincia,localidad,direccion,numero) VALUES (?,?,?,?,?);";
-            paramsSql.add(dep.getNombre());
-            paramsSql.add(dep.getProvincia());
-            paramsSql.add(dep.getLocalidad());
-            paramsSql.add(dep.getDireccion());
-            paramsSql.add(Integer.toString(dep.getNumDireccion()));
-            exito = C.GenericUpdate(Query, paramsSql);
+            boolean exito = C.GenericUpdate(Query, dep.getNombre(), dep.getProvincia(), dep.getLocalidad(), dep.getDireccion(), dep.getNumDireccion());
+            C.getCloseC();
+            return exito;
         }
-        paramsSql.clear();
-        C.getCloseC();
-        return exito;
+        return false;
     }
 
     public static boolean updateDep(Deposito dep) {
-        boolean exito = false;
+
         if (C.ExtablecerC() != null) {
             String Query = "UPDATE depositos SET descrip = ? ,provincia = ? ,localidad = ?,direccion = ?, numero = ? WHERE id = ?;";
-            paramsSql.add(dep.getNombre());
-            paramsSql.add(dep.getProvincia());
-            paramsSql.add(dep.getLocalidad());
-            paramsSql.add(dep.getDireccion());
-            paramsSql.add(Integer.toString(dep.getNumDireccion()));
-            paramsSql.add(Integer.toString(dep.getId()));
-            exito = C.GenericUpdate(Query, paramsSql);
+            boolean exito = C.GenericUpdate(Query, dep.getNombre(), dep.getProvincia(), dep.getLocalidad(), dep.getDireccion(), dep.getNumDireccion(), dep.getId());
+            C.getCloseC();
+            return exito;
         }
-        paramsSql.clear();
-        C.getCloseC();
-        return exito;
+        return false;
     }
 }

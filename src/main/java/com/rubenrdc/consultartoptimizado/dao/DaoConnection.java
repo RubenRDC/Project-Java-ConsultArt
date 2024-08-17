@@ -63,7 +63,6 @@ public class DaoConnection {
 
             }
         }
-
     }
 
     public ResultSet QueryById(String Query, int IdParam) {
@@ -72,7 +71,6 @@ public class DaoConnection {
             PreparedStatement ps = conectar.prepareStatement(Query);
             ps.setInt(1, IdParam);
             ResultSet rs = ps.executeQuery();
-
             return rs;
         } catch (SQLException ex) {
 
@@ -85,7 +83,23 @@ public class DaoConnection {
             PreparedStatement ps = conectar.prepareStatement(Query);
             int index = 1;
             for (String param : params) {
-                ps.setString(index, NullOrTxT(param));
+                ps.setString(index, verificString(param));
+                index++;
+            }
+            int rs = ps.executeUpdate();
+            return rs > 0;
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return false;
+    }
+
+    public boolean GenericUpdate(String Query, Object... params) {
+        try {
+            PreparedStatement ps = conectar.prepareStatement(Query);
+            int index = 1;
+            for (Object param : params) {
+                ps.setObject(index, verificString(param));
                 index++;
             }
             int rs = ps.executeUpdate();
@@ -102,7 +116,7 @@ public class DaoConnection {
             int index = 1;
             if (params != null) {
                 for (String param : params) {
-                    ps.setString(index, NullOrTxT(param));
+                    ps.setString(index, verificString(param));
                     index++;
                 }
             }
@@ -114,9 +128,31 @@ public class DaoConnection {
         return null;
     }
 
-    private String NullOrTxT(String txt) {//Filtro de Texto, Si la cadena no tiene caracteres, se reemplaza por nulo.
+    public ResultSet GenericQuery(String Query, Object... params) {
+        try {
+            PreparedStatement ps = conectar.prepareStatement(Query);
+            int index = 1;
+            if (params != null) {
+                for (Object param : params) {
+                    ps.setObject(index, verificString(param));
+                    index++;
+                }
+            }
+            ResultSet rs = ps.executeQuery();
+            return rs;
+        } catch (SQLException ex) {
+
+        }
+        return null;
+    }
+
+    private <T> T verificString(T txt) {//Filtro de Texto, Si la cadena no tiene caracteres, se reemplaza por nulo.
         if (txt != null) {
-            if (txt.length() > 0) {
+            if (txt instanceof String string) {
+                if (string.length() > 0) {
+                    return txt;
+                }
+            }else{
                 return txt;
             }
         }

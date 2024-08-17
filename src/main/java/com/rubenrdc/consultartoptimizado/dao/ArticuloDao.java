@@ -7,13 +7,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 /**
  *
  * @author Ruben
  */
 public class ArticuloDao implements funtionsCom {
 
-    private static List<String> paramsSql = new ArrayList<>(), datosArt = new ArrayList<>();
     private static DaoConnection abc = new DaoConnection();
     private static String query = "";
 
@@ -28,9 +28,7 @@ public class ArticuloDao implements funtionsCom {
         if (abc.ExtablecerC() != null) {
             List<Articulo> list = new ArrayList<>();
             String Query = "SELECT * FROM articulos WHERE codigo LIKE ? OR descripcion LIKE ? LIMIT " + limiteLista;
-            paramsSql.add("%" + code + "%");
-            paramsSql.add("%" + code + "%");
-            ResultSet rs = abc.GenericQuery(Query, paramsSql);
+            ResultSet rs = abc.GenericQuery(Query, "%" + code + "%", "%" + code + "%");
             try {
                 while (rs.next()) {
                     int id = rs.getInt("id");
@@ -43,7 +41,6 @@ public class ArticuloDao implements funtionsCom {
             } catch (SQLException e) {
                 System.out.println("SQLException " + e);
             }
-            paramsSql.clear();
             abc.getCloseC();
             return list;
         }
@@ -55,8 +52,7 @@ public class ArticuloDao implements funtionsCom {
         if (abc.ExtablecerC() != null) {
             String Query = "SELECT * FROM articulos WHERE codigo = ?";
             Articulo art = null;
-            paramsSql.add(cod);
-            ResultSet rs = abc.GenericQuery(Query, paramsSql);
+            ResultSet rs = abc.GenericQuery(Query, cod);
             try {
                 if (rs.next()) {
                     int id = rs.getInt("id");
@@ -70,7 +66,6 @@ public class ArticuloDao implements funtionsCom {
             } catch (SQLException e) {
                 System.out.println("SQLException " + e);
             }
-            paramsSql.clear();
             abc.getCloseC();
             return art;
         }
@@ -79,15 +74,9 @@ public class ArticuloDao implements funtionsCom {
 
     public static boolean addArticulo(Articulo varArt) {
         if (abc.ExtablecerC() != null) {
-            boolean exito;
             query = "INSERT INTO articulos (codigo,descripcion,foto) VALUES (?,?,?);";
-            datosArt.add(0, varArt.getCodigo());
-            datosArt.add(1, varArt.getDesc());
-            datosArt.add(2, varArt.getFoto());
-            exito = abc.GenericUpdate(query, datosArt);
-            
+            boolean exito = abc.GenericUpdate(query, varArt.getCodigo(), varArt.getDesc(), varArt.getFoto());
             abc.getCloseC();
-            datosArt.clear();
             return exito;
         }
         return false;
@@ -96,15 +85,8 @@ public class ArticuloDao implements funtionsCom {
     public static boolean updateArticulo(Articulo varArt) {
         if (abc.ExtablecerC() != null) {
             query = "UPDATE articulos SET codigo = ? ,descripcion = ? ,foto = ? WHERE id = ? ;";
-            boolean exito;
-            datosArt.add(0, varArt.getCodigo());
-            datosArt.add(1, varArt.getDesc());
-            datosArt.add(2, varArt.getFoto());
-            datosArt.add(3, String.valueOf(varArt.getId()));
-            exito = abc.GenericUpdate(query, datosArt);
-            
+            boolean exito = abc.GenericUpdate(query, varArt.getCodigo(), varArt.getDesc(), varArt.getFoto(), varArt.getId());
             abc.getCloseC();
-            datosArt.clear();
             return exito;
         }
         return false;
@@ -112,13 +94,9 @@ public class ArticuloDao implements funtionsCom {
 
     public static boolean eliminarArt(int idArt) {
         if (abc.ExtablecerC() != null) {
-            boolean exito;
             query = "DELETE FROM articulos WHERE id = ?";
-            datosArt.add(String.valueOf(idArt));
-            exito = abc.GenericUpdate(query, datosArt);
-            
+            boolean exito = abc.GenericUpdate(query, idArt);
             abc.getCloseC();
-            datosArt.clear();
             return exito;
         }
         return false;
