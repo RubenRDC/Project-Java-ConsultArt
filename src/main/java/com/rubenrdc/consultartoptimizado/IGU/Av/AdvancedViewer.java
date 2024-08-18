@@ -1,15 +1,15 @@
 package com.rubenrdc.consultartoptimizado.IGU.Av;
 
 import com.rubenrdc.consultartoptimizado.dao.ArticuloDao;
-import com.rubenrdc.consultartoptimizado.models.interfaces.funtionsCom;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import com.rubenrdc.consultartoptimizado.models.interfaces.Utilities;
 
 /**
  *
  * @author Ruben
  */
-public class AdvancedViewer extends javax.swing.JFrame implements funtionsCom {
+public class AdvancedViewer extends javax.swing.JFrame implements Utilities {
 
     private final ListSearcherArt listArts = new ListSearcherArt();
     private final UpAndEditArt wCrearArt = new UpAndEditArt(0);//Crear
@@ -248,6 +248,7 @@ public class AdvancedViewer extends javax.swing.JFrame implements funtionsCom {
                 wAltaArt = new UpAndEditArt(1, listArts.lista.get(listArts.artsTable.getSelectedRow()));
                 showPanel(wAltaArt, 521, 472, 0, 0, content);
                 wAltaArt.editUbicBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+                    @Override
                     public void mouseClicked(java.awt.event.MouseEvent evt) {
                         wAltaArtEditUbicBtnMouseClicked(evt);
                     }
@@ -281,6 +282,7 @@ public class AdvancedViewer extends javax.swing.JFrame implements funtionsCom {
             showPanel(editarUbicArt, 521, 472, 0, 0, content);
 
             editarUbicArt.previusPageExt.addMouseListener(new java.awt.event.MouseAdapter() {
+                @Override
                 public void mouseClicked(java.awt.event.MouseEvent evt) {
                     previusPageExtMouseClicked(evt);
                 }

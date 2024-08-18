@@ -7,10 +7,10 @@ package com.rubenrdc.consultartoptimizado.models.modelAbstract;
 public abstract class Ubicaciones {
     private String concatUbic;
 
-    public String getConcatUbic() {
+    public String getUbic() {
         return concatUbic;
     }
-    public void setConcatUbic(String concatUbic) {
+    public void setUbic(String concatUbic) {
         this.concatUbic = concatUbic;
     }
 }

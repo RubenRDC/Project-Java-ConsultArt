@@ -1,18 +1,19 @@
 package com.rubenrdc.consultartoptimizado.IGU.Av;
 
 import com.rubenrdc.consultartoptimizado.dao.ArticuloDao;
-import com.rubenrdc.consultartoptimizado.models.interfaces.funtionsCom;
 import com.rubenrdc.consultartoptimizado.models.Articulo;
 import com.rubenrdc.consultartoptimizado.models.interfaces.DialogsFunt;
 import javax.swing.JOptionPane;
+import com.rubenrdc.consultartoptimizado.models.interfaces.Utilities;
 
 /**
  *
  * @author Ruben
  */
-public class UpAndEditArt extends javax.swing.JPanel implements funtionsCom,DialogsFunt {
+public class UpAndEditArt extends javax.swing.JPanel implements Utilities, DialogsFunt {
 
-    private int tipo, idArt;
+    private final int tipo;
+    private int idArt;
     private Articulo ObjetoArticulo;
 
     public UpAndEditArt(int tipo) {
@@ -27,12 +28,10 @@ public class UpAndEditArt extends javax.swing.JPanel implements funtionsCom,Dial
         initComponents();
         this.tipo = tipo;
         this.idArt = ObjetoArticulo.getId();
-        this.ObjetoArticulo = ObjetoArticulo;
-
         codigotxt.setText(ObjetoArticulo.getCodigo());
         descTxt.setText(ObjetoArticulo.getDesc());
         fotoUrlTxt.setText(ObjetoArticulo.getFoto());
-        ObjetoArticulo.setUbicacion(ArticuloDao.ObtenerUbicHashMap(ObjetoArticulo));
+        this.ObjetoArticulo = ObjetoArticulo;
 
         if (tipo == 1) {//Editar
             ubicEditPanel.setVisible(true);
@@ -471,16 +470,13 @@ public class UpAndEditArt extends javax.swing.JPanel implements funtionsCom,Dial
                     foto = foto.replace("*", "");
                 }
                 if (tipo == 0) {//Add Articulo
-                    if (ArticuloDao.StrictSearchArt(codigo) == null) {//Si encuentra algun articulo que consida el codigo que se intenta dar de alta no avanzara el programa advirtiendo de que el codigo ya existe.
-                        ObjetoArticulo = new Articulo(0, codigo, descripcion, foto);
-                        
-                        msgInfoOperation(ArticuloDao.addArticulo(ObjetoArticulo));
-
+                    if (ArticuloDao.addArticulo(new Articulo(0, codigo, descripcion, foto))) {//Si encuentra algun articulo que consida el codigo que se intenta dar de alta no avanzara el programa advirtiendo de que el codigo ya existe.
+                        msgInfoOperation(true);
                         codigotxt.setText("");
                         descTxt.setText("");
                         fotoUrlTxt.setText("");
                     } else {
-                        msgInfo("El codigo de articulo que intentas cargar ya existe","Advertencia!", JOptionPane.ERROR_MESSAGE);
+                        msgInfo("El codigo de articulo que intentas cargar ya existe", "Advertencia!", JOptionPane.ERROR_MESSAGE);
                     }
                 } else {//Actualizar Articulo
                     ObjetoArticulo.setId(idArt);
@@ -490,10 +486,10 @@ public class UpAndEditArt extends javax.swing.JPanel implements funtionsCom,Dial
                     msgInfoOperation(ArticuloDao.updateArticulo(ObjetoArticulo));
                 }
             } else {
-                msgInfo("La URL ingresada debe de contener una imagen en formato JPG o PNG\nEn caso de que la URL termine en '.webp' o otro formato, reemplazar por el formato permitido.","Advertencia!",JOptionPane.ERROR_MESSAGE);
+                msgInfo("La URL ingresada debe de contener una imagen en formato JPG o PNG\nEn caso de que la URL termine en '.webp' o otro formato, reemplazar por el formato permitido.", "Advertencia!", JOptionPane.ERROR_MESSAGE);
             }
         } else {
-            msgInfo("Los campos ingrasado no cumplen con el reglamento.","Advertencia!",JOptionPane.ERROR_MESSAGE);
+            msgInfo("Los campos ingrasado no cumplen con el reglamento.", "Advertencia!", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_saveBtnMouseClicked
 

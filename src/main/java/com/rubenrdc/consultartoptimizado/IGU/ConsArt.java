@@ -4,25 +4,23 @@ import com.rubenrdc.consultartoptimizado.IGU.Av.AdvancedViewer;
 import com.rubenrdc.consultartoptimizado.IGU.depositos.ListAndSchDepositos;
 import com.rubenrdc.consultartoptimizado.dao.ArticuloDao;
 import com.rubenrdc.consultartoptimizado.dao.DepositosDao;
-import com.rubenrdc.consultartoptimizado.models.interfaces.funtionsCom;
 import com.rubenrdc.consultartoptimizado.models.Articulo;
-import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import com.rubenrdc.consultartoptimizado.models.interfaces.Utilities;
 
 /**
  *
  * @author Ruben
  */
-public class ConsArt extends javax.swing.JFrame implements funtionsCom {
+public class ConsArt extends javax.swing.JFrame implements Utilities {
 
-    private ArticuloDao ArtDao = new ArticuloDao();
     private Articulo Art;
     private AdvancedViewer windowAv;
     private ImageViewer imageV;
     private ListAndSchDepositos windowDepList;
-    private ReentrantLock lock = new ReentrantLock();
+    private final ReentrantLock lock = new ReentrantLock();
 
     public ConsArt() {
         initComponents();
@@ -70,6 +68,8 @@ public class ConsArt extends javax.swing.JFrame implements funtionsCom {
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jLabel1.setText("Consultar Articulo");
+
+        jPanel2.setPreferredSize(new java.awt.Dimension(380, 286));
 
         titleCod.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         titleCod.setText("Codigo:");
@@ -134,26 +134,28 @@ public class ConsArt extends javax.swing.JFrame implements funtionsCom {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(0, 0, 0)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(descTxt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(titleDesc)
+                            .addComponent(descTxt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(titleCod)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(codigoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(titleRelacion)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(relacionTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(titleUbic)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(titleRelacion1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(listDeposito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 364, Short.MAX_VALUE))
-                .addContainerGap())
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(titleDesc)
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addComponent(titleCod)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(codigoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addComponent(titleRelacion)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(relacionTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(titleUbic)
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addComponent(titleRelacion1)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(listDeposito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(0, 181, Short.MAX_VALUE)))
+                        .addContainerGap())))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -330,7 +332,7 @@ public class ConsArt extends javax.swing.JFrame implements funtionsCom {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGap(6, 6, 6)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
@@ -403,10 +405,10 @@ public class ConsArt extends javax.swing.JFrame implements funtionsCom {
             String c = codigoTxt.getText().toUpperCase();
             if (c.length() > 3 && c.length() <= 10) {
 
-                Art = ArtDao.StrictSearchArt(c);
+                Art = ArticuloDao.findCompleteArticuloByCode(c);
                 if (Art != null) {
                     descTxt.setText(Art.getDesc());
-                    llenarStockTabla(tablaStock, Art.getStocks());
+                    fillTable(tablaStock, Art.getStockByDeps());
                     listDeposito.setVisible(true);
                     JComboBoxDepositos(listDeposito, DepositosDao.getListDeps());
                     codigoTxt.setEnabled(false);
@@ -523,24 +525,10 @@ public class ConsArt extends javax.swing.JFrame implements funtionsCom {
         descTxt.setText("");
         ubicTxt.setText("");
         codigoTxt.setText("");
-        ClearTable(tablaStock);
+        clearTable(tablaStock);
         listDeposito.setVisible(false);
-        listDeposito.removeAllItems();
+        listDeposito.removeAllItems();  
     }
-
-    private void llenarStockTabla(javax.swing.JTable tb, List<Object[]> lista) {
-        ClearTable(tb);
-        if (lista != null) {
-            if (!lista.isEmpty()) {
-                javax.swing.table.DefaultTableModel dm = (javax.swing.table.DefaultTableModel) (tb.getModel());
-                for (int i = 0; i < lista.size(); i++) {
-                    dm.addRow(lista.get(i));
-                }
-                tb.setModel(dm);
-            }
-        }
-    }
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem InteraccionBtn;

@@ -1,17 +1,17 @@
 package com.rubenrdc.consultartoptimizado.IGU.depositos;
 
 import com.rubenrdc.consultartoptimizado.dao.DepositosDao;
-import com.rubenrdc.consultartoptimizado.models.interfaces.funtionsCom;
 import com.rubenrdc.consultartoptimizado.models.Deposito;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import com.rubenrdc.consultartoptimizado.models.interfaces.Utilities;
 
 /**
  *
  * @author Ruben
  */
-public class ListAndSchDepositos extends javax.swing.JFrame implements funtionsCom {
+public class ListAndSchDepositos extends javax.swing.JFrame implements Utilities {
 
     private final int limitList = 10;
     private List<Deposito> lista;
@@ -412,12 +412,12 @@ public class ListAndSchDepositos extends javax.swing.JFrame implements funtionsC
         }
     }//GEN-LAST:event_btnDeleteMouseClicked
     private void llenarTablaConDeps(javax.swing.JTable tb, String provincia, String desc, int limiteLista) {
-        ClearTable(tb);
+        clearTable(tb);
         tb.getColumnModel().getColumn(0).setMaxWidth(20);
         lista = DepositosDao.getListDepsByTitleAndProv(provincia, desc, limiteLista);
         if (lista != null) {//La lista sera nula solo si no se pudo conectar a la base de datos.
             if (!lista.isEmpty()) {
-                llenarTabla(tb, lista);
+                fillTable(tb, lista);
             } else {
                 JOptionPane.showMessageDialog(null, "No se encontraron resultados.");
                 llenarTablaConDeps(tb, "", "", limiteLista);

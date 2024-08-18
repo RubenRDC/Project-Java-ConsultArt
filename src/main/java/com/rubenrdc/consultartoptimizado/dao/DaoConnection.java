@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import javax.swing.JOptionPane;
 
 /**
@@ -38,20 +39,6 @@ public class DaoConnection {
         //System.out.println("conectar " + conectar);
         return conectar;
 
-    }
-
-    public int RetornarId(String Consulta) {
-        int id = 0;
-        try {
-            PreparedStatement cs = conectar.prepareStatement(Consulta);
-            ResultSet rs = cs.executeQuery();
-            if (rs.next()) {
-                id = rs.getInt("id");
-            }
-        } catch (SQLException ex) {
-            //System.out.println("ex= " + ex);
-        }
-        return id;
     }
 
     public void getCloseC() {
@@ -152,7 +139,7 @@ public class DaoConnection {
                 if (string.length() > 0) {
                     return txt;
                 }
-            }else{
+            } else {
                 return txt;
             }
         }

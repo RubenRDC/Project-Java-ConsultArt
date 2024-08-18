@@ -1,40 +1,38 @@
 package com.rubenrdc.consultartoptimizado.IGU.Av;
 
-import com.rubenrdc.consultartoptimizado.dao.ArticuloDao;
 import com.rubenrdc.consultartoptimizado.dao.DepositosDao;
-import com.rubenrdc.consultartoptimizado.models.interfaces.funtionsCom;
+import com.rubenrdc.consultartoptimizado.dao.UbicacionDao;
 import com.rubenrdc.consultartoptimizado.models.Articulo;
 import com.rubenrdc.consultartoptimizado.models.Deposito;
-import com.rubenrdc.consultartoptimizado.models.UbicacionExtra;
-import com.rubenrdc.consultartoptimizado.models.UbicacionPrincipal;
 import com.rubenrdc.consultartoptimizado.models.interfaces.Exportable;
 import java.util.List;
 import javax.swing.JTable;
+import com.rubenrdc.consultartoptimizado.models.interfaces.Utilities;
 
 /**
  *
  * @author Ruben
  */
-public class EditUbics extends javax.swing.JPanel implements funtionsCom {
+public class EditUbics extends javax.swing.JPanel implements Utilities {
 
     protected EditUbic addOeditUbic;
     private final int idArt;
     private int IdUbicP;
-    private final Articulo Art;
+    private Articulo Art;
     private String DepSelected;
-    private final List<Deposito> listaDeps;
+    private List<Deposito> listaDeps;
 
     public EditUbics(Articulo Art) {
         this.Art = Art;
-        listaDeps=DepositosDao.getListDeps();
-        
+        this.Art.setListCantsFromUbics(UbicacionDao.findUbicacionFromArticulo(Art));
+        this.listaDeps = DepositosDao.getListDeps();
+
         initComponents();
 
-        JComboBoxDepositos(listDeposito,listaDeps);
+        JComboBoxDepositos(listDeposito, listaDeps);
         idArt = Art.getId();
         codigotxt.setText(Art.getCodigo());
         descTxt.setText(Art.getDesc());
-
     }
 
     @SuppressWarnings("unchecked")
@@ -46,14 +44,9 @@ public class EditUbics extends javax.swing.JPanel implements funtionsCom {
         jLabel1 = new javax.swing.JLabel();
         titleDesc = new javax.swing.JLabel();
         descTxt = new javax.swing.JTextField();
-        TableUbicExtra = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tabUbEx = new javax.swing.JTable();
-        editBtnEx = new javax.swing.JButton();
-        addBtnEx = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        tabUbP = new javax.swing.JTable();
+        tabUb = new javax.swing.JTable();
         editBtnP = new javax.swing.JButton();
         addBtnP = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
@@ -80,73 +73,6 @@ public class EditUbics extends javax.swing.JPanel implements funtionsCom {
         descTxt.setEnabled(false);
         descTxt.setPreferredSize(new java.awt.Dimension(15, 30));
 
-        jScrollPane1.setToolTipText("");
-        jScrollPane1.setHorizontalScrollBar(null);
-
-        javax.swing.table.DefaultTableModel tableModel2 = new javax.swing.table.DefaultTableModel(
-
-            new Object [][] {
-                {null,null}
-            },
-            new String [] {
-                "id","Ubicaciones Extras"
-            }
-        ) {
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return false;
-            }
-        };
-        tabUbEx.setModel(tableModel2);
-        tabUbEx.setFocusable(false);
-        tabUbEx.setRowHeight(25);
-        tabUbEx.setRowMargin(5);
-        tabUbEx.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        tabUbEx.getTableHeader().setResizingAllowed(false);
-        tabUbEx.getTableHeader().setReorderingAllowed(false);
-        tabUbEx.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tabUbExMouseClicked(evt);
-            }
-        });
-        jScrollPane1.setViewportView(tabUbEx);
-
-        editBtnEx.setText("Edit");
-        editBtnEx.setEnabled(false);
-        editBtnEx.setFocusPainted(false);
-        editBtnEx.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                editBtnExMouseClicked(evt);
-            }
-        });
-
-        addBtnEx.setText("Add");
-        addBtnEx.setFocusPainted(false);
-        addBtnEx.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                addBtnExMouseClicked(evt);
-            }
-        });
-
-        javax.swing.GroupLayout TableUbicExtraLayout = new javax.swing.GroupLayout(TableUbicExtra);
-        TableUbicExtra.setLayout(TableUbicExtraLayout);
-        TableUbicExtraLayout.setHorizontalGroup(
-            TableUbicExtraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(TableUbicExtraLayout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(TableUbicExtraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(editBtnEx, javax.swing.GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE)
-                    .addComponent(addBtnEx, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-        );
-        TableUbicExtraLayout.setVerticalGroup(
-            TableUbicExtraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(TableUbicExtraLayout.createSequentialGroup()
-                .addComponent(addBtnEx)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
-                .addComponent(editBtnEx))
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-        );
-
         jScrollPane3.setToolTipText("");
         jScrollPane3.setHorizontalScrollBar(null);
 
@@ -156,26 +82,26 @@ public class EditUbics extends javax.swing.JPanel implements funtionsCom {
                 //{6,7},{8, 4}, {0,2}, {5,2}
             },
             new String [] {
-                "id","Ubicacion Principal"
+                "id","Ubicaciones"
             }
         ) {
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return false;
             }
         };
-        tabUbP.setModel(tableModel);
-        tabUbP.setFocusable(false);
-        tabUbP.setRowHeight(25);
-        tabUbP.setRowMargin(5);
-        tabUbP.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        tabUbP.getTableHeader().setResizingAllowed(false);
-        tabUbP.getTableHeader().setReorderingAllowed(false);
-        tabUbP.addMouseListener(new java.awt.event.MouseAdapter() {
+        tabUb.setModel(tableModel);
+        tabUb.setFocusable(false);
+        tabUb.setRowHeight(25);
+        tabUb.setRowMargin(5);
+        tabUb.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tabUb.getTableHeader().setResizingAllowed(false);
+        tabUb.getTableHeader().setReorderingAllowed(false);
+        tabUb.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tabUbPMouseClicked(evt);
+                tabUbMouseClicked(evt);
             }
         });
-        jScrollPane3.setViewportView(tabUbP);
+        jScrollPane3.setViewportView(tabUb);
 
         editBtnP.setText("Edit");
         editBtnP.setEnabled(false);
@@ -187,7 +113,6 @@ public class EditUbics extends javax.swing.JPanel implements funtionsCom {
         });
 
         addBtnP.setText("Add");
-        addBtnP.setEnabled(false);
         addBtnP.setFocusPainted(false);
         addBtnP.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -213,7 +138,7 @@ public class EditUbics extends javax.swing.JPanel implements funtionsCom {
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(addBtnP)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 138, Short.MAX_VALUE)
                         .addComponent(editBtnP)))
                 .addContainerGap())
         );
@@ -285,7 +210,6 @@ public class EditUbics extends javax.swing.JPanel implements funtionsCom {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(descTxt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(TableUbicExtra, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(titleDesc)
                                 .addGap(0, 0, Short.MAX_VALUE)))
@@ -304,9 +228,7 @@ public class EditUbics extends javax.swing.JPanel implements funtionsCom {
                 .addComponent(descTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(6, 6, 6)
-                .addComponent(TableUbicExtra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         previusPageExt.setText("VOLVER ATRAS");
@@ -402,63 +324,21 @@ public class EditUbics extends javax.swing.JPanel implements funtionsCom {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void tabUbPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabUbPMouseClicked
-        int selectedRow = tabUbP.getSelectedRow();
-
+    private void tabUbMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabUbMouseClicked
+        int selectedRow = tabUb.getSelectedRow();
         if (selectedRow != -1) {
-            tabUbEx.clearSelection();
             editBtnP.setEnabled(true);
-            editBtnEx.setEnabled(false);
-            addBtnEx.setEnabled(false);
         } else {
             editBtnP.setEnabled(false);
-            editBtnEx.setEnabled(true);
-            addBtnEx.setEnabled(true);
         }
-    }//GEN-LAST:event_tabUbPMouseClicked
-
-    private void tabUbExMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabUbExMouseClicked
-        int selectedRow = tabUbEx.getSelectedRow();
-        addBtnEx.setEnabled(true);
-        if (selectedRow != -1) {
-            tabUbP.clearSelection();
-            editBtnP.setEnabled(false);
-            addBtnP.setEnabled(false);
-            editBtnEx.setEnabled(true);
-
-        } else {
-            editBtnEx.setEnabled(false);
-            addBtnEx.setEnabled(false);
-
-        }
-    }//GEN-LAST:event_tabUbExMouseClicked
-
-    private void addBtnExMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addBtnExMouseClicked
-        if (addBtnEx.isEnabled()) {
-            DepSelected = listDeposito.getSelectedItem().toString();
-            IdUbicP = Art.getUbicacionPrincipal(DepSelected).get(0).getId();
-            addOeditUbic = new EditUbic(new UbicacionExtra(IdUbicP,null), EditUbic.ADD, EditUbic.EXTRA);
-            jPanel1.setVisible(false);
-            ContentExtra.setVisible(true);
-            showPanel(addOeditUbic, 419, 390, 0, 0, jPanel3);
-        }
-    }//GEN-LAST:event_addBtnExMouseClicked
-
-    private void editBtnExMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editBtnExMouseClicked
-        if (editBtnEx.isEnabled()) {
-            addOeditUbic = new EditUbic(Art.getUbicacionExtra(DepSelected).get(tabUbEx.getSelectedRow()), EditUbic.EDIT, EditUbic.EXTRA);
-            jPanel1.setVisible(false);
-            ContentExtra.setVisible(true);
-            showPanel(addOeditUbic, 419, 390, 0, 0, jPanel3);
-        }
-    }//GEN-LAST:event_editBtnExMouseClicked
+    }//GEN-LAST:event_tabUbMouseClicked
 
     private void addBtnPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addBtnPMouseClicked
         if (addBtnP.isEnabled()) {
             DepSelected = listDeposito.getSelectedItem().toString();
-            int idDep = listaDeps.get(listDeposito.getSelectedIndex()).getId();
-            
-            addOeditUbic = new EditUbic(new UbicacionPrincipal(idArt,idDep,0,null), EditUbic.ADD, EditUbic.PRINCIPAL);
+            //Deposito ObjectDepSelected = listaDeps.get(listDeposito.getSelectedIndex());
+
+            //addOeditUbic = new EditUbic(new Ubicacion(idArt,idDep,0,null), EditUbic.ADD, EditUbic.PRINCIPAL);
             jPanel1.setVisible(false);
             ContentExtra.setVisible(true);
             showPanel(addOeditUbic, 419, 390, 0, 0, jPanel3);
@@ -468,7 +348,7 @@ public class EditUbics extends javax.swing.JPanel implements funtionsCom {
     private void editBtnPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editBtnPMouseClicked
         if (editBtnP.isEnabled()) {
             DepSelected = listDeposito.getSelectedItem().toString();
-            addOeditUbic = new EditUbic(Art.getUbicacionPrincipal(DepSelected).get(tabUbP.getSelectedRow()), EditUbic.EDIT, EditUbic.PRINCIPAL);
+            //addOeditUbic = new EditUbic(Art.getUbicacionPrincipal(DepSelected).get(tabUb.getSelectedRow()), EditUbic.EDIT, EditUbic.PRINCIPAL);
             jPanel1.setVisible(false);
             ContentExtra.setVisible(true);
             showPanel(addOeditUbic, 419, 390, 0, 0, jPanel3);
@@ -478,18 +358,7 @@ public class EditUbics extends javax.swing.JPanel implements funtionsCom {
     private void listDepositoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_listDepositoItemStateChanged
 
         if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
-            DepSelected = listDeposito.getSelectedItem().toString();
-            llenarTablaUbics(tabUbEx, Art.getUbicacionExtra(DepSelected));
-            llenarTablaUbics(tabUbP, Art.getUbicacionPrincipal(DepSelected));
-
-            if (tabUbP.getRowCount() == 0) {
-                addBtnP.setEnabled(true);
-                addBtnEx.setEnabled(false);
-            } else {
-                addBtnEx.setEnabled(true);
-                addBtnP.setEnabled(false);
-            }
-            editBtnEx.setEnabled(false);
+            fillTableUbics(tabUb, Art.getListUbicByDepName(listDeposito.getSelectedItem().toString()));
             editBtnP.setEnabled(false);
         }
     }//GEN-LAST:event_listDepositoItemStateChanged
@@ -497,32 +366,31 @@ public class EditUbics extends javax.swing.JPanel implements funtionsCom {
     private void previusPageMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_previusPageMouseClicked
         if (previusPage.isVisible()) {
             addOeditUbic = null;
+            this.Art.setListCantsFromUbics(UbicacionDao.findUbicacionFromArticulo(Art));
+            this.listaDeps = DepositosDao.getListDeps();
             JComboBoxDepositos(listDeposito, listaDeps);
-            Art.setUbicacion(ArticuloDao.ObtenerUbicHashMap(Art));//Actualizo las ubicaciones del articulo q se esta editando.
             jPanel1.setVisible(true);
             ContentExtra.setVisible(false);
         }
     }//GEN-LAST:event_previusPageMouseClicked
 
-    public <T extends Exportable> void llenarTablaUbics(JTable tb, List<T> a) {
-        ClearTable(tb);
+    public <T extends Exportable> void fillTableUbics(JTable tb, List<T> a) {
+        clearTable(tb);
         tb.clearSelection();
         tb.getColumnModel().getColumn(0).setMaxWidth(20);
         if (a != null) {
             if (!a.isEmpty()) {
-                llenarTabla(tb,a);
+                fillTable(tb, a);
             }
+
         }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel ContentExtra;
-    private javax.swing.JPanel TableUbicExtra;
-    private javax.swing.JButton addBtnEx;
     private javax.swing.JButton addBtnP;
     private javax.swing.JTextField codigotxt;
     private javax.swing.JTextField descTxt;
-    private javax.swing.JButton editBtnEx;
     private javax.swing.JButton editBtnP;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
@@ -530,13 +398,11 @@ public class EditUbics extends javax.swing.JPanel implements funtionsCom {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JComboBox<String> listDeposito;
     private javax.swing.JButton previusPage;
     public javax.swing.JButton previusPageExt;
-    private javax.swing.JTable tabUbEx;
-    private javax.swing.JTable tabUbP;
+    private javax.swing.JTable tabUb;
     private javax.swing.JLabel titleCod;
     private javax.swing.JLabel titleDesc;
     private javax.swing.JLabel titleRelacion1;

@@ -1,15 +1,15 @@
 package com.rubenrdc.consultartoptimizado.IGU.depositos;
 
 import com.rubenrdc.consultartoptimizado.dao.DepositosDao;
-import com.rubenrdc.consultartoptimizado.models.interfaces.funtionsCom;
 import com.rubenrdc.consultartoptimizado.models.Deposito;
 import javax.swing.JOptionPane;
+import com.rubenrdc.consultartoptimizado.models.interfaces.Utilities;
 
 /**
  *
  * @author Ruben
  */
-public class PreviewDep extends javax.swing.JFrame implements funtionsCom {
+public class PreviewDep extends javax.swing.JFrame implements Utilities {
 
     private Deposito dep;
     private boolean estadoActivo;

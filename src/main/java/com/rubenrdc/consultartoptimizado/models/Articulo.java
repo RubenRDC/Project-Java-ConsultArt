@@ -1,22 +1,22 @@
 package com.rubenrdc.consultartoptimizado.models;
 
 import com.rubenrdc.consultartoptimizado.models.interfaces.Exportable;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  *
  * @author Ruben
  */
-public class Articulo implements Exportable{
+public class Articulo implements Exportable {
 
     private final int limitUbicExtra = 10, limitUbicP = 1;
     private int id;
-    private String codigo, desc, foto, ubicConcat;
-    private List<Object[]> stocks;
+    private String codigo, desc, foto;
     private final Object[] row = new Object[4];
-    private HashMap Ubicacion;
+
+    private List<ArticuloUbicacion> listCantsFromUbics;
 
     public Articulo(int idArt, String code, String desc, String foto) {
         this.id = idArt;
@@ -69,35 +69,34 @@ public class Articulo implements Exportable{
         this.foto = foto;
     }
 
-    public List<Object[]> getStocks() {
-        return stocks;
-    }
-
-    public void setStocks(List<Object[]> stocks) {
-        this.stocks = stocks;
-    }
-
     public String getUbicsConcat(String DepName) {
-        UbicacionPrincipal ubicPrinc = (UbicacionPrincipal) Ubicacion.get(DepName);
-        if (ubicPrinc != null) {
-            List<UbicacionExtra> listUbicacionesExtras = ubicPrinc.getListUbicacionesExtras();
-            ubicConcat = ubicPrinc.getConcatUbic();
-            if (!listUbicacionesExtras.isEmpty()) {
-                int p = 1;
-                for (UbicacionExtra listUbicacionesExtra : listUbicacionesExtras) {
-                    if (p < 3) {
-                        ubicConcat += " | ";
-                        ubicConcat += listUbicacionesExtra.getConcatUbic();
-                        p++;
-                    } else {
-                        ubicConcat += "\n";
-                        ubicConcat += listUbicacionesExtra.getConcatUbic();
-                        p = 1;
-                    }
-                }
+        if (listCantsFromUbics != null) {
+            if (!listCantsFromUbics.isEmpty()) {
+                String ubicConcat = listCantsFromUbics.stream()
+                        .filter(art -> art.getDeposito().getNombre().equals(DepName))//Filtro el stream y devuelve uno con el filtro aplicado
+                        .map(art -> art.getUbicacion().getUbic())//Devuelvo un stream con las ubicaciones filtradas
+                        .collect(Collectors.joining(" | "));//Realizo una coleccion con los valores del anterior Stream y genero una concatenacion devolviendo un String
                 return ubicConcat;
-            } else {
-                return ubicConcat;
+            }
+        }
+        return null;
+    }
+
+    public List<Ubicacion> getListUbicByDepName(String DepName) {
+        if (listCantsFromUbics != null) {
+            if (!listCantsFromUbics.isEmpty()) {
+                List<Ubicacion> collect = listCantsFromUbics.stream().filter(ubi -> ubi.getDeposito().getNombre().equals(DepName)).map(art -> art.getUbicacion()).collect(Collectors.toList());
+                return collect;
+            }
+        }
+        return null;
+    }
+
+    public Map<String, Integer> getStockByDeps() {
+        if (listCantsFromUbics != null) {
+            if (!listCantsFromUbics.isEmpty()) {
+                Map<String, Integer> collect = listCantsFromUbics.stream().collect(Collectors.groupingBy(art -> art.getDeposito().getNombre(), Collectors.summingInt(ArticuloUbicacion::getStockArt)));
+                return collect;
             }
         }
         return null;
@@ -111,38 +110,11 @@ public class Articulo implements Exportable{
         return limitUbicP;
     }
 
-    public HashMap getUbicacionHashMap() {
-        return Ubicacion;
+    public List<ArticuloUbicacion> getListCantsFromUbics() {
+        return listCantsFromUbics;
     }
 
-    public List<UbicacionExtra> getUbicacionExtra(String DepName) {
-        if (this.getUbicacionPrincipal(DepName) != null) {
-            UbicacionPrincipal UbicP = this.getUbicacionPrincipal(DepName).get(0);
-            if (UbicP != null) {
-                if (!UbicP.getListUbicacionesExtras().isEmpty()) {
-                    return UbicP.getListUbicacionesExtras();
-                }
-            }
-        }
-        return null;
+    public void setListCantsFromUbics(List<ArticuloUbicacion> listCantsFromUbics) {
+        this.listCantsFromUbics = listCantsFromUbics;
     }
-
-    public List<UbicacionPrincipal> getUbicacionPrincipal(String DepName) {
-        UbicacionPrincipal ubicPrinc = (UbicacionPrincipal) Ubicacion.get(DepName);
-        if (ubicPrinc != null) {
-            List<UbicacionPrincipal> listaUbicP = new ArrayList<>();
-            listaUbicP.add(ubicPrinc);
-            return listaUbicP;
-        }
-        return null;
-    }
-
-    public void setUbicacion(HashMap Ubicacion) {
-        this.Ubicacion = Ubicacion;
-    }
-
-    public void setUbicConcat(String ubicConcat) {
-        this.ubicConcat = ubicConcat;
-    }
-
 }

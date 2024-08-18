@@ -2,17 +2,17 @@ package com.rubenrdc.consultartoptimizado.IGU.auth;
 
 import com.rubenrdc.consultartoptimizado.IGU.ConsArt;
 import com.rubenrdc.consultartoptimizado.dao.UserDao;
-import com.rubenrdc.consultartoptimizado.models.interfaces.funtionsCom;
 import com.rubenrdc.consultartoptimizado.models.User;
 import java.util.concurrent.locks.ReentrantLock;
 import javax.swing.ImageIcon;
+import com.rubenrdc.consultartoptimizado.models.interfaces.Utilities;
 
 /**
  *
  * @author Ruben
  *
  */
-public class Login extends javax.swing.JFrame implements funtionsCom {
+public class Login extends javax.swing.JFrame implements Utilities {
 
     private ConsArt ventana;
     private ReentrantLock lock = new ReentrantLock();

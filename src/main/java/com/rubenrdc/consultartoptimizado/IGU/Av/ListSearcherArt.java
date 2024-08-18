@@ -1,16 +1,16 @@
 package com.rubenrdc.consultartoptimizado.IGU.Av;
 
 import com.rubenrdc.consultartoptimizado.dao.ArticuloDao;
-import com.rubenrdc.consultartoptimizado.models.interfaces.funtionsCom;
 import com.rubenrdc.consultartoptimizado.models.Articulo;
 import java.util.List;
 import javax.swing.JOptionPane;
+import com.rubenrdc.consultartoptimizado.models.interfaces.Utilities;
 
 /**
  *
  * @author Ruben
  */
-public class ListSearcherArt extends javax.swing.JPanel implements funtionsCom {
+public class ListSearcherArt extends javax.swing.JPanel implements Utilities {
 
     protected int limitList = 100;
     protected List<Articulo> lista;
@@ -256,14 +256,14 @@ public class ListSearcherArt extends javax.swing.JPanel implements funtionsCom {
     }//GEN-LAST:event_schDesBtnMouseClicked
 
     public void llenarTablaConArt(javax.swing.JTable tb, String code, int limit) {
-        ClearTable(tb);
+        clearTable(tb);
         lista = ArticuloDao.getListArt(code, limit);
         tb.getColumnModel().getColumn(0).setMaxWidth(20);//Cambiar tamaño de una columna
         tb.getColumnModel().getColumn(1).setMaxWidth(100);//
         tb.getColumnModel().getColumn(2).setMaxWidth(387);//
         if (lista != null) {
             if (!lista.isEmpty()) {
-                llenarTabla(tb, lista);
+                fillTable(tb, lista);
             } else {
                 JOptionPane.showMessageDialog(null, "No se encontraron resultados.");
                 llenarTablaConArt(tb, "", limit);
