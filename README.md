@@ -31,6 +31,6 @@
 `protobuf-java-3.19.4`
 
 <h2>Diagrama SQL:</h2>
-<img src ="https://raw.githubusercontent.com/RubenRDC/rdcpictures/b83329fc9df3d36b90d3410567e4ff84152d5089/pictures/ConsultorArticulo/DiagramSQL.png" height="650"></img> 
+<img src ="https://raw.githubusercontent.com/RubenRDC/rdcpictures/master/pictures/ConsultorArticulo/DiagramSQL.png" height="650"></img> 
 
 </div>
