@@ -1,11 +1,13 @@
 package com.rubenrdc.consultartoptimizado.dao;
 
 import com.rubenrdc.consultartoptimizado.models.Articulo;
+import com.rubenrdc.consultartoptimizado.models.ArticuloUbicacion;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import com.rubenrdc.consultartoptimizado.models.interfaces.Utilities;
+import java.util.Arrays;
 
 /**
  *
@@ -103,6 +105,59 @@ public class ArticuloDao implements Utilities {
         if (genericDao.ExtablecerC() != null) {
             query = "DELETE FROM articulos WHERE id = ?";
             boolean exito = genericDao.GenericUpdate(query, idArt);
+            genericDao.getCloseC();
+            return exito;
+        }
+        return false;
+    }
+
+    public static boolean updateUbicFromArt(Articulo art, ArticuloUbicacion relacionArtUbic) {
+        if (genericDao.ExtablecerC() != null) {
+            boolean exito = false;
+            int idRelacion = relacionArtUbic.getId();
+            int stockArt = relacionArtUbic.getStockArt();
+            int idUbicacion = relacionArtUbic.getUbicacion().getId();
+            String ubic = relacionArtUbic.getUbicacion().getUbic();
+
+            List<Object[]> listParams = new ArrayList<>();
+
+            if (idUbicacion == 0) {
+                String[] querys = {"INSERT INTO ubicaciones (ubic) VALUES(?)", "UPDATE ubicaciones_articulos SET idUbic = ?, stockArt = ? WHERE id = ?"};
+
+                listParams = Arrays.asList(new Object[]{ubic}, new Object[]{stockArt, idRelacion});
+                exito = genericDao.GenericCompuestUpdate(querys, listParams);
+            } else {
+                String[] querys = {"UPDATE ubicaciones_articulos SET idUbic = ?, stockArt = ? WHERE id = ?"};
+
+                listParams.add(new Object[]{idUbicacion, stockArt, idRelacion});
+                exito = genericDao.GenericCompuestUpdate(querys, listParams);
+            }
+            genericDao.getCloseC();
+            return exito;
+        }
+        return false;
+    }
+
+    public static boolean insertUbicFromArt(Articulo art, ArticuloUbicacion relacionArtUbic) {
+        if (genericDao.ExtablecerC() != null) {
+            boolean exito = false;
+            int idArt = art.getId();
+            int idDep = relacionArtUbic.getDeposito().getId();
+            int stockArt = relacionArtUbic.getStockArt();
+            int idUbicacion = relacionArtUbic.getUbicacion().getId();
+            String ubic = relacionArtUbic.getUbicacion().getUbic();
+
+            List<Object[]> listParams = new ArrayList<>();
+
+            if (idUbicacion == 0) {
+                String[] querys = {"INSERT INTO ubicaciones (ubic) VALUES(?)", "INSERT INTO ubicaciones_articulos (idUbic,idArt,idDep,stockArt) VALUES (?,?,?,?)"};
+                listParams.addAll(Arrays.asList(new Object[]{ubic}, new Object[]{idArt, idDep, stockArt}));
+                exito = genericDao.GenericCompuestUpdate(querys, listParams);
+            } else {
+                String[] querys = {"INSERT INTO ubicaciones_articulos (idUbic,idArt,idDep,stockArt) SELECT ?,?,?,? WHERE NOT EXISTS(SELECT 1 FROM ubicaciones_articulos WHERE idUbic = ? AND idArt = ? AND idDep = ?)"};
+                listParams.add(new Object[]{idUbicacion, idArt, idDep, stockArt, idUbicacion, idArt, idDep});
+                exito = genericDao.GenericCompuestUpdate(querys, listParams);
+            }
             genericDao.getCloseC();
             return exito;
         }

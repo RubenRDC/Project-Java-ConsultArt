@@ -1,55 +1,44 @@
 package com.rubenrdc.consultartoptimizado.IGU.Av;
 
-import com.rubenrdc.consultartoptimizado.dao.UbicacionExtraDao;
-import com.rubenrdc.consultartoptimizado.dao.UbicacionPrincDao;
-import com.rubenrdc.consultartoptimizado.models.UbicacionExtra;
-import com.rubenrdc.consultartoptimizado.models.UbicacionPrincipal;
-import com.rubenrdc.consultartoptimizado.models.interfaces.funtionsCom;
+import com.rubenrdc.consultartoptimizado.dao.ArticuloDao;
+import com.rubenrdc.consultartoptimizado.dao.UbicacionDao;
+import com.rubenrdc.consultartoptimizado.models.Articulo;
+import com.rubenrdc.consultartoptimizado.models.ArticuloUbicacion;
+import com.rubenrdc.consultartoptimizado.models.Ubicacion;
 import com.rubenrdc.consultartoptimizado.models.interfaces.DialogsFunt;
-import com.rubenrdc.consultartoptimizado.models.modelAbstract.Ubicaciones;
+import com.rubenrdc.consultartoptimizado.models.interfaces.Utilities;
 
 /**
  *
  * @author Ruben
  */
-public class EditUbic extends javax.swing.JPanel implements funtionsCom, DialogsFunt {
-
-    private int tipoUbicacion, tipoVentana;
+public class EditUbic extends javax.swing.JPanel implements Utilities, DialogsFunt {
+    
+    private int tipoVentana;
     private String s = "", p = "", e = "", c = "", a = "";
-    public static final int PRINCIPAL = 0, EXTRA = 1, ADD = 0, EDIT = 1;
-    private Ubicaciones Ubic;
-
-    public <T extends Ubicaciones> EditUbic(T Ubic, int tipoVentana, int tipoUbicacion) {
+    public static final int ADD = 0, EDIT = 1;
+    private ArticuloUbicacion relacionArtUbic;
+    private Articulo art;
+    
+    public EditUbic(Articulo art,ArticuloUbicacion relacionArtUbic, int tipoVentana) {
         initComponents();
-        this.Ubic = Ubic;
-        this.tipoUbicacion = tipoUbicacion;
+        this.relacionArtUbic = relacionArtUbic;
         this.tipoVentana = tipoVentana;
-
-        if (tipoUbicacion == PRINCIPAL) {
-            if (tipoVentana == ADD) {
-                titletxt.setText("Agregar Ubicacion Principal");
-            } else if (tipoVentana == EDIT) {
-                titletxt.setText("Editar Ubicacion Principal");
-                setCampos(Ubic);
-            }
-        } else if (tipoUbicacion == EXTRA) {
-            stocktxt.setEnabled(false);
-            stocktxt.setToolTipText("La asignacion o correccion del Stock solo se encuentra disponible el alta o edicion de la ubicacion principal de cada deposito.");
-            if (tipoVentana == ADD) {
-                titletxt.setText("Agregar Ubicacion Extra");
-
-            } else if (tipoVentana == EDIT) {
-                titletxt.setText("Editar Ubicacion Extra");
-                setCampos(Ubic);
-            }
+        this.art=art;
+        
+        if (tipoVentana == ADD) {
+            titletxt.setText("Agregar Ubicacion");
+        } else if (tipoVentana == EDIT) {
+            titletxt.setText("Editar Ubicacion");
+            setCampos(relacionArtUbic);
         }
-
+        
     }
-
+    
     public EditUbic() {
         initComponents();
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -334,33 +323,24 @@ public class EditUbic extends javax.swing.JPanel implements funtionsCom, Dialogs
 
     private void sendInfoBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_sendInfoBtnMouseClicked
         if (sendInfoBtn.isEnabled()) {
-            setCampsInUbic(Ubic);
+            setCampsInUbic(relacionArtUbic);
+            
+            if (tipoVentana == ADD) {
+                //Tipo Ventana de Add Ubicacion
+                msgInfoOperation(ArticuloDao.insertUbicFromArt(art, relacionArtUbic));
 
-            if (tipoUbicacion == PRINCIPAL) {//Tipo Ubicacion Principal
-                if (tipoVentana == ADD) {
-                    //Tipo Ventana de Add Ubicacion
-                    msgInfoOperation(UbicacionPrincDao.AddUbicP((UbicacionPrincipal) Ubic));
-
-                } else if (tipoVentana == EDIT) {
-                    //Tipo Ventana de Edit Ubicacion
-                    msgInfoOperation(UbicacionPrincDao.UpdateUbicP((UbicacionPrincipal) Ubic));
-                }
-            } else if (tipoUbicacion == EXTRA) {//Tipo Ubicacion Extra
-                if (tipoVentana == ADD) {
-                    //Agregar
-                    msgInfoOperation(UbicacionExtraDao.AddUbicExtra((UbicacionExtra) Ubic));
-                } else if (tipoVentana == EDIT) {
-                    //Editar
-                    msgInfoOperation(UbicacionExtraDao.UpdateUbicExtra((UbicacionExtra) Ubic));
-                }
+            } else if (tipoVentana == EDIT) {
+                //Tipo Ventana de Edit Ubicacion
+                msgInfoOperation(ArticuloDao.updateUbicFromArt(art, relacionArtUbic));
             }
+            
             setPanelEnabled(panelSeters, false);
         }
     }//GEN-LAST:event_sendInfoBtnMouseClicked
-
-    private <T extends Ubicaciones> void setCampos(T Ubicacion) {
-
-        String UbicConcat = Ubicacion.getConcatUbic();
+    
+    private void setCampos(ArticuloUbicacion relacionArtUbic) {
+        
+        String UbicConcat = relacionArtUbic.getUbicacion().getUbic();
         for (int i = 0; i < UbicConcat.length(); i++) {
             if (i == 0) {
                 s = String.valueOf(UbicConcat.charAt(i));
@@ -378,24 +358,23 @@ public class EditUbic extends javax.swing.JPanel implements funtionsCom, Dialogs
                 a += String.valueOf(UbicConcat.charAt(i));
             }
         }
-        if (tipoUbicacion == PRINCIPAL) {
-            stocktxt.setValue(((UbicacionPrincipal) Ubicacion).getExist());
-        }
+        stocktxt.setValue(relacionArtUbic.getStockArt());
+        
         SelSector.setValue(s);
         SelPasillo.setValue(Integer.valueOf(p));
         SelEstante.setValue(Integer.valueOf(e));
         SelCajon.setValue(Integer.valueOf(c));
         SelAltura.setValue(Integer.valueOf(a));
     }
-
-    private <T extends Ubicaciones> void setCampsInUbic(T Ubicacion) {
-
+    
+    private void setCampsInUbic(ArticuloUbicacion relacionArtUbic) {
+        
         s = SelSector.getValue().toString();
         p = String.valueOf(SelPasillo.getValue());
         e = String.valueOf(SelEstante.getValue());
         c = String.valueOf(SelCajon.getValue());
         a = String.valueOf(SelAltura.getValue());
-
+        
         if (p.length() < 2) {
             p = "0" + p;
         }
@@ -405,13 +384,15 @@ public class EditUbic extends javax.swing.JPanel implements funtionsCom, Dialogs
         if (c.length() < 2) {
             c = "0" + c;
         }
-
-        Ubicacion.setConcatUbic((s + p + "-" + e + c + "-" + a));
-
-        if (tipoUbicacion == PRINCIPAL) {
-            ((UbicacionPrincipal) Ubicacion).setExist((int) stocktxt.getValue());
+        relacionArtUbic.setUbicacion(ifExistUbic((s + p + "-" + e + c + "-" + a))).setStockArt((int) stocktxt.getValue());
+    }
+    private Ubicacion ifExistUbic(String Ubic){
+        int id = UbicacionDao.findUbicacionIdByUbic(Ubic);
+        if (id!=0) {
+            return new Ubicacion(id,Ubic);
+        }else{//Si no exite retorna un id = 0
+            return new Ubicacion(id,Ubic);
         }
-
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

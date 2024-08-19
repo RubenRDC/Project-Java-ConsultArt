@@ -18,6 +18,23 @@ public class UbicacionDao {
     private static final DaoConnection genericDao = new DaoConnection();
     private static String Query;
 
+    public static int findUbicacionIdByUbic(String Ubic) {
+        if (genericDao.ExtablecerC() != null) {
+            try {
+                int id = 0;
+                Query = "SELECT id FROM ubicaciones WHERE ubic = ? LIMIT 1";
+                ResultSet GenericQuery = genericDao.GenericQuery(Query, Ubic);
+                while(GenericQuery.next()){
+                   id = GenericQuery.getInt("id");
+                }
+                genericDao.getCloseC();
+                return id;
+            } catch (SQLException ex) {
+            }
+        }
+        return 0;
+    }
+
     public static boolean deleteUbic(int idUbicP) {
         if (genericDao.ExtablecerC() != null) {
             boolean exito;
@@ -33,7 +50,7 @@ public class UbicacionDao {
 
         if (genericDao.ExtablecerC() != null) {
             try {
-                String Query = """
+                Query = """
                    SELECT ua.id, ua.idDep,d.descrip,ua.idUbic, ux.ubic, (SELECT SUM(stockArt)
                    FROM ubicaciones_articulos u
                    WHERE u.idArt = ua.idArt

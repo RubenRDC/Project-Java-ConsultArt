@@ -97,6 +97,44 @@ public class DaoConnection {
         return false;
     }
 
+    public boolean GenericCompuestUpdate(String[] Querys, List<Object[]> listParams) {
+        try {
+            int generateKeys = 0;
+            conectar.setAutoCommit(false);
+            for (int i = 0; i < Querys.length; i++) {
+                PreparedStatement prepareStatement = conectar.prepareStatement(Querys[i], PreparedStatement.RETURN_GENERATED_KEYS);
+                Object[] get = listParams.get(i);
+                int index = 1;
+                //System.out.println("generateKeys -> " + generateKeys);
+                if (generateKeys != 0) {
+                    prepareStatement.setObject(index, generateKeys);
+                    index++;
+                }
+                for (Object get1 : get) {
+                    prepareStatement.setObject(index, get1);
+                    index++;
+                }
+                //System.out.println("PreparedStatement -> " + prepareStatement.toString());
+                prepareStatement.executeUpdate();
+                ResultSet generatedKeys = prepareStatement.getGeneratedKeys();
+                while (generatedKeys.next()) {
+                    generateKeys = generatedKeys.getInt(1);
+
+                }
+            }
+            conectar.commit();
+            return true;
+        } catch (SQLException ex) {
+            try {
+                conectar.rollback();
+            } catch (SQLException ex1) {
+                System.out.println("ex1 " + ex1);
+            }
+            System.out.println("ex " + ex);
+        }
+        return false;
+    }
+
     public ResultSet GenericQuery(String Query, java.util.List<String> params) {
         try {
             PreparedStatement ps = conectar.prepareStatement(Query);

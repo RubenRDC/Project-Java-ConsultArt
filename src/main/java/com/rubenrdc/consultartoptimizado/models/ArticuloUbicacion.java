@@ -42,16 +42,18 @@ public class ArticuloUbicacion {
         return ubicacion;
     }
 
-    public void setUbicacion(Ubicacion ubicacion) {
+    public ArticuloUbicacion setUbicacion(Ubicacion ubicacion) {
         this.ubicacion = ubicacion;
+        return this;
     }
 
     public Deposito getDeposito() {
         return deposito;
     }
 
-    public void setDeposito(Deposito deposito) {
+    public ArticuloUbicacion setDeposito(Deposito deposito) {
         this.deposito = deposito;
+        return this;
     }
 
     @Override
@@ -81,5 +83,5 @@ public class ArticuloUbicacion {
         }
         return Objects.equals(this.deposito, other.deposito);
     }
-    
+
 }

@@ -3,6 +3,7 @@ package com.rubenrdc.consultartoptimizado.IGU.Av;
 import com.rubenrdc.consultartoptimizado.dao.DepositosDao;
 import com.rubenrdc.consultartoptimizado.dao.UbicacionDao;
 import com.rubenrdc.consultartoptimizado.models.Articulo;
+import com.rubenrdc.consultartoptimizado.models.ArticuloUbicacion;
 import com.rubenrdc.consultartoptimizado.models.Deposito;
 import com.rubenrdc.consultartoptimizado.models.interfaces.Exportable;
 import java.util.List;
@@ -337,8 +338,9 @@ public class EditUbics extends javax.swing.JPanel implements Utilities {
         if (addBtnP.isEnabled()) {
             DepSelected = listDeposito.getSelectedItem().toString();
             //Deposito ObjectDepSelected = listaDeps.get(listDeposito.getSelectedIndex());
-
-            //addOeditUbic = new EditUbic(new Ubicacion(idArt,idDep,0,null), EditUbic.ADD, EditUbic.PRINCIPAL);
+            ArticuloUbicacion relacionArtUbic = new ArticuloUbicacion().setDeposito(listaDeps.get(listDeposito.getSelectedIndex()));
+            addOeditUbic = new EditUbic(Art, relacionArtUbic, EditUbic.ADD);
+            
             jPanel1.setVisible(false);
             ContentExtra.setVisible(true);
             showPanel(addOeditUbic, 419, 390, 0, 0, jPanel3);
@@ -348,7 +350,10 @@ public class EditUbics extends javax.swing.JPanel implements Utilities {
     private void editBtnPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editBtnPMouseClicked
         if (editBtnP.isEnabled()) {
             DepSelected = listDeposito.getSelectedItem().toString();
-            //addOeditUbic = new EditUbic(Art.getUbicacionPrincipal(DepSelected).get(tabUb.getSelectedRow()), EditUbic.EDIT, EditUbic.PRINCIPAL);
+            int valueAt = (int) tabUb.getValueAt(tabUb.getSelectedRow(), 0);
+            ArticuloUbicacion relacionArtUbic = Art.getListCantsFromUbics().stream().filter(u -> u.getDeposito().getNombre().equals(DepSelected) && u.getUbicacion().getId() == valueAt).findFirst().orElse(null);
+
+            addOeditUbic = new EditUbic(Art, relacionArtUbic, EditUbic.EDIT);
             jPanel1.setVisible(false);
             ContentExtra.setVisible(true);
             showPanel(addOeditUbic, 419, 390, 0, 0, jPanel3);
