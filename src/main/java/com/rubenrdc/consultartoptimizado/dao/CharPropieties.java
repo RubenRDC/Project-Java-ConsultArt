@@ -21,20 +21,14 @@ public class CharPropieties {
     private final static String ALGORITM = "AES";
 
     public CharPropieties() {
-        iniciar();
     }
 
-    private void iniciar() {
-
+    public static void loadConfig() {
         Properties propiedades = new Properties();
         InputStream file = null;
         String userDirectoryPath = System.getProperty("user.dir");
-        //javax.swing.JOptionPane.showMessageDialog(null, userDirectoryPath);
         try {
-            
-
             file = new FileInputStream(userDirectoryPath+"/datos.properties");
-            //System.out.println("ES NULO");
             propiedades.load(file);
             
             key = propiedades.getProperty("key");

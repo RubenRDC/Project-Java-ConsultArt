@@ -19,24 +19,17 @@ public class DaoConnection {
 
     }
     Connection conectar;
-    private CharPropieties Propiet = new CharPropieties();
-    private String puerto = "3306";
-
-    private String cadena = "jdbc:mysql://" + Propiet.getIp() + ":" + puerto + "/" + Propiet.getBd();
+    private final String PUERTO = "3306";
+    private final String CADENA = "jdbc:mysql://" + CharPropieties.getIp() + ":" + PUERTO + "/" + CharPropieties.getBd();
 
     public Connection ExtablecerC() {
         conectar = null;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            //System.out.println("cadena= "+cadena);
-            conectar = DriverManager.getConnection(cadena, Propiet.getUser(), Propiet.getPass());
-            //JOptionPane.showMessageDialog(null, "Se establecio la conexion exitosamente");
+            conectar = DriverManager.getConnection(CADENA, CharPropieties.getUser(), CharPropieties.getPass());
         } catch (HeadlessException | ClassNotFoundException | SQLException e) {
-            //System.out.println("ex " + e);
-            JOptionPane.showMessageDialog(null, "No se logro conectar a la base de datos", "ERROR!!", JOptionPane.ERROR_MESSAGE);
-            JOptionPane.showMessageDialog(null, e, "ERROR!!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "No se logro conectar a la base de datos\n"+e, "ERROR!!", JOptionPane.ERROR_MESSAGE);
         }
-        //System.out.println("conectar " + conectar);
         return conectar;
 
     }
@@ -171,7 +164,7 @@ public class DaoConnection {
         return null;
     }
 
-    private <T> T verificString(T txt) {//Filtro de Texto, Si la cadena no tiene caracteres, se reemplaza por nulo.
+    private <T> T verificString(T txt) {//Filtro de Texto, Si la CADENA no tiene caracteres, se reemplaza por nulo.
         if (txt != null) {
             if (txt instanceof String string) {
                 if (string.length() > 0) {
