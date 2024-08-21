@@ -51,11 +51,7 @@ public class UbicacionDao {
         if (genericDao.ExtablecerC() != null) {
             try {
                 Query = """
-                   SELECT ua.id, ua.idDep,d.descrip,ua.idUbic, ux.ubic, (SELECT SUM(stockArt)
-                   FROM ubicaciones_articulos u
-                   WHERE u.idArt = ua.idArt
-                   AND u.idDep = ua.idDep
-                   AND u.idUbic = ua.idUbic) AS stockInUbic
+                   SELECT ua.id, ua.idDep,d.descrip,ua.idUbic, ux.ubic, ua.stockArt
                    FROM articulos art
                    INNER JOIN ubicaciones_articulos ua ON ua.idArt = art.id
                    LEFT JOIN depositos d ON ua.idDep = d.id
@@ -69,7 +65,7 @@ public class UbicacionDao {
                     listCantsFromUbics.add(
                             new ArticuloUbicacion(
                                     GenericQuery.getInt("ua.id"),
-                                    GenericQuery.getInt("stockInUbic"),
+                                    GenericQuery.getInt("ua.stockArt"),
                                     new Ubicacion(GenericQuery.getInt("ua.idUbic"), GenericQuery.getString("ux.ubic")),
                                     new Deposito(GenericQuery.getInt("ua.idDep"), GenericQuery.getString("d.descrip"))
                             ));
