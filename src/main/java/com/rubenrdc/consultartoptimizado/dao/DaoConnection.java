@@ -18,7 +18,7 @@ public class DaoConnection {
     public DaoConnection() {
 
     }
-    Connection conectar;
+    private Connection conectar;
     private final String PUERTO = "3306";
     private final String CADENA = "jdbc:mysql://" + CharPropieties.getIp() + ":" + PUERTO + "/" + CharPropieties.getBd();
 
