@@ -1,7 +1,6 @@
 package com.rubenrdc.consultartoptimizado.models;
 
 import com.rubenrdc.consultartoptimizado.models.interfaces.Exportable;
-import com.rubenrdc.consultartoptimizado.models.modelAbstract.Ubicaciones;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -10,7 +9,7 @@ import java.util.Objects;
  *
  * @author Ruben
  */
-public class Ubicacion extends Ubicaciones implements Exportable{
+public class Ubicacion implements Exportable{
 
     private int id;
     private List<Articulo> listArt;
@@ -34,7 +33,6 @@ public class Ubicacion extends Ubicaciones implements Exportable{
         this.id = id;
     }
 
-    @Override
     public String getUbic() {
         return ubic;
     }
@@ -57,7 +55,6 @@ public class Ubicacion extends Ubicaciones implements Exportable{
         this.ubic = sector + p + "-" + e + c + "-" + a;
     }
 
-    @Override
     public void setUbic(String ConcatUbic) {
         this.ubic = ConcatUbic;
     }
